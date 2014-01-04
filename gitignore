@@ -1,0 +1,5 @@
+# generated files
+bin/
+gen/
+
+# leaving eclipse project files in for now
