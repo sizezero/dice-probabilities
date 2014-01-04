@@ -1,0 +1,26 @@
+
+* TODO static background graph in main frame
+
+* TODO input dice selection
+
+- simple rendered squares instead of dice images
+
+* TODO Roll One
+
+- simple rendered
+- zero values instead of hiding the control
+
+* TODO input controls
+
+- touches allow dice to be moved back and forth
+
+* TODO calc probabilities
+
+- rerender graph
+- display percentage results
+
+* TODO hide zero dice on roll one
+
+* TODO add rendered dice
+
+* TODO animate dice movement
