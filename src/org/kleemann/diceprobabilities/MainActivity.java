@@ -3,6 +3,7 @@ package org.kleemann.diceprobabilities;
 import android.os.Bundle;
 import android.app.Activity;
 import android.view.Menu;
+import android.widget.FrameLayout;
 
 public class MainActivity extends Activity {
 
