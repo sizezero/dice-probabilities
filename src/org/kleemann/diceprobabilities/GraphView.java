@@ -1,5 +1,8 @@
 package org.kleemann.diceprobabilities;
 
+import java.util.List;
+import java.util.Vector;
+
 import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.Color;
@@ -30,7 +33,8 @@ public class GraphView extends View {
 	 */
 	@Override
 	protected void onDraw(Canvas canvas) {
-		bounds(canvas);
+		//bounds(canvas);
+		curvy(canvas);
 	}
 
 	private void blueBackground(Canvas canvas) {
@@ -56,6 +60,9 @@ public class GraphView extends View {
 		                        0.9f, 1.0f,
 		                        0.99f, 0.99f
 		};
+		//final float[] points = { 0.1f,0.2f, 0.5f,0.2f, 0.7f,0.8f };
+		
+		/*
 		float[] mid = new float[points.length-2];
 		for (int i=0 ; i<mid.length ; ++i) {
 			mid[i] = (points[i]+points[i+2]) / 2.0f;
@@ -69,14 +76,21 @@ public class GraphView extends View {
 			pa.quadTo(points[i]*w,points[i+1]*h, mid[i]*w,mid[i+1]*h);
 		}
 		//pa.lineTo(w,h);
+        */
 
 		blueBackground(canvas);
+		
+		for (int i=0 ; i<points.length ; i+=2) {
+			points[i] *= w;
+			points[i+1] *= h;
+		}
+		Path path = BestFit.getPath(points);
 		
 		Paint p = new Paint();
 		p.setStyle(Paint.Style.STROKE);
         p.setStrokeWidth(5f);
         p.setColor(Color.WHITE);
-		canvas.drawPath(pa, p);		
+		canvas.drawPath(path, p);		
 	}
 
 	private void bounds(Canvas canvas) {
