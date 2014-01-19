@@ -34,7 +34,8 @@ public class GraphView extends View {
 	@Override
 	protected void onDraw(Canvas canvas) {
 		//bounds(canvas);
-		curvy(canvas);
+		//curvy(canvas);
+		curvy2(canvas);
 	}
 
 	private void blueBackground(Canvas canvas) {
@@ -80,17 +81,53 @@ public class GraphView extends View {
 
 		blueBackground(canvas);
 		
+		// scale points into a duplicated array
+		float[] s = new float[points.length];
 		for (int i=0 ; i<points.length ; i+=2) {
-			points[i] *= w;
-			points[i+1] *= h;
+			s[i] = points[i] * w;
+			s[i+1] = points[i+1] * h;
 		}
-		Path path = BestFit.getPath(points);
+		
+		Path path = BestFit.getPath(s);
 		
 		Paint p = new Paint();
 		p.setStyle(Paint.Style.STROKE);
         p.setStrokeWidth(5f);
         p.setColor(Color.WHITE);
 		canvas.drawPath(path, p);		
+	}
+
+	private void curvy2(Canvas canvas) {
+		final int h = canvas.getHeight();
+		final int w = canvas.getWidth();
+		
+		// break the drawable image into 0-1, 0-1
+		Point[] points = {
+		                        new Point(0.1f, 0.0f),
+		                        new Point(0.2f, 0.0f),
+		                        new Point(0.3f, 0.1f),
+		                        new Point(0.4f, 0.25f),
+		                        new Point(0.5f, 0.5f),
+		                        new Point(0.6f, 0.75f),
+		                        new Point(0.7f, 0.9f),
+		                        new Point(0.8f, 1.0f),
+		                        new Point(0.9f, 1.0f),
+		                        new Point(0.99f, 0.99f)
+		};
+		
+		blueBackground(canvas);
+		
+		for (int i=0 ; i<points.length ; ++i) {
+			points[i] = new Point(points[i].getX()*w, points[i].getY()*h);
+		}
+		Interpolate interpolate = new Interpolate(points);
+		Path path = interpolate.getPath();
+		
+		Paint p = new Paint();
+		p.setStyle(Paint.Style.STROKE);
+        p.setStrokeWidth(5f);
+        p.setColor(Color.WHITE);
+		canvas.drawPath(path, p);
 	}
 
 	private void bounds(Canvas canvas) {
