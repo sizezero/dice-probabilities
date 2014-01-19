@@ -2,4 +2,7 @@
 bin/
 gen/
 
+tests/bin/
+tests/gen/
+
 # leaving eclipse project files in for now
