@@ -84,8 +84,13 @@ public class GraphView extends View {
 		// scale points into a duplicated array
 		float[] s = new float[points.length];
 		for (int i=0 ; i<points.length ; i+=2) {
-			s[i] = points[i] * w;
-			s[i+1] = points[i+1] * h;
+			// add a 10% border by scaling in
+			s[i] = (points[i]-0.5f)*0.70f + 0.5f;
+			s[i+1] = (points[i+1]-0.5f)*0.70f + 0.5f;
+			
+			// scale unit coords to world coords
+			s[i] = s[i] * w;
+			s[i+1] = s[i+1] * h;
 		}
 		
 		Path path = BestFit.getPath(s);
@@ -102,7 +107,7 @@ public class GraphView extends View {
 		final int w = canvas.getWidth();
 		
 		// break the drawable image into 0-1, 0-1
-		Point[] points = {
+		Point[] points1 = {
 		                        new Point(0.1f, 0.0f),
 		                        new Point(0.2f, 0.0f),
 		                        new Point(0.3f, 0.1f),
@@ -114,13 +119,29 @@ public class GraphView extends View {
 		                        new Point(0.9f, 1.0f),
 		                        new Point(0.99f, 0.99f)
 		};
+		Point[] points2 = {
+                new Point(0.0f, 0.0f),
+                new Point(0.5f, 1.0f),
+                new Point(1.0f, 0.0f)
+		};
+		Point[] points = points1;
 		
 		blueBackground(canvas);
-		
+
+		Point[] s = new Point[points.length];
 		for (int i=0 ; i<points.length ; ++i) {
-			points[i] = new Point(points[i].getX()*w, points[i].getY()*h);
+			// add a 10% border by scaling in
+			float x = (points[i].getX()-0.5f)*0.70f + 0.5f;
+			float y = (points[i].getY()-0.5f)*0.70f + 0.5f;
+			
+			// scale unit coords to world coords
+			x *= w;
+			y *= h;
+			
+			s[i] = new Point(x,y);
 		}
-		Interpolate interpolate = new Interpolate(points);
+
+		Interpolate interpolate = new Interpolate(s);
 		Path path = interpolate.getPath();
 		
 		Paint p = new Paint();

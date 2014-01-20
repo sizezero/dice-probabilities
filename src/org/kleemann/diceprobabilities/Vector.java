@@ -29,7 +29,7 @@ public class Vector {
 	}
 	
 	public Vector scale(float f) {
-		final Point n = new Point(pt.getX()/f, pt.getY()/f);
+		final Point n = new Point(pt.getX()*f, pt.getY()*f);
 		return new Vector(n);
 	}
 	
@@ -40,4 +40,11 @@ public class Vector {
 	public Point add(Point that) {
 		return this.pt.add(that);
 	}
+	
+	public Point sub(Point that) {
+		return this.pt.sub(that);
+	}
+	
+	@Override
+	public String toString() { return pt.toString(); }
 }
