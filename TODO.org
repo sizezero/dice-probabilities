@@ -1,5 +1,5 @@
 
-* TODO static background graph in main frame
+* DONE static background graph in main frame
 
 * TODO input dice selection
 
@@ -16,8 +16,8 @@
 
 * TODO calc probabilities
 
-- rerender graph
 - display percentage results
+- rerender graph
 
 * TODO hide zero dice on roll one
 

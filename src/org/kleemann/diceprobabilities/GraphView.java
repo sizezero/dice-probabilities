@@ -103,6 +103,12 @@ public class GraphView extends View {
 	}
 
 	private void curvy2(Canvas canvas) {
+		blueBackground(canvas);
+		interpolatedSolid(canvas, 50.0f, Color.YELLOW);
+		interpolatedSolid(canvas, 0.0f, Color.RED);
+	}
+
+	private void interpolatedSolid(Canvas canvas, float xOffset, int color) {
 		final int h = canvas.getHeight();
 		final int w = canvas.getWidth();
 		
@@ -126,8 +132,6 @@ public class GraphView extends View {
 		};
 		Point[] points = points1;
 		
-		blueBackground(canvas);
-
 		Point[] s = new Point[points.length];
 		for (int i=0 ; i<points.length ; ++i) {
 			// add a 10% border by scaling in
@@ -138,19 +142,30 @@ public class GraphView extends View {
 			x *= w;
 			y *= h;
 			
+			x += xOffset;
+			
 			s[i] = new Point(x,y);
 		}
 
 		Interpolate interpolate = new Interpolate(s);
 		Path path = interpolate.getPath();
 		
+		// connect the path to origin and starting point
+		path.lineTo(s[s.length-1].getX(), h);
+		path.lineTo(0.0f, h);
+		path.lineTo(0.0f, 0.0f);
+		path.lineTo(s[0].getX(),s[0].getY());
+		
 		Paint p = new Paint();
-		p.setStyle(Paint.Style.STROKE);
+		p.setStyle(Paint.Style.FILL);
         p.setStrokeWidth(5f);
-        p.setColor(Color.WHITE);
+        p.setColor(color);
 		canvas.drawPath(path, p);
+		p.setStyle(Paint.Style.STROKE);
+        p.setColor(Color.WHITE);
+		canvas.drawPath(path, p);		
 	}
-
+	
 	private void bounds(Canvas canvas) {
 		final int h = canvas.getHeight();
 		final int w = canvas.getWidth();
