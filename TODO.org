@@ -1,16 +1,18 @@
 
 * DONE static background graph in main frame
 
-* TODO input dice selection
+* DONE input dice selection
 
 - simple rendered squares instead of dice images
 
-* TODO Roll One
+* DONE Roll One
 
+- vertical linear layout
+- two horz linear layouts over background canvas
 - simple rendered
 - zero values instead of hiding the control
 
-* TODO input controls
+* DONE input controls
 
 - touches allow dice to be moved back and forth
 
