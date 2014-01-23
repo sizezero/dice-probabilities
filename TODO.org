@@ -29,10 +29,29 @@
 
 - display percentage results
 
+* TODO Bug: no dice gives 100%
+
+* TODO hide buttons
+
+CurrentDicePile should not be shown if the values are zero
+
+* TODO enable internal layout animations
+
 * TODO render graph
 
+* TODO Bug: rows of dice are rendered truncated
+
+GridLayout?
+
 * TODO add second set of result dice
+
+* TODO Bug: values are not saved on re-orientation
+
+* TODO libraries are big
+
+see if we can just pull the fractions out of apache math
 
 * TODO add rendered dice
 
 * TODO animate dice movement
+
