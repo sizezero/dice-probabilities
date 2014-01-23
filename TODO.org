@@ -31,6 +31,8 @@
 
 * TODO Bug: no dice gives 100%
 
+* TODO Bug: any constant value gives 0%
+
 * TODO hide buttons
 
 CurrentDicePile should not be shown if the values are zero
