@@ -31,7 +31,7 @@
 
 * DONE Bug: no dice gives 100%
 
-* TODO Bug: any constant value gives 0%
+* DONE Bug: any constant value gives 0%
 
 * TODO hide buttons
 

@@ -30,7 +30,7 @@ public class DistributionTest extends TestCase {
 		assertEquals(BigFraction.ZERO, twoDSix.getProbability(13));
 		assertEquals(BigFraction.ZERO, twoDSix.getProbability(14));
 		
-		assertEquals(BigFraction.ONE, twoDSix.getCumulativeProbability(12));
+		assertEquals(BigFraction.ONE, twoDSix.getCumulativeProbability(2));
 	}
 	
 	public void testIdentity() {
@@ -44,5 +44,23 @@ public class DistributionTest extends TestCase {
 		for (int x=0 ; x<10 ; ++x) {
 			assertEquals(d6.getProbability(x), sum.getProbability(x));
 		}
+	}
+	
+	public void testConstant() {
+		Distribution c2 = new ConstantDistribution(2);
+		Distribution d6 = new DieDistribution(6);
+		Distribution d = new MultinomialDistribution(c2, d6);
+
+		assertEquals(BigFraction.ZERO, d.getProbability(0));
+		assertEquals(BigFraction.ZERO, d.getProbability(1));
+		assertEquals(BigFraction.ZERO, d.getProbability(2));
+		assertEquals(new BigFraction(1,6), d.getProbability(3));
+		assertEquals(new BigFraction(1,6), d.getProbability(4));
+		assertEquals(new BigFraction(1,6), d.getProbability(5));
+		assertEquals(new BigFraction(1,6), d.getProbability(6));
+		assertEquals(new BigFraction(1,6), d.getProbability(7));
+		assertEquals(new BigFraction(1,6), d.getProbability(8));
+		assertEquals(BigFraction.ZERO, d.getProbability(9));
+		assertEquals(BigFraction.ZERO, d.getProbability(10));
 	}
 }
