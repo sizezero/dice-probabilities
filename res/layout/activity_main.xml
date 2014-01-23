@@ -32,7 +32,15 @@
 	        android:orientation="horizontal" >
 	        
 	    </LinearLayout>
-    
+
+	    <Button 
+	        android:id="@+id/current_probability"
+	        android:layout_width="match_parent"
+	        android:layout_height="0dp"
+	        android:layout_weight="1"
+	        android:text=""
+	        />
+	    
     </LinearLayout>
     
 </FrameLayout>

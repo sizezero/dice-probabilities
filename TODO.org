@@ -16,12 +16,22 @@
 
 - touches allow dice to be moved back and forth
 
-* TODO calc probabilities
+* DONE calc probabilities
+
+** DONE calc
+
+- interface Distribution
+- class MultinomialDistribution
+- class DieDistribution
+- class ConstantDistribution
+
+** DONE Display
 
 - display percentage results
-- rerender graph
 
-* TODO hide zero dice on roll one
+* TODO render graph
+
+* TODO add second set of result dice
 
 * TODO add rendered dice
 

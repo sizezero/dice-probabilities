@@ -18,7 +18,9 @@ public class PoolDicePile implements View.OnClickListener {
 		button.setText(render());
 	}
 	
-	private String render() { return "+d"+sides; }
+	private String render() {
+		return sides==1 ? "+1" : "+d"+sides;
+	}
 
 	public void setIncrementer(CurrentDicePile current) {
 		this.current = current;
