@@ -92,31 +92,35 @@ public class MainActivity extends Activity implements View.OnClickListener {
 		// TODO: may want to do this in the background
 		
 		Distribution d = new ZeroDistribution(); // identity
-		//Log.v("TAG", "d0 "+d.getCumulativeProbability(cResult.getCount()).toString());
+		boolean atLeastOne = false;
 		for (int i=0 ; i<cd12.getCount() ; ++i) {
 			d = new MultinomialDistribution(d, new DieDistribution(12));
+			atLeastOne = true;
 		}
-		//Log.v("TAG", "d12 "+d.getCumulativeProbability(cResult.getCount()).toString());
 		for (int i=0 ; i<cd10.getCount() ; ++i) {
 			d = new MultinomialDistribution(d, new DieDistribution(10));
+			atLeastOne = true;
 		}
-		//Log.v("TAG", "d10 "+d.getCumulativeProbability(cResult.getCount()).toString());
 		for (int i=0 ; i<cd8.getCount() ; ++i) {
 			d = new MultinomialDistribution(d, new DieDistribution(8));
+			atLeastOne = true;
 		}
-		//Log.v("TAG", "d8 "+d.getCumulativeProbability(cResult.getCount()).toString());
 		for (int i=0 ; i<cd6.getCount() ; ++i) {
 			d = new MultinomialDistribution(d, new DieDistribution(6));
+			atLeastOne = true;
 		}
-		//Log.v("TAG", "d6 "+d.getCumulativeProbability(cResult.getCount()).toString());
 		for (int i=0 ; i<cd4.getCount() ; ++i) {
 			d = new MultinomialDistribution(d, new DieDistribution(4));
+			atLeastOne = true;
 		}
-		//Log.v("TAG", "d4 "+d.getCumulativeProbability(cResult.getCount()).toString());
 		if (cd1.getCount() > 0) {
 			d = new MultinomialDistribution(d, new ConstantDistribution(cd1.getCount()));
+			atLeastOne = true;
 		}
-		//Log.v("TAG", "d final "+d.getCumulativeProbability(cResult.getCount()).toString());
-		return d.getCumulativeProbability(cResult.getCount());
+		if (atLeastOne) {
+			return d.getCumulativeProbability(cResult.getCount());
+		} else { 
+			return BigFraction.ZERO;
+		}
 	}
 }
