@@ -37,7 +37,7 @@
 
 CurrentDicePile should not be shown if the values are zero
 
-* TODO enable internal layout animations
+* DONE enable internal layout animations
 
 * TODO add color to dice buttons
 
