@@ -15,4 +15,12 @@ public class ToBeat extends CurrentDicePile {
 		final String greaterThanOrEqual = "\u2265";
 		return greaterThanOrEqual+getCount(); 
 	}
+
+	/**
+	 * Always show the ToBeat value even if it's zero
+	 */
+	protected void updateButton() {
+		button.setText(render());
+	}
+
 }

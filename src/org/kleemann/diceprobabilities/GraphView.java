@@ -1,8 +1,5 @@
 package org.kleemann.diceprobabilities;
 
-import java.util.List;
-import java.util.Vector;
-
 import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.Color;

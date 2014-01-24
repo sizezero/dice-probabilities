@@ -33,11 +33,13 @@
 
 * DONE Bug: any constant value gives 0%
 
-* TODO hide buttons
+* DONE hide buttons
 
 CurrentDicePile should not be shown if the values are zero
 
 * TODO enable internal layout animations
+
+* TODO add color to dice buttons
 
 * TODO render graph
 
