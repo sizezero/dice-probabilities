@@ -66,7 +66,6 @@ public class GraphView extends View {
 		 // add a few extra values after the distribution peaks; multiples of 10
 		final int maxX = (distribution.size()+10) - (distribution.size() % 10);  
 		Point[] pt = new Point[maxX];
-		BigFraction sum = distribution.getProbability(0);
 		for (int i=0 ; i<maxX ; ++i) {
 			
 			float x = (float)i/maxX;
@@ -83,8 +82,6 @@ public class GraphView extends View {
 			y *= h;
 			
 			pt[i] = new Point(x,y);
-			
-			sum = sum.add(distribution.getProbability(i+1));
 		}
 
 		Interpolate interpolate = new Interpolate(pt);
