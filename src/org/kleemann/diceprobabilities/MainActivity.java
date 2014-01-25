@@ -35,32 +35,27 @@ public class MainActivity extends Activity implements View.OnClickListener {
 		super.onCreate(savedInstanceState);		
 		setContentView(R.layout.activity_main);
 		
-		Context c = getApplicationContext();
+		pd12 = new PoolDicePile(12, (Button)findViewById(R.id.pool_d12));
+		pd10 = new PoolDicePile(10, (Button)findViewById(R.id.pool_d10));
+		pd8 = new PoolDicePile(8, (Button)findViewById(R.id.pool_d8));
+		pd6 = new PoolDicePile(6, (Button)findViewById(R.id.pool_d6));
+		pd4 = new PoolDicePile(4, (Button)findViewById(R.id.pool_d4));
+		pd1 = new PoolDicePile(1, (Button)findViewById(R.id.pool_constant));
+		pResult = new PoolDicePile(1, (Button)findViewById(R.id.pool_target));
 		
-		// TODO: not sure if this is where I should create ui elements that are not defined by xml
-		ViewGroup container = (ViewGroup)findViewById(R.id.dice_pool);
-		pd12 = new PoolDicePile(12,c,container);
-		pd10 = new PoolDicePile(10,c,container);
-		pd8 = new PoolDicePile(8,c,container);
-		pd6 = new PoolDicePile(6,c,container);
-		pd4 = new PoolDicePile(4,c,container);
-		pd1 = new PoolDicePile(1,c,container);
-		pResult = new PoolDicePile(1,c,container);
-		
-		ViewGroup container2 = (ViewGroup)findViewById(R.id.dice_current);
-		cd12 = new CurrentDicePile(12,c,container2,this);
+		cd12 = new CurrentDicePile(12, (Button)findViewById(R.id.current_d12), this);
 		pd12.setIncrementer(cd12);
-		cd10 = new CurrentDicePile(10,c,container2,this);
+		cd10 = new CurrentDicePile(10, (Button)findViewById(R.id.current_d10), this);
 		pd10.setIncrementer(cd10);
-		cd8 = new CurrentDicePile(8,c,container2,this);
+		cd8 = new CurrentDicePile(8, (Button)findViewById(R.id.current_d8), this);
 		pd8.setIncrementer(cd8);
-		cd6 = new CurrentDicePile(6,c,container2,this);
+		cd6 = new CurrentDicePile(6, (Button)findViewById(R.id.current_d6), this);
 		pd6.setIncrementer(cd6);
-		cd4 = new CurrentDicePile(4,c,container2,this);
+		cd4 = new CurrentDicePile(4, (Button)findViewById(R.id.current_d4), this);
 		pd4.setIncrementer(cd4);
-		cd1 = new CurrentDicePile(1,c,container2,this);
+		cd1 = new CurrentDicePile(1, (Button)findViewById(R.id.current_constant), this);
 		pd1.setIncrementer(cd1);
-		cResult = new ToBeat(c,container2,this);
+		cResult = new ToBeat((Button)findViewById(R.id.current_target), this);
 		pResult.setIncrementer(cResult);
 	}
 

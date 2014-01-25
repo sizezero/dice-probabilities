@@ -1,14 +1,12 @@
 package org.kleemann.diceprobabilities;
 
-import android.content.Context;
-import android.view.View.OnClickListener;
-import android.view.ViewGroup;
+import android.view.View;
+import android.widget.Button;
 
 public class ToBeat extends CurrentDicePile {
 
-	public ToBeat(Context context, ViewGroup container,
-			OnClickListener listener) {
-		super(1, context, container, listener);
+	public ToBeat(Button button, View.OnClickListener listener) {
+		super(1, button, listener);
 	}
 
 	protected String render() {

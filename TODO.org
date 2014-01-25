@@ -39,9 +39,11 @@ CurrentDicePile should not be shown if the values are zero
 
 * DONE enable internal layout animations
 
-* TODO add color to dice buttons
+* DONE add color to dice buttons
 
 * TODO render graph
+
+* TODO deploy to Play store
 
 * TODO Bug: rows of dice are rendered truncated
 
@@ -50,6 +52,8 @@ GridLayout?
 * TODO add second set of result dice
 
 * TODO Bug: values are not saved on re-orientation
+
+* TODO calculate result in background thread
 
 * TODO libraries are big
 

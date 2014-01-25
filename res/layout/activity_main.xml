@@ -17,11 +17,53 @@
 
 	    <LinearLayout
 	        android:id="@+id/dice_pool"
-	        android:layout_width="match_parent"
-	        android:layout_height="0dp"
+	        android:layout_width="fill_parent"
+	        android:layout_height="wrap_content"
 	        android:layout_weight="1"
 	        android:orientation="horizontal" >
+
+	        <Button 
+	            android:id="@+id/pool_d12"
+		        android:background="@drawable/d12_btn"
+ 		        style="@style/die_button"
+	            />
 	        
+	        <Button 
+	            android:id="@+id/pool_d10"
+		        android:background="@drawable/d10_btn"
+ 		        style="@style/die_button"
+	            />
+	        
+	        <Button 
+	            android:id="@+id/pool_d8"
+		        android:background="@drawable/d08_btn"
+ 		        style="@style/die_button"
+	            />
+
+	        <Button 
+	            android:id="@+id/pool_d6"
+		        android:background="@drawable/d06_btn"
+ 		        style="@style/die_button"
+	            />
+
+	        <Button 
+	            android:id="@+id/pool_d4"
+		        android:background="@drawable/d04_btn"
+ 		        style="@style/die_button"
+	            />
+
+	        <Button 
+	            android:id="@+id/pool_constant"
+		        android:background="@drawable/constant_btn"
+ 		        style="@style/die_button"
+	            />
+
+	        <Button 
+	            android:id="@+id/pool_target"
+		        android:background="@drawable/target_btn"
+ 		        style="@style/die_button"
+	            />
+
 	    </LinearLayout>
 
 	    <LinearLayout
@@ -31,17 +73,57 @@
 	        android:layout_weight="1"
 	        android:orientation="horizontal"
 	        android:animateLayoutChanges="true" >
-	        	        
+
+	        <Button 
+	            android:id="@+id/current_d12"
+		        android:background="@drawable/d12_btn"
+ 		        style="@style/die_button"
+	            />
+	        
+	        <Button 
+	            android:id="@+id/current_d10"
+		        android:background="@drawable/d10_btn"
+ 		        style="@style/die_button"
+	            />
+	        
+	        <Button 
+	            android:id="@+id/current_d8"
+		        android:background="@drawable/d08_btn"
+ 		        style="@style/die_button"
+	            />
+
+	        <Button 
+	            android:id="@+id/current_d6"
+		        android:background="@drawable/d06_btn"
+ 		        style="@style/die_button"
+	            />
+
+	        <Button 
+	            android:id="@+id/current_d4"
+		        android:background="@drawable/d04_btn"
+ 		        style="@style/die_button"
+	            />
+
+	        <Button 
+	            android:id="@+id/current_constant"
+		        android:background="@drawable/constant_btn"
+ 		        style="@style/die_button"
+	            />
+
+	        <Button 
+	            android:id="@+id/current_target"
+		        android:background="@drawable/target_btn"
+ 		        style="@style/die_button"
+	            />
+
 	    </LinearLayout>
 
 	    <Button 
 	        android:id="@+id/current_probability"
-	        android:layout_width="match_parent"
-	        android:layout_height="0dp"
-	        android:layout_weight="1"
-	        android:text=""
+	        style="@style/die_button"
+	        android:background="@drawable/result_btn"
 	        />
-	    
+
     </LinearLayout>
     
 </FrameLayout>

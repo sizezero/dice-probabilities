@@ -1,8 +1,6 @@
 package org.kleemann.diceprobabilities;
 
-import android.content.Context;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.Button;
 
 public class CurrentDicePile implements View.OnClickListener {
@@ -12,11 +10,10 @@ public class CurrentDicePile implements View.OnClickListener {
 	protected Button button;
 	private View.OnClickListener listener;
 	
-	public CurrentDicePile(int sides, Context context, ViewGroup container, View.OnClickListener listener) {
+	public CurrentDicePile(int sides, Button button, View.OnClickListener listener) {
 		this.sides = sides;
 		this.count = 0;
-		button = new Button(context);
-		container.addView(button);
+		this.button = button;
 		button.setOnClickListener(this);
 		this.listener = listener;
 		updateButton();

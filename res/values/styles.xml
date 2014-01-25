@@ -17,4 +17,27 @@
         <!-- All customizations that are NOT specific to a particular API-level can go here. -->
     </style>
 
+    <style name="die_button">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:textColor">@color/menu_text_color</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:shadowColor">@color/menu_shadow_color</item>
+        <item name="android:shadowDx">1</item>
+        <item name="android:shadowDy">1</item>
+        <item name="android:shadowRadius">4</item>
+        <item name="android:includeFontPadding">false</item>
+        <item name="android:minWidth">0dp</item>
+        <item name="android:minHeight">0dp</item>
+        <item name="android:layout_margin">1dp</item>
+        <!--  
+        <item name="android:textSize">30sp</item>
+        <item name="android:gravity">left</item>
+        <item name="android:layout_marginLeft">45dip</item>
+        <item name="android:layout_marginRight">45dip</item>
+        <item name="android:paddingLeft">-30dip</item>
+        <item name="android:paddingRight">-30dip</item>
+        -->
+    </style>
+
 </resources>
