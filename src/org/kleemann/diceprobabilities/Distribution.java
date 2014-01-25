@@ -6,6 +6,8 @@ import org.apache.commons.math3.fraction.BigFraction;
  * <p>Represents a discrete distribution that exists of the integer set 0 to size()-1
  * Each distribution is represented as a fraction and the sum of all fractions must equal 1.
  * 
+ * <p>All our implementation of Distribution are immutable.
+ * 
  *  <p>TODO: this could behave like a collection.  Perhaps we should expose an enumarable?
  */
 public interface Distribution {

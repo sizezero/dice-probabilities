@@ -4,6 +4,8 @@ import org.apache.commons.math3.fraction.BigFraction;
 
 /**
  * <p>This is a distribution that is the sum of other distributions.
+ * 
+ * <p>O(m*n) where m and n are the sizes of the two distributions.
  */
 public class MultinomialDistribution implements Distribution {
 

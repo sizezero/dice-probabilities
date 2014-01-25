@@ -34,9 +34,9 @@ public class DieDistribution implements Distribution {
 
 	@Override
 	public BigFraction getCumulativeProbability(int x) {
-		if (x>=1 && x<=sides) {
+		if (x>=1 && x<sides) {
 			return probability.multiply(x);
-		} else if (x>sides) {
+		} else if (x>=sides) {
 			return BigFraction.ONE;
 		} else {
 			return BigFraction.ZERO;

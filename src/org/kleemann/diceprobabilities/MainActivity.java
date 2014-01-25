@@ -6,10 +6,8 @@ import org.apache.commons.math3.fraction.BigFraction;
 
 import android.os.Bundle;
 import android.app.Activity;
-import android.content.Context;
 import android.view.Menu;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.Button;
 
 public class MainActivity extends Activity implements View.OnClickListener {
@@ -59,60 +57,53 @@ public class MainActivity extends Activity implements View.OnClickListener {
 		pResult.setIncrementer(cResult);
 	}
 
+	/* Don't need menu for now
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
 		// Inflate the menu; this adds items to the action bar if it is present.
 		getMenuInflater().inflate(R.menu.main, menu);
 		return true;
 	}
+	*/
 
 	/**
 	 * <p>Anytime any of the current dice are changed, this is called.  Recalculate the probabilities.
 	 */
 	@Override
 	public void onClick(View v) {
-		BigFraction f = getCumulativeProbability();
+		Distribution d = getDistribution();
+		int target = cResult.getCount();
+		BigFraction f = d.getCumulativeProbability(target);
 		DecimalFormat formatter = new DecimalFormat("##.#%");
 		final String approximatelyEqualTo = "\u2245";
 		String s = f.toString() + " "+ approximatelyEqualTo +" " + formatter.format(f.doubleValue());
 		
 		Button prob = (Button)findViewById(R.id.current_probability);
 		prob.setText(s);
+		GraphView graphView = (GraphView)findViewById(R.id.graph);
+		graphView.setResult(d, target);
 	}
 	
-	private BigFraction getCumulativeProbability() {
-		// TODO: may want to do this in the background
-		
+	private Distribution getDistribution() {
 		Distribution d = new ZeroDistribution(); // identity
-		boolean atLeastOne = false;
 		for (int i=0 ; i<cd12.getCount() ; ++i) {
 			d = new MultinomialDistribution(d, new DieDistribution(12));
-			atLeastOne = true;
 		}
 		for (int i=0 ; i<cd10.getCount() ; ++i) {
 			d = new MultinomialDistribution(d, new DieDistribution(10));
-			atLeastOne = true;
 		}
 		for (int i=0 ; i<cd8.getCount() ; ++i) {
 			d = new MultinomialDistribution(d, new DieDistribution(8));
-			atLeastOne = true;
 		}
 		for (int i=0 ; i<cd6.getCount() ; ++i) {
 			d = new MultinomialDistribution(d, new DieDistribution(6));
-			atLeastOne = true;
 		}
 		for (int i=0 ; i<cd4.getCount() ; ++i) {
 			d = new MultinomialDistribution(d, new DieDistribution(4));
-			atLeastOne = true;
 		}
 		if (cd1.getCount() > 0) {
 			d = new MultinomialDistribution(d, new ConstantDistribution(cd1.getCount()));
-			atLeastOne = true;
 		}
-		if (atLeastOne) {
-			return d.getCumulativeProbability(cResult.getCount());
-		} else { 
-			return BigFraction.ZERO;
-		}
+		return d;
 	}
 }

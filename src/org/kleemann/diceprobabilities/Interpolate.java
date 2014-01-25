@@ -8,6 +8,10 @@ import android.util.Log;
 /**
  * <p>Given a set of points, interpolates the control points between them creating a smooth path.
  * 
+ * 
+ * 
+ * <p>This is an immutable object
+ * 
  * @author robert
  *
  */

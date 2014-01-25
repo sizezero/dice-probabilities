@@ -1,5 +1,7 @@
 package org.kleemann.diceprobabilities;
 
+import org.apache.commons.math3.fraction.BigFraction;
+
 import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.Color;
@@ -10,6 +12,9 @@ import android.view.View;
 
 public class GraphView extends View {
 
+	private Distribution distribution = null;
+	private int target = 0;
+	
 	public GraphView(Context context, AttributeSet attrs, int defStyleAttr) {
 		super(context, attrs, defStyleAttr);
 		// TODO Auto-generated constructor stub
@@ -25,14 +30,22 @@ public class GraphView extends View {
 		// TODO Auto-generated constructor stub
 	}
 
+	/**
+	 * Sets a new interpolated value
+	 */
+	public void setResult(Distribution distribution, int target) {
+		this.distribution = distribution;
+		this.target = target;
+		invalidate();
+	}
+	
 	/* (non-Javadoc)
 	 * @see android.view.View#onDraw(android.graphics.Canvas)
 	 */
 	@Override
 	protected void onDraw(Canvas canvas) {
-		//bounds(canvas);
-		//curvy(canvas);
-		curvy2(canvas);
+		blueBackground(canvas);
+		interpolatedSolid(canvas, Color.RED);
 	}
 
 	private void blueBackground(Canvas canvas) {
@@ -41,155 +54,88 @@ public class GraphView extends View {
 		canvas.drawPaint(p);		
 	}
 	
-	private void curvy(Canvas canvas) {
+	private void interpolatedSolid(Canvas canvas, int color) {
+		
+		if (distribution==null) {
+			return;
+		}
+		
 		final int h = canvas.getHeight();
 		final int w = canvas.getWidth();
 		
-		// break the drawable image into 0-1, 0-1
-		final float[] points = {
-		                        0.1f, 0.0f,
-		                        0.2f, 0.0f,
-		                        0.3f, 0.1f,
-		                        0.4f, 0.25f,
-		                        0.5f, 0.5f,
-		                        0.6f, 0.75f,
-		                        0.7f, 0.9f,
-		                        0.8f, 1.0f,
-		                        0.9f, 1.0f,
-		                        0.99f, 0.99f
-		};
-		//final float[] points = { 0.1f,0.2f, 0.5f,0.2f, 0.7f,0.8f };
-		
-		/*
-		float[] mid = new float[points.length-2];
-		for (int i=0 ; i<mid.length ; ++i) {
-			mid[i] = (points[i]+points[i+2]) / 2.0f;
-		}
-		
-		// for now construct a path that moves through mid-points
-		Path pa = new Path();
-        
-		pa.moveTo(points[0]*w, points[1]*h);
-		for (int i=0 ; i<mid.length ; i += 2) {
-			pa.quadTo(points[i]*w,points[i+1]*h, mid[i]*w,mid[i+1]*h);
-		}
-		//pa.lineTo(w,h);
-        */
-
-		blueBackground(canvas);
-		
-		// scale points into a duplicated array
-		float[] s = new float[points.length];
-		for (int i=0 ; i<points.length ; i+=2) {
-			// add a 10% border by scaling in
-			s[i] = (points[i]-0.5f)*0.70f + 0.5f;
-			s[i+1] = (points[i+1]-0.5f)*0.70f + 0.5f;
+		 // add a few extra values after the distribution peaks; multiples of 10
+		final int maxX = (distribution.size()+10) - (distribution.size() % 10);  
+		Point[] pt = new Point[maxX];
+		BigFraction sum = distribution.getProbability(0);
+		for (int i=0 ; i<maxX ; ++i) {
 			
-			// scale unit coords to world coords
-			s[i] = s[i] * w;
-			s[i+1] = s[i+1] * h;
-		}
-		
-		Path path = BestFit.getPath(s);
-		
-		Paint p = new Paint();
-		p.setStyle(Paint.Style.STROKE);
-        p.setStrokeWidth(5f);
-        p.setColor(Color.WHITE);
-		canvas.drawPath(path, p);		
-	}
-
-	private void curvy2(Canvas canvas) {
-		blueBackground(canvas);
-		interpolatedSolid(canvas, 50.0f, Color.YELLOW);
-		interpolatedSolid(canvas, 0.0f, Color.RED);
-	}
-
-	private void interpolatedSolid(Canvas canvas, float xOffset, int color) {
-		final int h = canvas.getHeight();
-		final int w = canvas.getWidth();
-		
-		// break the drawable image into 0-1, 0-1
-		Point[] points1 = {
-		                        new Point(0.1f, 0.0f),
-		                        new Point(0.2f, 0.0f),
-		                        new Point(0.3f, 0.1f),
-		                        new Point(0.4f, 0.25f),
-		                        new Point(0.5f, 0.5f),
-		                        new Point(0.6f, 0.75f),
-		                        new Point(0.7f, 0.9f),
-		                        new Point(0.8f, 1.0f),
-		                        new Point(0.9f, 1.0f),
-		                        new Point(0.99f, 0.99f)
-		};
-		Point[] points2 = {
-                new Point(0.0f, 0.0f),
-                new Point(0.5f, 1.0f),
-                new Point(1.0f, 0.0f)
-		};
-		Point[] points = points1;
-		
-		Point[] s = new Point[points.length];
-		for (int i=0 ; i<points.length ; ++i) {
-			// add a 10% border by scaling in
-			float x = (points[i].getX()-0.5f)*0.70f + 0.5f;
-			float y = (points[i].getY()-0.5f)*0.70f + 0.5f;
+			float x = (float)i/maxX;
+			// TODO: it would be more efficient to compute all the cumulative
+			// distributions at once
+			float y = BigFraction.ONE.subtract(distribution.getCumulativeProbability(i)).floatValue();
+			
+			// add a border
+			//x = (x-0.5f)*0.95f + 0.5f;
+			//y = (y-0.5f)*0.95f + 0.5f;
 			
 			// scale unit coords to world coords
 			x *= w;
 			y *= h;
 			
-			x += xOffset;
+			pt[i] = new Point(x,y);
 			
-			s[i] = new Point(x,y);
+			sum = sum.add(distribution.getProbability(i+1));
 		}
 
-		Interpolate interpolate = new Interpolate(s);
+		Interpolate interpolate = new Interpolate(pt);
 		Path path = interpolate.getPath();
 		
 		// connect the path to origin and starting point
-		path.lineTo(s[s.length-1].getX(), h);
+		path.lineTo(pt[pt.length-1].getX(), h);
 		path.lineTo(0.0f, h);
 		path.lineTo(0.0f, 0.0f);
-		path.lineTo(s[0].getX(),s[0].getY());
+		path.lineTo(pt[0].getX(),pt[0].getY());
 		
 		Paint p = new Paint();
+		
 		p.setStyle(Paint.Style.FILL);
         p.setStrokeWidth(5f);
         p.setColor(color);
 		canvas.drawPath(path, p);
 		p.setStyle(Paint.Style.STROKE);
         p.setColor(Color.WHITE);
-		canvas.drawPath(path, p);		
-	}
-	
-	private void bounds(Canvas canvas) {
-		final int h = canvas.getHeight();
-		final int w = canvas.getWidth();
+		canvas.drawPath(path, p);
 		
-		Paint p = new Paint();
-		p.setStyle(Paint.Style.STROKE);
-        p.setStrokeWidth(0f);
+		// draw target line
+		p.setColor(Color.BLACK);
+		// TODO: need to scale this
+		final float targetF = ((float)target/maxX) * w;
+		canvas.drawLine(targetF, 0.0f, targetF, (float)h, p);
 
-        // blue background
-        blueBackground(canvas);
-        
-        // draw a bounding box in white
-        p.setColor(Color.RED);
-		canvas.drawLine(0, 0, w-1, 0, p);		
-		canvas.drawLine(0, h-1, w-1, h-1, p);		
-		canvas.drawLine(0, 0, 0, h-1, p);		
-		canvas.drawLine(w-1, 0, w-1, h-1, p);
+		// add some tick marks to the 5 and 10 x spots
+		//p.setStrokeWidth(3f);
+		p.setColor(Color.GRAY);
+		for (int i=0 ; i<=maxX ; ++i) {
+			if (i % 10 == 0) {
+				final float x = (float)i/maxX * w;
+				canvas.drawLine(x, h, x, h-(float)h/10, p);
+			} else if (i % 5 == 0) {
+				final float x = (float)i/maxX * w;
+				canvas.drawLine(x, h, x, h-(float)h/20, p);				
+			}
+		}
 		
-		// The above bounding box lacks the bottom horz line in the emulator
-		// on an actual nexus 5 it lacks the top horz line and the right vert line
-		
-		// diagonal
-		p.setColor(Color.YELLOW);
-		canvas.drawLine(0,0,w-1,h-1,p);
-		canvas.drawLine(0,h-1,w-1,0,p);
-		
-		// emulator appears to be truncated to some degree (~10%)
-		// due to small screen resolution
-	}
+		/*
+		// draw bounds X
+        p.setColor(Color.YELLOW);
+        // box
+        canvas.drawLine(0, 0, w-1, 0, p);               
+        canvas.drawLine(0, h-1, w-1, h-1, p);           
+        canvas.drawLine(0, 0, 0, h-1, p);               
+        canvas.drawLine(w-1, 0, w-1, h-1, p);
+        // X
+        canvas.drawLine(0, 0, w-1, h-1, p);               
+        canvas.drawLine(0, h-1, w-1, 0, p);               
+		*/
+	}	
 }

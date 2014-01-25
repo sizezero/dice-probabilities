@@ -41,7 +41,9 @@ CurrentDicePile should not be shown if the values are zero
 
 * DONE add color to dice buttons
 
-* TODO render graph
+* DONE render graph
+
+* TODO calculate result in background thread
 
 * TODO deploy to Play store
 
@@ -52,8 +54,6 @@ GridLayout?
 * TODO add second set of result dice
 
 * TODO Bug: values are not saved on re-orientation
-
-* TODO calculate result in background thread
 
 * TODO libraries are big
 

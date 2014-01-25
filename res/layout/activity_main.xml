@@ -5,6 +5,7 @@
     tools:context=".MainActivity" >
 
     <view
+	    android:id="@+id/graph"
         class="org.kleemann.diceprobabilities.GraphView"
         android:layout_width="fill_parent"
         android:layout_height="fill_parent"
@@ -122,6 +123,7 @@
 	        android:id="@+id/current_probability"
 	        style="@style/die_button"
 	        android:background="@drawable/result_btn"
+	        android:layout_weight="2"
 	        />
 
     </LinearLayout>

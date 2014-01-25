@@ -5,8 +5,6 @@ import junit.framework.TestCase;
 import org.kleemann.diceprobabilities.Point;
 import org.kleemann.diceprobabilities.Interpolate;
 
-import android.util.Log;
-
 public class InterpolateTest extends TestCase {
 
 	public void testTest() {
