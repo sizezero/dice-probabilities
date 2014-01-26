@@ -55,6 +55,8 @@ Found RowLayout and increase the text size on the buttons
 
 * TODO create application icon
 
+Letting Emma take a crack at this first.
+This would take me forever.
 
 * TODO add second set of result dice
 
