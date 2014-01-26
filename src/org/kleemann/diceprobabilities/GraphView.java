@@ -73,10 +73,6 @@ public class GraphView extends View {
 			// distributions at once
 			float y = BigFraction.ONE.subtract(distribution.getCumulativeProbability(i)).floatValue();
 			
-			// add a border
-			//x = (x-0.5f)*0.95f + 0.5f;
-			//y = (y-0.5f)*0.95f + 0.5f;
-			
 			// scale unit coords to world coords
 			x *= w;
 			y *= h;
