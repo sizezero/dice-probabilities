@@ -1,0 +1,12 @@
+<resources>
+    
+    <!--
+        http://stackoverflow.com/questions/549451/line-breaking-widget-layout-for-android 
+     -->
+    
+    <declare-styleable name="RowLayout">
+        <attr name="android:verticalSpacing" />
+        <attr name="android:horizontalSpacing" />
+    </declare-styleable>
+    
+</resources>

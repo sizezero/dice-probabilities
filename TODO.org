@@ -45,11 +45,13 @@ CurrentDicePile should not be shown if the values are zero
 
 * DONE calculate result in background thread
 
-* TODO Bug: rows of dice are rendered truncated
+* DONE Bug: rows of dice are rendered truncated
 
 GridLayout? FlowLayout?
 
 bigger buttons?
+
+Found RowLayout and increase the text size on the buttons
 
 * TODO create application icon
 
