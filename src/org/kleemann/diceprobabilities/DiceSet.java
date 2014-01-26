@@ -31,7 +31,7 @@ public class DiceSet {
 	private CurrentDicePile cResult;
 	
 	private Button answerButton;
-	private GraphView graphView;
+	private GraphView.Setter graphSetter;
 	
 	// every time the dice are changed; this is incremented
 	private long serial = 0;
@@ -54,7 +54,7 @@ public class DiceSet {
 			Button cd1Button,
 			Button cResultButton,
 			Button answerButton,
-			GraphView graphView
+			GraphView.Setter graphSetter
 			) {
 		
 		
@@ -83,7 +83,7 @@ public class DiceSet {
 		pResult.setIncrementer(cResult);
 		
 		this.answerButton = answerButton;
-		this.graphView = graphView;
+		this.graphSetter = graphSetter;
 	}
 
 	private class CurrentDiceChanged implements View.OnClickListener {
@@ -187,7 +187,7 @@ public class DiceSet {
 				String s = f.toString() + " "+ approximatelyEqualTo +" " + formatter.format(f.doubleValue());
 			
 				answerButton.setText(s);
-				graphView.setResult(r.distribution, r.target);
+				graphSetter.setResult(r.distribution, r.target);
 			} else {
 				// the dice have changed since we started the background task
 				// run the calculation again

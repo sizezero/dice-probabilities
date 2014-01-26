@@ -30,6 +30,18 @@ public class GraphView extends View {
 		// TODO Auto-generated constructor stub
 	}
 
+	public static interface Setter {
+		public void setResult(Distribution distribution, int target);
+	}
+	
+	private class SetGraph1 implements Setter {
+		public void setResult(Distribution distribution, int target) {
+			GraphView.this.setResult(distribution, target);
+		}
+	}
+	
+	public Setter getSetter1() { return new SetGraph1(); }
+	
 	/**
 	 * Sets a new interpolated value
 	 */

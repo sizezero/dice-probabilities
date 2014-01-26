@@ -35,7 +35,7 @@ public class MainActivity extends Activity {
 				(Button)findViewById(R.id.current_constant),
 				(Button)findViewById(R.id.current_target),
 				(Button)findViewById(R.id.current_probability),
-				(GraphView)findViewById(R.id.graph)
+				((GraphView)findViewById(R.id.graph)).getSetter1()
 				);
 		
 	}
