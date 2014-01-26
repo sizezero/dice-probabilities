@@ -147,6 +147,9 @@ public class GraphView extends View {
 	        p.setColor(Color.WHITE);
 			canvas.drawPath(path, p);
 			
+		}
+
+		for (int j=0 ; j<2 ; ++j) {
 			// draw target line
 			p.setColor(Color.BLACK);
 			// TODO: need to scale this
