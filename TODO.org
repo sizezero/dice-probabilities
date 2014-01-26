@@ -62,7 +62,7 @@ This would take me forever.
 
 * DONE dont render trivial graphs
 
-* TODO Clear button
+* DONE Clear button
 
 * TODO Copy values button
 

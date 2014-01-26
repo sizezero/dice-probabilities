@@ -124,7 +124,13 @@
 			        android:background="@drawable/target_btn"
 	 		        style="@style/die_button"
 		            />
-	
+
+		        <Button 
+		            android:id="@+id/clear1"
+		            android:text="@string/clear"
+	 		        style="@style/die_button"
+		            />
+		        	
 		    </com.asolutions.widget.RowLayout>
 	
 		    <Button 
@@ -244,7 +250,13 @@
 			        android:background="@drawable/target_btn"
 	 		        style="@style/die_button"
 		            />
-	
+
+		        <Button 
+		            android:id="@+id/clear2"
+		            android:text="@string/clear"
+	 		        style="@style/die_button"
+		            />
+		        	
 		    </com.asolutions.widget.RowLayout>
 	
 		    <Button 

@@ -53,6 +53,7 @@ public class DiceSet {
 			Button cd4Button,
 			Button cd1Button,
 			Button cResultButton,
+			Button clear,
 			Button answerButton,
 			GraphView.Setter graphSetter
 			) {
@@ -82,10 +83,25 @@ public class DiceSet {
 		cResult = new ToBeat(cResultButton, listener);
 		pResult.setIncrementer(cResult);
 		
+		clear.setOnClickListener(new Clear());
+		
 		this.answerButton = answerButton;
 		this.graphSetter = graphSetter;
 	}
 
+	private class Clear implements View.OnClickListener {
+		@Override
+		public void onClick(View v) {
+			cd12.setCount(0);
+			cd10.setCount(0);
+			cd8.setCount(0);
+			cd6.setCount(0);
+			cd4.setCount(0);
+			cd1.setCount(0);
+			cResult.setCount(0);
+		}		
+	}
+	
 	private class CurrentDiceChanged implements View.OnClickListener {
 		@Override
 		public void onClick(View v) {
@@ -181,12 +197,17 @@ public class DiceSet {
 			running = false;
 			if (r.serial == serial) {
 
-				BigFraction f = r.distribution.getCumulativeProbability(r.target);
-				DecimalFormat formatter = new DecimalFormat("##.#%");
-				final String approximatelyEqualTo = "\u2245";
-				String s = f.toString() + " "+ approximatelyEqualTo +" " + formatter.format(f.doubleValue());
-			
-				answerButton.setText(s);
+				// if distribution is trivial then don't show any text
+				if (r.distribution.size() <= 1) {
+					answerButton.setText("");
+				} else {
+					BigFraction f = r.distribution.getCumulativeProbability(r.target);
+					DecimalFormat formatter = new DecimalFormat("##.#%");
+					final String approximatelyEqualTo = "\u2245";
+					String s = f.toString() + " "+ approximatelyEqualTo +" " + formatter.format(f.doubleValue());
+					answerButton.setText(s);
+				}
+				
 				graphSetter.setResult(r.distribution, r.target);
 			} else {
 				// the dice have changed since we started the background task
