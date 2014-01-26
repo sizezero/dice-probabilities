@@ -55,7 +55,7 @@ GridLayout?
 
 * TODO Bug: values are not saved on re-orientation
 
-* TODO libraries are big
+* DONE libraries are big
 
 see if we can just pull the fractions out of apache math
 
