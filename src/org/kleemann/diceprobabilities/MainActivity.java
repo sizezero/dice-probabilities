@@ -4,9 +4,9 @@ import java.text.DecimalFormat;
 
 import org.apache.commons.math3.fraction.BigFraction;
 
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.app.Activity;
-import android.view.Menu;
 import android.view.View;
 import android.widget.Button;
 
@@ -27,6 +27,11 @@ public class MainActivity extends Activity implements View.OnClickListener {
 	private CurrentDicePile cd4;
 	private CurrentDicePile cd1;
 	private CurrentDicePile cResult;
+	
+	// every time the dice are changed; this is incremented
+	private long serial = 0;
+	// true if the background distribution calculation is running
+	private boolean running = false;
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -71,39 +76,112 @@ public class MainActivity extends Activity implements View.OnClickListener {
 	 */
 	@Override
 	public void onClick(View v) {
-		Distribution d = getDistribution();
-		int target = cResult.getCount();
-		BigFraction f = d.getCumulativeProbability(target);
-		DecimalFormat formatter = new DecimalFormat("##.#%");
-		final String approximatelyEqualTo = "\u2245";
-		String s = f.toString() + " "+ approximatelyEqualTo +" " + formatter.format(f.doubleValue());
-		
-		Button prob = (Button)findViewById(R.id.current_probability);
-		prob.setText(s);
-		GraphView graphView = (GraphView)findViewById(R.id.graph);
-		graphView.setResult(d, target);
+		++serial;
+		startDistributionCalculation();
 	}
 	
-	private Distribution getDistribution() {
-		Distribution d = new ZeroDistribution(); // identity
-		for (int i=0 ; i<cd12.getCount() ; ++i) {
-			d = new MultinomialDistribution(d, new DieDistribution(12));
+	/**
+	 * Attempts to start a new background distribution calculation. If a calculation is already 
+	 * running then let it run.
+	 */
+	private void startDistributionCalculation() {
+		if (!running) {
+			running = true;
+			RecalculateIn r = new RecalculateIn();
+			r.serial = serial;
+			r.d12 = cd12.getCount();
+			r.d10 = cd10.getCount();
+			r.d8 = cd8.getCount();
+			r.d6 = cd6.getCount();
+			r.d4 = cd4.getCount();
+			r.constant = cd1.getCount();
+			r.target = cResult.getCount();
+			
+			Button prob = (Button)findViewById(R.id.current_probability);
+			prob.setText("?");
+			
+			new CalculateDistribution().execute(r);
 		}
-		for (int i=0 ; i<cd10.getCount() ; ++i) {
-			d = new MultinomialDistribution(d, new DieDistribution(10));
+	}
+	
+	/**
+	 * Just a payload into the background calculation job
+	 */
+	private static class RecalculateIn {
+		public long serial;
+		public int d12;
+		public int d10;
+		public int d8;
+		public int d6;
+		public int d4;
+		public int constant;
+		public int target;
+	}
+	
+	/**
+	 * Just a payload out of the background calculation job
+	 */
+	private static class RecalculateOut {
+		public long serial;
+		public Distribution distribution;
+		public int target;
+	}
+	
+	private class CalculateDistribution extends AsyncTask<RecalculateIn, Void, RecalculateOut> {
+
+		/**
+		 * Calculate the full distribution of the current dice. This thread is run in the background so it
+		 * shouldn't access any other objects in this class or call android gui methods.
+		 */
+		@Override
+		protected RecalculateOut doInBackground(RecalculateIn... arg0) {
+			RecalculateIn r = arg0[0];
+			
+			Distribution d = new ZeroDistribution(); // identity
+			for (int i=0 ; i<r.d12 ; ++i) {
+				d = new MultinomialDistribution(d, new DieDistribution(12));
+			}
+			for (int i=0 ; i<r.d10 ; ++i) {
+				d = new MultinomialDistribution(d, new DieDistribution(10));
+			}
+			for (int i=0 ; i<r.d8 ; ++i) {
+				d = new MultinomialDistribution(d, new DieDistribution(8));
+			}
+			for (int i=0 ; i<r.d6 ; ++i) {
+				d = new MultinomialDistribution(d, new DieDistribution(6));
+			}
+			for (int i=0 ; i<r.d4 ; ++i) {
+				d = new MultinomialDistribution(d, new DieDistribution(4));
+			}
+			if (r.constant > 0) {
+				d = new MultinomialDistribution(d, new ConstantDistribution(r.constant));
+			}
+			RecalculateOut out = new RecalculateOut();
+			out.serial = r.serial;
+			out.distribution = d;
+			out.target = r.target;
+			return out;
 		}
-		for (int i=0 ; i<cd8.getCount() ; ++i) {
-			d = new MultinomialDistribution(d, new DieDistribution(8));
+		
+		@Override
+		protected void onPostExecute(RecalculateOut r) {
+			running = false;
+			if (r.serial == serial) {
+
+				BigFraction f = r.distribution.getCumulativeProbability(r.target);
+				DecimalFormat formatter = new DecimalFormat("##.#%");
+				final String approximatelyEqualTo = "\u2245";
+				String s = f.toString() + " "+ approximatelyEqualTo +" " + formatter.format(f.doubleValue());
+			
+				Button prob = (Button)findViewById(R.id.current_probability);
+				prob.setText(s);
+				GraphView graphView = (GraphView)findViewById(R.id.graph);
+				graphView.setResult(r.distribution, r.target);
+			} else {
+				// the dice have changed since we started the background task
+				// run the calculation again
+				startDistributionCalculation();
+			}
 		}
-		for (int i=0 ; i<cd6.getCount() ; ++i) {
-			d = new MultinomialDistribution(d, new DieDistribution(6));
-		}
-		for (int i=0 ; i<cd4.getCount() ; ++i) {
-			d = new MultinomialDistribution(d, new DieDistribution(4));
-		}
-		if (cd1.getCount() > 0) {
-			d = new MultinomialDistribution(d, new ConstantDistribution(cd1.getCount()));
-		}
-		return d;
 	}
 }

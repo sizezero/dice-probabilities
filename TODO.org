@@ -43,7 +43,7 @@ CurrentDicePile should not be shown if the values are zero
 
 * DONE render graph
 
-* TODO calculate result in background thread
+* DONE calculate result in background thread
 
 * TODO deploy to Play store
 
