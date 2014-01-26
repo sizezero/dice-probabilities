@@ -1,18 +1,13 @@
 package org.kleemann.diceprobabilities;
 
-import java.text.DecimalFormat;
-
-import org.apache.commons.math3.fraction.BigFraction;
-
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.app.Activity;
-import android.view.View;
 import android.widget.Button;
 
 public class MainActivity extends Activity {
 
 	private DiceSet diceSet1;
+	private DiceSet diceSet2;
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -20,33 +15,42 @@ public class MainActivity extends Activity {
 		setContentView(R.layout.activity_main);
 		
 		this.diceSet1 = new DiceSet(
-				(Button)findViewById(R.id.pool_d12),
-				(Button)findViewById(R.id.pool_d10),
-				(Button)findViewById(R.id.pool_d8),
-				(Button)findViewById(R.id.pool_d6),
-				(Button)findViewById(R.id.pool_d4),
-				(Button)findViewById(R.id.pool_constant),
-				(Button)findViewById(R.id.pool_target),
-				(Button)findViewById(R.id.current_d12),
-				(Button)findViewById(R.id.current_d10),
-				(Button)findViewById(R.id.current_d8),
-				(Button)findViewById(R.id.current_d6),
-				(Button)findViewById(R.id.current_d4),
-				(Button)findViewById(R.id.current_constant),
-				(Button)findViewById(R.id.current_target),
-				(Button)findViewById(R.id.current_probability),
+				(Button)findViewById(R.id.pool1_d12),
+				(Button)findViewById(R.id.pool1_d10),
+				(Button)findViewById(R.id.pool1_d8),
+				(Button)findViewById(R.id.pool1_d6),
+				(Button)findViewById(R.id.pool1_d4),
+				(Button)findViewById(R.id.pool1_constant),
+				(Button)findViewById(R.id.pool1_target),
+				(Button)findViewById(R.id.current1_d12),
+				(Button)findViewById(R.id.current1_d10),
+				(Button)findViewById(R.id.current1_d8),
+				(Button)findViewById(R.id.current1_d6),
+				(Button)findViewById(R.id.current1_d4),
+				(Button)findViewById(R.id.current1_constant),
+				(Button)findViewById(R.id.current1_target),
+				(Button)findViewById(R.id.current1_probability),
 				((GraphView)findViewById(R.id.graph)).getSetter1()
 				);
-		
-	}
 
-	/* Don't need menu for now
-	@Override
-	public boolean onCreateOptionsMenu(Menu menu) {
-		// Inflate the menu; this adds items to the action bar if it is present.
-		getMenuInflater().inflate(R.menu.main, menu);
-		return true;
+		this.diceSet2 = new DiceSet(
+				(Button)findViewById(R.id.pool2_d12),
+				(Button)findViewById(R.id.pool2_d10),
+				(Button)findViewById(R.id.pool2_d8),
+				(Button)findViewById(R.id.pool2_d6),
+				(Button)findViewById(R.id.pool2_d4),
+				(Button)findViewById(R.id.pool2_constant),
+				(Button)findViewById(R.id.pool2_target),
+				(Button)findViewById(R.id.current2_d12),
+				(Button)findViewById(R.id.current2_d10),
+				(Button)findViewById(R.id.current2_d8),
+				(Button)findViewById(R.id.current2_d6),
+				(Button)findViewById(R.id.current2_d4),
+				(Button)findViewById(R.id.current2_constant),
+				(Button)findViewById(R.id.current2_target),
+				(Button)findViewById(R.id.current2_probability),
+				((GraphView)findViewById(R.id.graph)).getSetter2()
+				);
 	}
-	*/
 
 }

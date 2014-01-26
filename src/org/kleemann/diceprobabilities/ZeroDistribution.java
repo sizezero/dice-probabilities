@@ -3,7 +3,7 @@ package org.kleemann.diceprobabilities;
 import org.apache.commons.math3.fraction.BigFraction;
 
 /**
- * 100% chance of returning zero.  Useful as an identity distrubution to
+ * 100% chance of returning zero.  Useful as an identity distribution to
  * add other distributions to.  I.e. adding a distribution D to this will
  * result in D.
  */

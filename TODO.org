@@ -58,7 +58,7 @@ Found RowLayout and increase the text size on the buttons
 Letting Emma take a crack at this first.
 This would take me forever.
 
-* TODO add second set of result dice
+* DONE add second set of result dice
 
 * TODO Bug: values are not saved on re-orientation
 
