@@ -27,11 +27,11 @@
 				android:color="@color/black_stroke"/>
 			<corners
 				android:radius="3dip"/>
-		<padding 
-		    android:left="5dp"
-		    android:right="5dp"
-		    android:top="5dp"
-		    android:bottom="5dp"/>
-					</shape>
+			<padding 
+			    android:left="5dp"
+			    android:right="5dp"
+			    android:top="5dp"
+			    android:bottom="5dp"/>
+		</shape>
 	</item>
 </selector>
