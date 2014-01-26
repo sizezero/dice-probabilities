@@ -73,6 +73,11 @@ public class GraphView extends View {
 	
 	private void interpolatedSolid(Canvas canvas) {
 
+		// don't display anything if both graphs are trivial
+		if (distribution1.size() <= 1 && distribution2.size() <= 1) {
+			return;
+		}
+		
 		final int h = canvas.getHeight();
 		final int w = canvas.getWidth();
 
@@ -86,6 +91,7 @@ public class GraphView extends View {
 			fill[0] = Color.RED;
 			dist[1] = distribution2;
 			target[1] = target2;
+			fill[1] = Color.YELLOW;
 		} else {
 			dist[0] = distribution2;
 			target[0] = target2;
@@ -105,6 +111,12 @@ public class GraphView extends View {
         p.setStrokeWidth(5f);
 		
 		for (int j=0 ; j<2 ; ++j) {
+			
+			// don't display a trivial graph
+			if (dist[j].size() <= 1) {
+				continue;
+			}
+			
 			for (int i=0 ; i<maxX ; ++i) {
 				float x = (float)i/maxX;
 				

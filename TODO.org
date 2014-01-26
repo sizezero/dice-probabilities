@@ -60,6 +60,19 @@ This would take me forever.
 
 * DONE add second set of result dice
 
+* DONE dont render trivial graphs
+
+* TODO Clear button
+
+* TODO Copy values button
+
+* TODO Color rethink
+
+- pastel colors for background graphs
+- tie target button with background colors
+- tie answer button to background colors
+- tie target to background colors
+
 * TODO Bug: values are not saved on re-orientation
 
 * DONE libraries are big
