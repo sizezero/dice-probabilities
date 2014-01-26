@@ -45,11 +45,14 @@ CurrentDicePile should not be shown if the values are zero
 
 * DONE calculate result in background thread
 
-* TODO deploy to Play store
-
 * TODO Bug: rows of dice are rendered truncated
 
-GridLayout?
+GridLayout? FlowLayout?
+
+bigger buttons?
+
+* TODO create application icon
+
 
 * TODO add second set of result dice
 
@@ -58,6 +61,18 @@ GridLayout?
 * DONE libraries are big
 
 see if we can just pull the fractions out of apache math
+
+* TODO Acquire private key
+
+* TODO promotional material
+
+- screenshots
+- descriptions
+
+* TODO license or EULA
+
+* TODO deploy to Play store
+
 
 * TODO add rendered dice
 
