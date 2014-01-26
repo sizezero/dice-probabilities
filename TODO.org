@@ -64,7 +64,7 @@ This would take me forever.
 
 * DONE Clear button
 
-* TODO Copy values button
+* DONE Copy values button
 
 * TODO Color rethink
 

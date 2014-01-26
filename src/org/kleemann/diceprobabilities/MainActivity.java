@@ -2,6 +2,7 @@ package org.kleemann.diceprobabilities;
 
 import android.os.Bundle;
 import android.app.Activity;
+import android.view.View;
 import android.widget.Button;
 
 public class MainActivity extends Activity {
@@ -53,6 +54,27 @@ public class MainActivity extends Activity {
 				(Button)findViewById(R.id.current2_probability),
 				((GraphView)findViewById(R.id.graph)).getSetter2()
 				);
+		
+		((Button)findViewById(R.id.copy_down)).setOnClickListener(new Copy(diceSet2, diceSet1));
+		((Button)findViewById(R.id.copy_up)).setOnClickListener(new Copy(diceSet1, diceSet2));
 	}
 
+	private static class Copy implements View.OnClickListener {
+		
+		private DiceSet destination;
+		private DiceSet source;
+
+		public Copy(DiceSet destination, DiceSet source) {
+			this.destination = destination;
+			this.source = source;
+		}
+		
+		@Override
+		public void onClick(View v) {
+			destination.copyFrom(source);
+		}		
+	}
+	
+
+	
 }

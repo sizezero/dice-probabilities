@@ -141,7 +141,26 @@
 		        />
 	
 	    </LinearLayout>
-	
+
+	    <LinearLayout
+	        android:layout_width="fill_parent"
+	        android:layout_height="wrap_content"
+	        android:orientation="horizontal" >
+	        
+	        <Button 
+	            android:id="@+id/copy_down"
+	            android:text="@string/copy_down"
+ 		        style="@style/die_button"
+	            />
+
+	        <Button 
+	            android:id="@+id/copy_up"
+	            android:text="@string/copy_up"
+ 		        style="@style/die_button"
+	            />
+
+	    </LinearLayout>
+	    	
 	    <LinearLayout
 	        android:layout_width="fill_parent"
 	        android:layout_height="wrap_content"

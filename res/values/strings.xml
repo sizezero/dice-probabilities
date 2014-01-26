@@ -6,4 +6,6 @@
     <string name="hello_world">Hello world!</string>
 
     <string name="clear">C</string>
+    <string name="copy_down">\u2193</string>
+    <string name="copy_up">\u2191</string>
 </resources>

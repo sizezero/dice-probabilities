@@ -89,6 +89,20 @@ public class DiceSet {
 		this.graphSetter = graphSetter;
 	}
 
+	/**
+	 * Copies all values from the specified "other" dice set
+	 */
+	public void copyFrom(DiceSet that) {
+		cd12.setCount(that.cd12.getCount());
+		cd10.setCount(that.cd10.getCount());
+		cd8.setCount(that.cd8.getCount());
+		cd6.setCount(that.cd6.getCount());
+		cd4.setCount(that.cd4.getCount());
+		cd1.setCount(that.cd1.getCount());
+		cResult.setCount(that.cResult.getCount());
+		
+	}
+	
 	private class Clear implements View.OnClickListener {
 		@Override
 		public void onClick(View v) {
