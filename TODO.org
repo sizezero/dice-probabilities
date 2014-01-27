@@ -66,11 +66,14 @@ This would take me forever.
 
 * DONE Copy values button
 
-* TODO Color rethink
+* DONE Color rethink
 
 - pastel colors for background graphs
 - tie target button with background colors
 - tie answer button to background colors
+
+* TODO more graphic cleanup
+
 - tie target to background colors
 
 * TODO Bug: values are not saved on re-orientation
@@ -78,6 +81,8 @@ This would take me forever.
 * DONE libraries are big
 
 see if we can just pull the fractions out of apache math
+
+* TODO better layout in landscape mode
 
 * TODO Acquire private key
 

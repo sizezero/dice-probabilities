@@ -40,4 +40,14 @@
         -->
     </style>
 
+    <style name="fraction" parent="die_button">
+        <item name="android:textSize">15sp</item>
+        <item name="android:layout_gravity">center</item>
+    </style>
+    
+    <style name="probability" parent="die_button">
+        <item name="android:textSize">30sp</item>
+        <item name="android:layout_gravity">center</item>
+    </style>
+    
 </resources>

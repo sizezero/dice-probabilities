@@ -44,4 +44,13 @@
 	
 	<color name="menu_text_color">#ffffff</color>
 	<color name="menu_shadow_color">#000000</color>
+	
+	<color name="graph_solid1">#d1c7d2</color>
+	<color name="graph_solid2">#ebf2b5</color>
+	<color name="graph_background">#eeeeee</color>
+	<color name="graph_stroke">#ffffff</color>
+	<color name="graph_target">#919191</color>
+	<color name="graph_ruler">#888888</color>
+	
+			
 </resources>

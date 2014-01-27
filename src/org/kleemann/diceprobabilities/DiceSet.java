@@ -8,6 +8,7 @@ import android.content.Context;
 import android.os.AsyncTask;
 import android.view.View;
 import android.widget.Button;
+import android.widget.TextView;
 
 /**
  * <p>This class contains the behavior for a set of pool dice, 
@@ -31,7 +32,8 @@ public class DiceSet {
 	private CurrentDicePile cd1;
 	private CurrentDicePile cResult;
 	
-	private Button answerButton;
+	private TextView answer_fraction;
+	private TextView answer_probability;
 	private GraphView.Setter graphSetter;
 	
 	// every time the dice are changed; this is incremented
@@ -58,7 +60,8 @@ public class DiceSet {
 			Button cd1Button,
 			Button cResultButton,
 			Button clear,
-			Button answerButton,
+			TextView answer_fraction,
+			TextView answer_probability,
 			GraphView.Setter graphSetter
 			) {
 		
@@ -90,7 +93,8 @@ public class DiceSet {
 		
 		clear.setOnClickListener(new Clear());
 		
-		this.answerButton = answerButton;
+		this.answer_fraction = answer_fraction;
+		this.answer_probability = answer_probability;
 		this.graphSetter = graphSetter;
 	}
 
@@ -146,7 +150,8 @@ public class DiceSet {
 			r.constant = cd1.getCount();
 			r.target = cResult.getCount();
 			
-			answerButton.setText("?");
+			answer_fraction.setText("");
+			answer_probability.setText("?");
 			
 			new CalculateDistribution().execute(r);
 		}
@@ -218,13 +223,14 @@ public class DiceSet {
 
 				// if distribution is trivial then don't show any text
 				if (r.distribution.size() <= 1) {
-					answerButton.setText("");
+					answer_fraction.setText("");
+					answer_probability.setText("0%");
 				} else {
 					BigFraction f = r.distribution.getCumulativeProbability(r.target);
 					DecimalFormat formatter = new DecimalFormat(context.getString(R.string.answer_format));
 					final String approximatelyEqualTo = "\u2245";
-					String s = f.toString() + " "+ approximatelyEqualTo +" " + formatter.format(f.doubleValue());
-					answerButton.setText(s);
+					answer_fraction.setText(f.toString() + " " + approximatelyEqualTo + " ");
+					answer_probability.setText(formatter.format(f.doubleValue()));
 				}
 				
 				graphSetter.setResult(r.distribution, r.target);

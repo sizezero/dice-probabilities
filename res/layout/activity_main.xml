@@ -133,15 +133,33 @@
 		        	
 		    </com.asolutions.widget.RowLayout>
 	
-		    <Button 
-		        android:id="@+id/current1_probability"
-		        style="@style/die_button"
-		        android:background="@drawable/result_btn"
-		        android:layout_weight="2"
-		        />
+		    <LinearLayout
+		        android:layout_width="fill_parent"
+		        android:layout_height="wrap_content"
+		        android:orientation="horizontal" >
+			    		    
+			    <TextView 
+			        android:id="@+id/answer1_fraction"
+			        style="@style/fraction"
+			        android:background="@drawable/result_btn"
+			        />
 	
+			    <TextView 
+			        android:id="@+id/answer1_probability"
+			        style="@style/probability"
+			        android:background="@drawable/result_btn"
+			        />
+	
+		    </LinearLayout>
+		    	
 	    </LinearLayout>
 
+        <View
+           	android:layout_width="fill_parent"
+			android:layout_height="1dp"
+			android:layout_weight="1"
+			/>
+	    
 	    <LinearLayout
 	        android:layout_width="fill_parent"
 	        android:layout_height="wrap_content"
@@ -178,7 +196,13 @@
 			</View>
 	        
 	    </LinearLayout>
-	    	
+
+        <View
+           	android:layout_width="fill_parent"
+			android:layout_height="1dp"
+			android:layout_weight="1"
+			/>
+	    
 	    <LinearLayout
 	        android:layout_width="fill_parent"
 	        android:layout_height="wrap_content"
@@ -295,16 +319,34 @@
 		            />
 		        	
 		    </com.asolutions.widget.RowLayout>
+
+		    <LinearLayout
+		        android:layout_width="fill_parent"
+		        android:layout_height="wrap_content"
+		        android:orientation="horizontal" >
+			    		    
+			    <TextView 
+			        android:id="@+id/answer2_fraction"
+			        style="@style/fraction"
+			        android:background="@drawable/result_btn"
+			        />
 	
-		    <Button 
-		        android:id="@+id/current2_probability"
-		        style="@style/die_button"
-		        android:background="@drawable/result_btn"
-		        android:layout_weight="2"
-		        />
+			    <TextView 
+			        android:id="@+id/answer2_probability"
+			        style="@style/probability"
+			        android:background="@drawable/result_btn"
+			        />
+	
+		    </LinearLayout>
 	
 	    </LinearLayout>
     
+        <View
+           	android:layout_width="fill_parent"
+			android:layout_height="1dp"
+			android:layout_weight="3"
+			/>
+	    	    
     </LinearLayout>    
     
 </FrameLayout>

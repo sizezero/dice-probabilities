@@ -61,16 +61,13 @@ public class GraphView extends View {
 	 */
 	@Override
 	protected void onDraw(Canvas canvas) {
-		blueBackground(canvas);
+		Paint p = new Paint();
+		p.setColor(getResources().getColor(R.color.graph_background));		
+		canvas.drawPaint(p);
+		
 		interpolatedSolid(canvas);
 	}
 
-	private void blueBackground(Canvas canvas) {
-		Paint p = new Paint();
-		p.setARGB(255, 0, 0, 64); // dark blue; full alpha		
-		canvas.drawPaint(p);		
-	}
-	
 	private void interpolatedSolid(Canvas canvas) {
 
 		// don't display anything if both graphs are trivial
@@ -88,17 +85,17 @@ public class GraphView extends View {
 		if (greaterCumulative(distribution1,distribution2)) {
 			dist[0] = distribution1;
 			target[0] = target1;
-			fill[0] = Color.RED;
+			fill[0] = getResources().getColor(R.color.graph_solid1);
 			dist[1] = distribution2;
 			target[1] = target2;
-			fill[1] = Color.YELLOW;
+			fill[1] = getResources().getColor(R.color.graph_solid2);
 		} else {
 			dist[0] = distribution2;
 			target[0] = target2;
-			fill[0] = Color.YELLOW;
+			fill[0] = getResources().getColor(R.color.graph_solid2);
 			dist[1] = distribution1;
 			target[1] = target1;
-			fill[1] = Color.RED;
+			fill[1] = getResources().getColor(R.color.graph_solid1);
 		}
 		
 		final int largestSize = Math.max(dist[0].size(), dist[1].size());
@@ -144,14 +141,14 @@ public class GraphView extends View {
 	        p.setColor(fill[j]);
 			canvas.drawPath(path, p);
 			p.setStyle(Paint.Style.STROKE);
-	        p.setColor(Color.WHITE);
+	        p.setColor(getResources().getColor(R.color.graph_stroke));
 			canvas.drawPath(path, p);
 			
 		}
 
 		for (int j=0 ; j<2 ; ++j) {
 			// draw target line
-			p.setColor(Color.BLACK);
+			p.setColor(getResources().getColor(R.color.graph_target));
 			// TODO: need to scale this
 			final float targetF = ((float)target[j]/maxX) * w;
 			canvas.drawLine(targetF, 0.0f, targetF, (float)h, p);
@@ -159,7 +156,7 @@ public class GraphView extends View {
 		
 		// add some tick marks to the 5 and 10 x spots
 		//p.setStrokeWidth(3f);
-		p.setColor(Color.GRAY);
+		p.setColor(getResources().getColor(R.color.graph_ruler));
 		for (int i=0 ; i<=maxX ; ++i) {
 			if (i % 10 == 0) {
 				final float x = (float)i/maxX * w;

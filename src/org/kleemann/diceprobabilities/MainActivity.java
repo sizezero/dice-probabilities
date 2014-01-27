@@ -4,6 +4,7 @@ import android.os.Bundle;
 import android.app.Activity;
 import android.view.View;
 import android.widget.Button;
+import android.widget.TextView;
 
 public class MainActivity extends Activity {
 
@@ -32,7 +33,8 @@ public class MainActivity extends Activity {
 				(Button)findViewById(R.id.current1_constant),
 				(Button)findViewById(R.id.current1_target),
 				(Button)findViewById(R.id.clear1),
-				(Button)findViewById(R.id.current1_probability),
+				(TextView)findViewById(R.id.answer1_fraction),
+				(TextView)findViewById(R.id.answer1_probability),
 				((GraphView)findViewById(R.id.graph)).getSetter1()
 				);
 
@@ -53,7 +55,8 @@ public class MainActivity extends Activity {
 				(Button)findViewById(R.id.current2_constant),
 				(Button)findViewById(R.id.current2_target),
 				(Button)findViewById(R.id.clear2),
-				(Button)findViewById(R.id.current2_probability),
+				(TextView)findViewById(R.id.answer2_fraction),
+				(TextView)findViewById(R.id.answer2_probability),
 				((GraphView)findViewById(R.id.graph)).getSetter2()
 				);
 		
