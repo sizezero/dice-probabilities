@@ -4,6 +4,7 @@ import java.text.DecimalFormat;
 
 import org.apache.commons.math3.fraction.BigFraction;
 
+import android.content.Context;
 import android.os.AsyncTask;
 import android.view.View;
 import android.widget.Button;
@@ -37,8 +38,11 @@ public class DiceSet {
 	private long serial = 0;
 	// true if the background distribution calculation is running
 	private boolean running = false;
-		
+
+	private Context context;
+	
 	public DiceSet(
+			Context context,
 			Button pd12Button,
 			Button pd10Button,
 			Button pd8Button,
@@ -58,6 +62,7 @@ public class DiceSet {
 			GraphView.Setter graphSetter
 			) {
 		
+		this.context = context;
 		
 		pd12 = new PoolDicePile(12, pd12Button);
 		pd10 = new PoolDicePile(10, pd10Button);
@@ -115,7 +120,7 @@ public class DiceSet {
 			cResult.setCount(0);
 		}		
 	}
-	
+
 	private class CurrentDiceChanged implements View.OnClickListener {
 		@Override
 		public void onClick(View v) {
@@ -216,7 +221,7 @@ public class DiceSet {
 					answerButton.setText("");
 				} else {
 					BigFraction f = r.distribution.getCumulativeProbability(r.target);
-					DecimalFormat formatter = new DecimalFormat("##.#%");
+					DecimalFormat formatter = new DecimalFormat(context.getString(R.string.answer_format));
 					final String approximatelyEqualTo = "\u2245";
 					String s = f.toString() + " "+ approximatelyEqualTo +" " + formatter.format(f.doubleValue());
 					answerButton.setText(s);

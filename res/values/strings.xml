@@ -8,4 +8,5 @@
     <string name="clear">C</string>
     <string name="copy_down">\u2193</string>
     <string name="copy_up">\u2191</string>
+    <string name="answer_format">"##%"</string>
 </resources>
