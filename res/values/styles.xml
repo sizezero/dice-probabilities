@@ -30,8 +30,8 @@
         <item name="android:minWidth">0dp</item>
         <item name="android:minHeight">0dp</item>
         <item name="android:textSize">22sp</item>
+        <item name="android:layout_margin">2dp</item>
         <!--  
-        <item name="android:layout_margin">1dp</item>
         <item name="android:gravity">left</item>
         <item name="android:layout_marginLeft">45dip</item>
         <item name="android:layout_marginRight">45dip</item>
