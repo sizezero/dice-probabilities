@@ -49,5 +49,5 @@
         <item name="android:textSize">30sp</item>
         <item name="android:layout_gravity">center</item>
     </style>
-    
+
 </resources>
