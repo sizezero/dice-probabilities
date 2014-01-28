@@ -2,25 +2,64 @@ package org.kleemann.diceprobabilities.graph;
 
 import org.apache.commons.math3.fraction.BigFraction;
 import org.kleemann.diceprobabilities.R;
-import org.kleemann.diceprobabilities.R.color;
 import org.kleemann.diceprobabilities.distribution.Distribution;
 import org.kleemann.diceprobabilities.distribution.ZeroDistribution;
 
 import android.content.Context;
 import android.graphics.Canvas;
-import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Path;
+import android.os.AsyncTask;
 import android.util.AttributeSet;
 import android.view.View;
 
 public class GraphView extends View {
 
-	private Distribution distribution1 = new ZeroDistribution();
-	private int target1 = 0;
+	/**
+	 * Just a payload into the background calculation job
+	 */
+	private static class CalculateIn {
+		public long serial = -1;
+		public Distribution[] dist = new Distribution[]{ new ZeroDistribution(), new ZeroDistribution()};
+		public int[] target = new int[2];
+		public int width;
+		public int height;
+		
+		public CalculateIn() {
+		}
+		
+		public CalculateIn(CalculateIn that) {
+			this.serial = that.serial;
+			this.dist = that.dist.clone();
+			this.target = that.target.clone();
+			this.width = that.width;
+			this.height = that.height;
+		}
+	}
 	
-	private Distribution distribution2 = new ZeroDistribution();
-	private int target2 = 0;
+	private CalculateIn in = new CalculateIn();
+
+	/**
+	 * Just a payload out of the background calculation job
+	 */
+	private static class CalculateOut {
+		public long serial = -1;
+		public Path [] path = new Path[2];
+		public int[] fill = new int[2];
+		public int[] target = new int[2];
+		public float [] answer = new float[2];
+		public int ticks;
+	}
+	
+	private CalculateOut out = new CalculateOut();
+	
+	// true if the background distribution calculation is running
+	private boolean running = false;
+	
+	// drawing objects
+	
+	final int solid1 = getResources().getColor(R.color.graph_solid1);
+	final int solid2 = getResources().getColor(R.color.graph_solid2);
 	
 	public GraphView(Context context, AttributeSet attrs, int defStyleAttr) {
 		super(context, attrs, defStyleAttr);
@@ -28,37 +67,143 @@ public class GraphView extends View {
 
 	public GraphView(Context context, AttributeSet attrs) {
 		super(context, attrs);
-		// TODO Auto-generated constructor stub
 	}
 
 	public GraphView(Context context) {
 		super(context);
-		// TODO Auto-generated constructor stub
 	}
 
 	public static interface Setter {
 		public void setResult(Distribution distribution, int target);
 	}
 	
-	private class SetGraph1 implements Setter {
+	private class SetGraph implements Setter {
+		private final int i;
+		public SetGraph(int i) { this.i = i; }
 		public void setResult(Distribution d, int target) {
-			distribution1 = d;
-			target1 = target;
-			invalidate();
+			in.dist[i] = d;
+			in.target[i] = target;
+			++in.serial;
+			startCalculation();
 		}
 	}
 	
-	public Setter getSetter1() { return new SetGraph1(); }
+	public Setter getSetter1() { return new SetGraph(0); }
 	
-	private class SetGraph2 implements Setter {
-		public void setResult(Distribution d, int target) {
-			distribution2 = d;
-			target2 = target;
-			invalidate();
+	public Setter getSetter2() { return new SetGraph(1); }
+	
+	@Override
+	protected void onSizeChanged(int w, int h, int oldw, int oldh) {
+		in.width = w;
+		in.height = h;
+		++in.serial;
+		startCalculation();
+	}
+	
+	private void startCalculation() {
+		if (!running) {
+			running = true;
+			// not sure if cloning is necessary to protect thread access
+			new CalculatePoints().execute(new CalculateIn(in));
 		}
 	}
 	
-	public Setter getSetter2() { return new SetGraph2(); }
+	private class CalculatePoints extends AsyncTask<CalculateIn, Void, CalculateOut> {
+
+		/**
+		 * This thread is run in the background so it
+		 * shouldn't access any other objects in this class or call android gui methods.
+		 */
+		@Override
+		protected CalculateOut doInBackground(CalculateIn... arg0) {
+			CalculateIn cin = arg0[0];
+			CalculateOut cout = new CalculateOut();
+			cout.serial = cin.serial;
+			cout.target[0] = cout.target[0];
+			cout.target[1] = cout.target[1];
+
+			// don't display anything if both graphs are trivial
+			if (cin.dist[0].size() <= 1 && cin.dist[1].size() <= 1) {
+				return cout;
+			}
+			
+			// draw the larger distribution first
+			Distribution[] dist = new Distribution[2];
+			int[] target = new int[2];
+			if (greaterCumulative(cin.dist[0], cin.dist[1])) {
+				dist[0] = cin.dist[0];
+				target[0] = cin.target[0];
+				cout.fill[0] = solid1;
+				dist[1] = cin.dist[1];
+				target[1] = cin.target[1];
+				cout.fill[1] = solid2;
+			} else {
+				dist[0] = cin.dist[1];
+				target[0] = cin.target[1];
+				cout.fill[0] = solid2;
+				dist[1] = cin.dist[0];
+				target[1] = cin.target[0];
+				cout.fill[1] = solid1;
+			}
+			
+			final int largestSize = Math.max(dist[0].size(), dist[1].size());
+			
+			 // add a few extra values after the distribution peaks; multiples of 10
+			final int maxX = (largestSize+10) - (largestSize % 10);
+			cout.ticks = maxX;
+			Point[] pt = new Point[maxX];
+			
+			for (int j=0 ; j<2 ; ++j) {
+				
+				// don't display a trivial graph
+				if (dist[j].size() <= 1) {
+					cout.path[j] = new Path();
+					cout.answer[j] = cin.height;
+					continue;
+				}
+				
+				for (int i=0 ; i<maxX ; ++i) {
+					float x = (float)i/maxX;
+					
+					// TODO: it would be more efficient to compute all the cumulative
+					// distributions at once
+					float y = BigFraction.ONE.subtract(dist[j].getCumulativeProbability(i)).floatValue();
+					
+					// scale unit coords to world coords
+					x *= cin.width;
+					y *= cin.height;
+					
+					pt[i] = new Point(x,y);
+				}
+		
+				Interpolate interpolate = new Interpolate(pt);
+				cout.path[j] = interpolate.getPath();
+				
+				// connect the path to origin and starting point
+				cout.path[j].lineTo(pt[pt.length-1].getX(), cin.height);
+				cout.path[j].lineTo(0.0f, cin.height);
+				cout.path[j].lineTo(0.0f, 0.0f);
+				cout.path[j].lineTo(pt[0].getX(),pt[0].getY());
+				
+				cout.answer[j] = (1.0f - dist[j].getCumulativeProbability(target[j]).floatValue()) * cin.height;
+			}
+
+			return cout;
+		}
+		
+		@Override
+		protected void onPostExecute(CalculateOut cout) {
+			running = false;
+			if (cout.serial == in.serial) {
+				out = cout;
+				invalidate();
+			} else {
+				// something has changed since the last time; restart calculation
+				startCalculation();
+			}
+		}
+	}
+
 	
 	/* (non-Javadoc)
 	 * @see android.view.View#onDraw(android.graphics.Canvas)
@@ -74,99 +219,44 @@ public class GraphView extends View {
 
 	private void interpolatedSolid(Canvas canvas) {
 
-		// don't display anything if both graphs are trivial
-		if (distribution1.size() <= 1 && distribution2.size() <= 1) {
+		// don't display anything if the background calculation has not occured once
+		if (out.path[0] == null) {
 			return;
 		}
 		
 		final int h = canvas.getHeight();
 		final int w = canvas.getWidth();
 
-		// draw the larger distribution first
-		Distribution[] dist = new Distribution[2];
-		int[] target = new int[2];
-		int[] fill = new int[2];
-		if (greaterCumulative(distribution1,distribution2)) {
-			dist[0] = distribution1;
-			target[0] = target1;
-			fill[0] = getResources().getColor(R.color.graph_solid1);
-			dist[1] = distribution2;
-			target[1] = target2;
-			fill[1] = getResources().getColor(R.color.graph_solid2);
-		} else {
-			dist[0] = distribution2;
-			target[0] = target2;
-			fill[0] = getResources().getColor(R.color.graph_solid2);
-			dist[1] = distribution1;
-			target[1] = target1;
-			fill[1] = getResources().getColor(R.color.graph_solid1);
-		}
-		
-		final int largestSize = Math.max(dist[0].size(), dist[1].size());
-		
-		 // add a few extra values after the distribution peaks; multiples of 10
-		final int maxX = (largestSize+10) - (largestSize % 10);
-		Point[] pt = new Point[maxX];
-		
 		Paint p = new Paint();
         p.setStrokeWidth(5f);
 		
 		for (int j=0 ; j<2 ; ++j) {
 			
-			// don't display a trivial graph
-			if (dist[j].size() <= 1) {
-				continue;
-			}
-			
-			for (int i=0 ; i<maxX ; ++i) {
-				float x = (float)i/maxX;
-				
-				// TODO: it would be more efficient to compute all the cumulative
-				// distributions at once
-				float y = BigFraction.ONE.subtract(dist[j].getCumulativeProbability(i)).floatValue();
-				
-				// scale unit coords to world coords
-				x *= w;
-				y *= h;
-				
-				pt[i] = new Point(x,y);
-			}
-	
-			Interpolate interpolate = new Interpolate(pt);
-			Path path = interpolate.getPath();
-			
-			// connect the path to origin and starting point
-			path.lineTo(pt[pt.length-1].getX(), h);
-			path.lineTo(0.0f, h);
-			path.lineTo(0.0f, 0.0f);
-			path.lineTo(pt[0].getX(),pt[0].getY());
-			
 			p.setStyle(Paint.Style.FILL);
-	        p.setColor(fill[j]);
-			canvas.drawPath(path, p);
+	        p.setColor(out.fill[j]);
+			canvas.drawPath(out.path[j], p);
 			p.setStyle(Paint.Style.STROKE);
 	        p.setColor(getResources().getColor(R.color.graph_stroke));
-			canvas.drawPath(path, p);
+			canvas.drawPath(out.path[j], p);
 			
 		}
 
+		// draw answer line
+		p.setColor(getResources().getColor(R.color.graph_target));
 		for (int j=0 ; j<2 ; ++j) {
-			// draw target line
-			p.setColor(getResources().getColor(R.color.graph_target));
-			final float targetF = (1.0f - dist[j].getCumulativeProbability(target[j]).floatValue()) * h;
-			canvas.drawLine(0.0f, targetF, (float)w, targetF, p);
+			canvas.drawLine(0.0f, out.answer[j], (float)w, out.answer[j], p);
 		}
 		
 		// add some tick marks to the 5 and 10 x spots
 		//p.setStrokeWidth(3f);
 		p.setColor(getResources().getColor(R.color.graph_ruler));
-		for (int i=0 ; i<=maxX ; ++i) {
+		for (int i=0 ; i<=out.ticks ; ++i) {
 			if (i % 10 == 0) {
-				final float x = (float)i/maxX * w;
+				final float x = (float)i/out.ticks * w;
 				canvas.drawLine(x, h, x, h-(float)h/10, p);
 			} else if (i % 5 == 0) {
-				final float x = (float)i/maxX * w;
-				canvas.drawLine(x, h, x, h-(float)h/20, p);				
+				final float x = (float)i/out.ticks * w;
+				canvas.drawLine(x, h, x, h-(float)h/20, p);
 			}
 		}
 		
