@@ -1,6 +1,6 @@
 package org.kleemann.diceprobabilities.graph;
 
-public class Point {
+class Point {
 
 	private final float x;
 	private final float y;

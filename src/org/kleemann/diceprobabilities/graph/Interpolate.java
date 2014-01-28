@@ -7,14 +7,9 @@ import android.graphics.Path;
 /**
  * <p>Given a set of points, interpolates the control points between them creating a smooth path.
  * 
- * 
- * 
  * <p>This is an immutable object
- * 
- * @author robert
- *
  */
-public class Interpolate {
+class Interpolate {
 
 	private static final float SCALE = 0.3f;
 	

@@ -1,4 +1,4 @@
-package org.kleemann.diceprobabilities.test;
+package org.kleemann.diceprobabilities.graph;
 
 import junit.framework.TestCase;
 

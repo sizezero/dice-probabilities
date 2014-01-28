@@ -1,4 +1,4 @@
-package org.kleemann.diceprobabilities.test;
+package org.kleemann.diceprobabilities.distribution;
 
 import org.apache.commons.math3.fraction.BigFraction;
 import org.kleemann.diceprobabilities.distribution.ConstantDistribution;
@@ -11,6 +11,11 @@ import junit.framework.TestCase;
 
 public class DistributionTest extends TestCase {
 
+	public void testDSix() {
+		Distribution d6 = new DieDistribution(6);
+		// TODO
+	}
+	
 	public void testTwoDSix() {
 		Distribution d6 = new DieDistribution(6);
 		Distribution twoDSix = new MultinomialDistribution(d6,d6);

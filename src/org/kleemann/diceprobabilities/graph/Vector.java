@@ -1,6 +1,6 @@
 package org.kleemann.diceprobabilities.graph;
 
-public class Vector {
+class Vector {
 
 	private final Point pt;
 	
