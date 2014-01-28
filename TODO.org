@@ -74,7 +74,7 @@ This would take me forever.
 
 * DONE separate classes into packages
 
-* TODO horizontal target lines
+* DONE horizontal target lines
 
 * TODO graph performance
 

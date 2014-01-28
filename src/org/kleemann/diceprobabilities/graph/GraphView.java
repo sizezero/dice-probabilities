@@ -153,9 +153,8 @@ public class GraphView extends View {
 		for (int j=0 ; j<2 ; ++j) {
 			// draw target line
 			p.setColor(getResources().getColor(R.color.graph_target));
-			// TODO: need to scale this
-			final float targetF = ((float)target[j]/maxX) * w;
-			canvas.drawLine(targetF, 0.0f, targetF, (float)h, p);
+			final float targetF = (1.0f - dist[j].getCumulativeProbability(target[j]).floatValue()) * h;
+			canvas.drawLine(0.0f, targetF, (float)w, targetF, p);
 		}
 		
 		// add some tick marks to the 5 and 10 x spots
