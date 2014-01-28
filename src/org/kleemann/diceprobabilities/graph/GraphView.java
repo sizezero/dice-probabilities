@@ -68,9 +68,8 @@ public class GraphView extends View {
 		pBackground = new Paint();
 		pBackground.setColor(getResources().getColor(R.color.graph_background));		
     	
-    	float strokeWidth = getResources().getDimension(R.dimen.graph_stroke_width);
     	pGraphSolid1 = new Paint();
-    	pGraphSolid1.setStrokeWidth(strokeWidth);
+    	pGraphSolid1.setStrokeWidth(getResources().getDimension(R.dimen.graph_stroke_width));
     	pGraphSolid1.setStyle(Paint.Style.FILL);
     	pGraphSolid1.setColor(getResources().getColor(R.color.graph_solid1));
         
@@ -82,9 +81,11 @@ public class GraphView extends View {
         pGraphStroke.setColor(getResources().getColor(R.color.graph_stroke));
 
         pAnswer = new Paint(pGraphStroke);
+    	pAnswer.setStrokeWidth(getResources().getDimension(R.dimen.answer_stroke_width));
 		pAnswer.setColor(getResources().getColor(R.color.graph_answer));
 
 		pRuler = new Paint(pGraphStroke);
+    	pRuler.setStrokeWidth(getResources().getDimension(R.dimen.ruler_stroke_width));
 		pRuler.setColor(getResources().getColor(R.color.graph_ruler));
     }
 	
