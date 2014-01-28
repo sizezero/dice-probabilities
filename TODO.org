@@ -81,7 +81,7 @@ This would take me forever.
 - pre-create graphic objects
 - perform most calculations in a background thread
 
-* TODO background tap toggles button visibility
+* DONE background tap toggles button visibility
 
 * TODO more graphic cleanup
 

@@ -10,6 +10,8 @@ import android.widget.TextView;
 
 public class MainActivity extends Activity {
 
+	private View topButtonGroup;
+	
 	private DiceSet diceSet1;
 	private DiceSet diceSet2;
 	
@@ -17,6 +19,10 @@ public class MainActivity extends Activity {
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);		
 		setContentView(R.layout.activity_main);
+		
+		this.topButtonGroup = (View)findViewById(R.id.top_button_group);
+
+		GraphView graph = (GraphView)findViewById(R.id.graph); 
 		
 		this.diceSet1 = new DiceSet(
 				getApplicationContext(),
@@ -37,7 +43,7 @@ public class MainActivity extends Activity {
 				(Button)findViewById(R.id.clear1),
 				(TextView)findViewById(R.id.answer1_fraction),
 				(TextView)findViewById(R.id.answer1_probability),
-				((GraphView)findViewById(R.id.graph)).getSetter1()
+				graph.getSetter1()
 				);
 
 		this.diceSet2 = new DiceSet(
@@ -59,11 +65,13 @@ public class MainActivity extends Activity {
 				(Button)findViewById(R.id.clear2),
 				(TextView)findViewById(R.id.answer2_fraction),
 				(TextView)findViewById(R.id.answer2_probability),
-				((GraphView)findViewById(R.id.graph)).getSetter2()
+				graph.getSetter2()
 				);
 		
 		((Button)findViewById(R.id.copy_down)).setOnClickListener(new Copy(diceSet2, diceSet1));
 		((Button)findViewById(R.id.copy_up)).setOnClickListener(new Copy(diceSet1, diceSet2));
+		
+		graph.setOnClickListener(new GraphPress());
 	}
 
 	private static class Copy implements View.OnClickListener {
@@ -82,6 +90,16 @@ public class MainActivity extends Activity {
 		}		
 	}
 	
-
+	private class GraphPress implements View.OnClickListener {
+		@Override
+		public void onClick(View v) {
+			// toggle visibility
+			if (topButtonGroup.getVisibility() == View.VISIBLE) {
+				topButtonGroup.setVisibility(View.INVISIBLE);
+			} else {
+				topButtonGroup.setVisibility(View.VISIBLE);
+			}
+		}		
+	}
 	
 }
