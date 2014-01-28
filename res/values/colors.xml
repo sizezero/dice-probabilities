@@ -49,7 +49,7 @@
 	<color name="graph_solid2">#ebf2b5</color>
 	<color name="graph_background">#eeeeee</color>
 	<color name="graph_stroke">#ffffff</color>
-	<color name="graph_target">#919191</color>
+	<color name="graph_answer">#919191</color>
 	<color name="graph_ruler">#888888</color>
 	
 			

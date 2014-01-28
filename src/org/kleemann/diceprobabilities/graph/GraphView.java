@@ -45,7 +45,7 @@ public class GraphView extends View {
 	private static class CalculateOut {
 		public long serial = -1;
 		public Path [] path = new Path[2];
-		public int[] fill = new int[2];
+		public Paint[] paint = new Paint[2];
 		public int[] target = new int[2];
 		public float [] answer = new float[2];
 		public int ticks;
@@ -58,8 +58,35 @@ public class GraphView extends View {
 	
 	// drawing objects
 	
-	final int solid1 = getResources().getColor(R.color.graph_solid1);
-	final int solid2 = getResources().getColor(R.color.graph_solid2);
+	private Paint pBackground;
+    private Paint pGraphSolid1;
+    private Paint pGraphSolid2;
+    private Paint pGraphStroke;
+    private Paint pAnswer;
+    private Paint pRuler;
+    {
+		pBackground = new Paint();
+		pBackground.setColor(getResources().getColor(R.color.graph_background));		
+    	
+    	float strokeWidth = getResources().getDimension(R.dimen.graph_stroke_width);
+    	pGraphSolid1 = new Paint();
+    	pGraphSolid1.setStrokeWidth(strokeWidth);
+    	pGraphSolid1.setStyle(Paint.Style.FILL);
+    	pGraphSolid1.setColor(getResources().getColor(R.color.graph_solid1));
+        
+        pGraphSolid2 = new Paint(pGraphSolid1);
+        pGraphSolid2 .setColor(getResources().getColor(R.color.graph_solid2));
+        
+        pGraphStroke = new Paint(pGraphSolid1);
+        pGraphStroke.setStyle(Paint.Style.STROKE);
+        pGraphStroke.setColor(getResources().getColor(R.color.graph_stroke));
+
+        pAnswer = new Paint(pGraphStroke);
+		pAnswer.setColor(getResources().getColor(R.color.graph_answer));
+
+		pRuler = new Paint(pGraphStroke);
+		pRuler.setColor(getResources().getColor(R.color.graph_ruler));
+    }
 	
 	public GraphView(Context context, AttributeSet attrs, int defStyleAttr) {
 		super(context, attrs, defStyleAttr);
@@ -73,6 +100,7 @@ public class GraphView extends View {
 		super(context);
 	}
 
+    
 	public static interface Setter {
 		public void setResult(Distribution distribution, int target);
 	}
@@ -133,17 +161,17 @@ public class GraphView extends View {
 			if (greaterCumulative(cin.dist[0], cin.dist[1])) {
 				dist[0] = cin.dist[0];
 				target[0] = cin.target[0];
-				cout.fill[0] = solid1;
+				cout.paint[0] = pGraphSolid1;
 				dist[1] = cin.dist[1];
 				target[1] = cin.target[1];
-				cout.fill[1] = solid2;
+				cout.paint[1] = pGraphSolid2;
 			} else {
 				dist[0] = cin.dist[1];
 				target[0] = cin.target[1];
-				cout.fill[0] = solid2;
+				cout.paint[0] = pGraphSolid2;
 				dist[1] = cin.dist[0];
 				target[1] = cin.target[0];
-				cout.fill[1] = solid1;
+				cout.paint[1] = pGraphSolid1;
 			}
 			
 			final int largestSize = Math.max(dist[0].size(), dist[1].size());
@@ -210,10 +238,7 @@ public class GraphView extends View {
 	 */
 	@Override
 	protected void onDraw(Canvas canvas) {
-		Paint p = new Paint();
-		p.setColor(getResources().getColor(R.color.graph_background));		
-		canvas.drawPaint(p);
-		
+		canvas.drawPaint(pBackground);
 		interpolatedSolid(canvas);
 	}
 
@@ -227,36 +252,25 @@ public class GraphView extends View {
 		final int h = canvas.getHeight();
 		final int w = canvas.getWidth();
 
-		Paint p = new Paint();
-        p.setStrokeWidth(5f);
-		
+		// draw each graph solid and outline
 		for (int j=0 ; j<2 ; ++j) {
-			
-			p.setStyle(Paint.Style.FILL);
-	        p.setColor(out.fill[j]);
-			canvas.drawPath(out.path[j], p);
-			p.setStyle(Paint.Style.STROKE);
-	        p.setColor(getResources().getColor(R.color.graph_stroke));
-			canvas.drawPath(out.path[j], p);
-			
+			canvas.drawPath(out.path[j], out.paint[j]);
+			canvas.drawPath(out.path[j], pGraphStroke);
 		}
 
 		// draw answer line
-		p.setColor(getResources().getColor(R.color.graph_target));
 		for (int j=0 ; j<2 ; ++j) {
-			canvas.drawLine(0.0f, out.answer[j], (float)w, out.answer[j], p);
+			canvas.drawLine(0.0f, out.answer[j], (float)w, out.answer[j], pAnswer);
 		}
 		
 		// add some tick marks to the 5 and 10 x spots
-		//p.setStrokeWidth(3f);
-		p.setColor(getResources().getColor(R.color.graph_ruler));
 		for (int i=0 ; i<=out.ticks ; ++i) {
 			if (i % 10 == 0) {
 				final float x = (float)i/out.ticks * w;
-				canvas.drawLine(x, h, x, h-(float)h/10, p);
+				canvas.drawLine(x, h, x, h-(float)h/10, pRuler);
 			} else if (i % 5 == 0) {
 				final float x = (float)i/out.ticks * w;
-				canvas.drawLine(x, h, x, h-(float)h/20, p);
+				canvas.drawLine(x, h, x, h-(float)h/20, pRuler);
 			}
 		}
 		
