@@ -76,7 +76,7 @@ This would take me forever.
 
 * DONE horizontal target lines
 
-* TODO graph performance
+* DONE graph performance
 
 - pre-create graphic objects
 - perform most calculations in a background thread
