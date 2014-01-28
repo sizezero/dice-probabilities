@@ -6,7 +6,7 @@
 
     <view
 	    android:id="@+id/graph"
-        class="org.kleemann.diceprobabilities.GraphView"
+        class="org.kleemann.diceprobabilities.graph.GraphView"
         android:layout_width="fill_parent"
         android:layout_height="fill_parent"
         />

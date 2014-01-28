@@ -1,4 +1,4 @@
-package org.kleemann.diceprobabilities;
+package org.kleemann.diceprobabilities.graph;
 
 public class Vector {
 

@@ -2,8 +2,8 @@ package org.kleemann.diceprobabilities.test;
 
 import junit.framework.TestCase;
 
-import org.kleemann.diceprobabilities.Point;
-import org.kleemann.diceprobabilities.Interpolate;
+import org.kleemann.diceprobabilities.graph.Interpolate;
+import org.kleemann.diceprobabilities.graph.Point;
 
 public class InterpolateTest extends TestCase {
 

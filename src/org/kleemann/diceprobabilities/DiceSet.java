@@ -8,6 +8,7 @@ import org.kleemann.diceprobabilities.distribution.DieDistribution;
 import org.kleemann.diceprobabilities.distribution.Distribution;
 import org.kleemann.diceprobabilities.distribution.MultinomialDistribution;
 import org.kleemann.diceprobabilities.distribution.ZeroDistribution;
+import org.kleemann.diceprobabilities.graph.GraphView;
 
 import android.content.Context;
 import android.os.AsyncTask;

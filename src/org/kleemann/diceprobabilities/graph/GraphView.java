@@ -1,6 +1,8 @@
-package org.kleemann.diceprobabilities;
+package org.kleemann.diceprobabilities.graph;
 
 import org.apache.commons.math3.fraction.BigFraction;
+import org.kleemann.diceprobabilities.R;
+import org.kleemann.diceprobabilities.R.color;
 import org.kleemann.diceprobabilities.distribution.Distribution;
 import org.kleemann.diceprobabilities.distribution.ZeroDistribution;
 

@@ -1,5 +1,7 @@
 package org.kleemann.diceprobabilities;
 
+import org.kleemann.diceprobabilities.graph.GraphView;
+
 import android.os.Bundle;
 import android.app.Activity;
 import android.view.View;
