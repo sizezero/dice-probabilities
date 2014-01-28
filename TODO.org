@@ -72,11 +72,24 @@ This would take me forever.
 - tie target button with background colors
 - tie answer button to background colors
 
+* TODO separate classes into packages
+
+* TODO horizontal target lines
+
+* TODO graph performance
+
+- pre-create graphic objects
+- perform most calculations in a background thread
+
+* TODO background tap toggles button visibility
+
 * TODO more graphic cleanup
 
 - tie target to background colors
 
 * TODO Bug: values are not saved on re-orientation
+
+* TODO show equation and odds on target line
 
 * DONE libraries are big
 
