@@ -34,12 +34,12 @@ public class DieDistribution implements Distribution {
 
 	@Override
 	public BigFraction getCumulativeProbability(int x) {
-		if (x>=1 && x<sides) {
-			return probability.multiply(x);
-		} else if (x>=sides) {
-			return BigFraction.ONE;
-		} else {
+		if (x>1 && x<=sides) {
+			return probability.multiply(sides-x+1);
+		} else if (x>sides) {
 			return BigFraction.ZERO;
+		} else {
+			return BigFraction.ONE;
 		}
 	}
 

@@ -13,7 +13,14 @@ public class DistributionTest extends TestCase {
 
 	public void testDSix() {
 		Distribution d6 = new DieDistribution(6);
-		// TODO
+		assertEquals(BigFraction.ONE, d6.getCumulativeProbability(1));
+		assertEquals(new BigFraction(5,6), d6.getCumulativeProbability(2));
+		assertEquals(new BigFraction(4,6), d6.getCumulativeProbability(3));
+		assertEquals(new BigFraction(3,6), d6.getCumulativeProbability(4));
+		assertEquals(new BigFraction(2,6), d6.getCumulativeProbability(5));
+		assertEquals(new BigFraction(1,6), d6.getCumulativeProbability(6));
+		assertEquals(BigFraction.ZERO, d6.getCumulativeProbability(7));
+		assertEquals(BigFraction.ZERO, d6.getCumulativeProbability(8));
 	}
 	
 	public void testTwoDSix() {
