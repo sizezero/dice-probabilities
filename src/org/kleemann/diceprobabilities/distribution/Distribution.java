@@ -1,4 +1,4 @@
-package org.kleemann.diceprobabilities;
+package org.kleemann.diceprobabilities.distribution;
 
 import org.apache.commons.math3.fraction.BigFraction;
 

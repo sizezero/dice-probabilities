@@ -1,6 +1,8 @@
 package org.kleemann.diceprobabilities;
 
 import org.apache.commons.math3.fraction.BigFraction;
+import org.kleemann.diceprobabilities.distribution.Distribution;
+import org.kleemann.diceprobabilities.distribution.ZeroDistribution;
 
 import android.content.Context;
 import android.graphics.Canvas;

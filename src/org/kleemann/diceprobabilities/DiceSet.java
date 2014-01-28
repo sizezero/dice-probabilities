@@ -3,6 +3,11 @@ package org.kleemann.diceprobabilities;
 import java.text.DecimalFormat;
 
 import org.apache.commons.math3.fraction.BigFraction;
+import org.kleemann.diceprobabilities.distribution.ConstantDistribution;
+import org.kleemann.diceprobabilities.distribution.DieDistribution;
+import org.kleemann.diceprobabilities.distribution.Distribution;
+import org.kleemann.diceprobabilities.distribution.MultinomialDistribution;
+import org.kleemann.diceprobabilities.distribution.ZeroDistribution;
 
 import android.content.Context;
 import android.os.AsyncTask;

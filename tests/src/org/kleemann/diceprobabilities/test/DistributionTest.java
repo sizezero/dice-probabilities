@@ -1,11 +1,11 @@
 package org.kleemann.diceprobabilities.test;
 
 import org.apache.commons.math3.fraction.BigFraction;
-import org.kleemann.diceprobabilities.ConstantDistribution;
-import org.kleemann.diceprobabilities.DieDistribution;
-import org.kleemann.diceprobabilities.Distribution;
-import org.kleemann.diceprobabilities.MultinomialDistribution;
-import org.kleemann.diceprobabilities.ZeroDistribution;
+import org.kleemann.diceprobabilities.distribution.ConstantDistribution;
+import org.kleemann.diceprobabilities.distribution.DieDistribution;
+import org.kleemann.diceprobabilities.distribution.Distribution;
+import org.kleemann.diceprobabilities.distribution.MultinomialDistribution;
+import org.kleemann.diceprobabilities.distribution.ZeroDistribution;
 
 import junit.framework.TestCase;
 
