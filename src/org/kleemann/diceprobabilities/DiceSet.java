@@ -39,6 +39,8 @@ public class DiceSet {
 	private boolean running = false;
 
 	private final DecimalFormat answerFormatter;
+
+	private static final String APPROXIMATELY_EQUAL_TO = "\u2245";
 	
 	public DiceSet(
 			Button pd12Button,
@@ -167,6 +169,8 @@ public class DiceSet {
 		public long serial;
 		public Distribution distribution;
 		public int target;
+		public String answerFraction;
+		public String answerProbability;
 	}
 	
 	private class CalculateDistribution extends AsyncTask<RecalculateIn, Void, RecalculateOut> {
@@ -202,6 +206,16 @@ public class DiceSet {
 			out.serial = r.serial;
 			out.distribution = d;
 			out.target = r.target;
+			
+			// if distribution is trivial then show minimal text
+			if (d.size() <= 1) {
+				out.answerFraction = "";
+				out.answerProbability = answerFormatter.format(0.0d);
+			} else {
+				BigFraction f = d.getCumulativeProbability(r.target);
+				out.answerFraction = f.toString() + " " + APPROXIMATELY_EQUAL_TO + " ";
+				out.answerProbability = answerFormatter.format(f.doubleValue());
+			}
 			return out;
 		}
 		
@@ -209,18 +223,8 @@ public class DiceSet {
 		protected void onPostExecute(RecalculateOut r) {
 			running = false;
 			if (r.serial == serial) {
-
-				// if distribution is trivial then don't show any text
-				if (r.distribution.size() <= 1) {
-					answer_fraction.setText("");
-					answer_probability.setText("0%");
-				} else {
-					BigFraction f = r.distribution.getCumulativeProbability(r.target);
-					final String approximatelyEqualTo = "\u2245";
-					answer_fraction.setText(f.toString() + " " + approximatelyEqualTo + " ");
-					answer_probability.setText(answerFormatter.format(f.doubleValue()));
-				}
-				
+				answer_fraction.setText(r.answerFraction);
+				answer_probability.setText(r.answerProbability);
 				graphSetter.setResult(r.distribution, r.target);
 			} else {
 				// the dice have changed since we started the background task
