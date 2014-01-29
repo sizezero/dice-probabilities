@@ -81,20 +81,20 @@ public class DiceSet {
 		pd1 = new PoolDicePile(1, pd1Button);
 		pResult = new PoolDicePile(1, pResultButton);
 		
-		CurrentDiceChanged listener = new CurrentDiceChanged();
-		cd12 = new CurrentDicePile(12, cd12Button, listener);
+		CurrentDiceChanged diceChanged = new CurrentDiceChanged();
+		cd12 = new CurrentDicePile(12, cd12Button, diceChanged);
 		pd12.setIncrementer(cd12);
-		cd10 = new CurrentDicePile(10, cd10Button, listener);
+		cd10 = new CurrentDicePile(10, cd10Button, diceChanged);
 		pd10.setIncrementer(cd10);
-		cd8 = new CurrentDicePile(8, cd8Button, listener);
+		cd8 = new CurrentDicePile(8, cd8Button, diceChanged);
 		pd8.setIncrementer(cd8);
-		cd6 = new CurrentDicePile(6, cd6Button, listener);
+		cd6 = new CurrentDicePile(6, cd6Button, diceChanged);
 		pd6.setIncrementer(cd6);
-		cd4 = new CurrentDicePile(4, cd4Button, listener);
+		cd4 = new CurrentDicePile(4, cd4Button, diceChanged);
 		pd4.setIncrementer(cd4);
-		cd1 = new CurrentDicePile(1, cd1Button, listener);
+		cd1 = new CurrentDicePile(1, cd1Button, diceChanged);
 		pd1.setIncrementer(cd1);
-		cResult = new ToBeat(cResultButton, listener);
+		cResult = new ToBeat(cResultButton, diceChanged);
 		pResult.setIncrementer(cResult);
 		
 		clear.setOnClickListener(new Clear());
