@@ -6,7 +6,7 @@ import android.widget.Button;
 public class CurrentDicePile implements View.OnClickListener {
 
 	private int sides;
-	private int count;
+	protected int count;
 	protected Button button;
 	private View.OnClickListener changed;
 	
@@ -45,5 +45,9 @@ public class CurrentDicePile implements View.OnClickListener {
 		if (count != 0) {
 			setCount(count-1);
 		}
+	}
+	
+	public void clear() {
+		setCount(0);
 	}
 }

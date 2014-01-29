@@ -106,13 +106,13 @@ public class DiceSet {
 	private class Clear implements View.OnClickListener {
 		@Override
 		public void onClick(View v) {
-			cd12.setCount(0);
-			cd10.setCount(0);
-			cd8.setCount(0);
-			cd6.setCount(0);
-			cd4.setCount(0);
-			cd1.setCount(0);
-			cResult.setCount(0);
+			cd12.clear();
+			cd10.clear();
+			cd8.clear();
+			cd6.clear();
+			cd4.clear();
+			cd1.clear();
+			cResult.clear();
 		}		
 	}
 
