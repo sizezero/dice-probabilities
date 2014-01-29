@@ -90,7 +90,7 @@ class Interpolate {
 		Path path = new Path();
 		path.moveTo(p[0].getX(), p[0].getY());
 		for (int i=0 ; i<p.length-1 ; ++i) {
-			final Point p0 = p[i];
+			//final Point p0 = p[i];
 			final Point p1 = p[i+1];
 			final Point c0 = c[i*2+1]; // second control point of first segment point
 			final Point c1 = c[i*2+2]; // first control point of second segment point
