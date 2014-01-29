@@ -104,11 +104,6 @@ public class GraphView extends View {
 		pAnswerText = new Paint();
 		pAnswerText.setColor(getResources().getColor(R.color.graph_formula_text));
 		pAnswerText.setTextSize(getResources().getDimension(R.dimen.formula_text_size));
-		pAnswerText.setShadowLayer(
-				getResources().getDimension(R.dimen.formula_shadow_radius), 
-				getResources().getDimension(R.dimen.formula_shadow_offset_x), 
-				getResources().getDimension(R.dimen.formula_shadow_offset_y), 
-				getResources().getColor(R.color.graph_formula_shadow));
 		answerTextOffsetY = getResources().getDimension(R.dimen.formula_text_offset_y);
     }
 	
