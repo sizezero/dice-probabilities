@@ -10,7 +10,6 @@ import org.kleemann.diceprobabilities.distribution.MultinomialDistribution;
 import org.kleemann.diceprobabilities.distribution.ZeroDistribution;
 import org.kleemann.diceprobabilities.graph.GraphView;
 
-import android.content.Context;
 import android.os.AsyncTask;
 import android.view.View;
 import android.widget.Button;
@@ -39,10 +38,9 @@ public class DiceSet {
 	// true if the background distribution calculation is running
 	private boolean running = false;
 
-	private Context context;
+	private final DecimalFormat answerFormatter;
 	
 	public DiceSet(
-			Context context,
 			Button pd12Button,
 			Button pd10Button,
 			Button pd8Button,
@@ -63,7 +61,7 @@ public class DiceSet {
 			GraphView.Setter graphSetter
 			) {
 		
-		this.context = context;
+		this.answerFormatter = new DecimalFormat(clear.getResources().getString(R.string.answer_format));
 		
 		CurrentDiceChanged diceChanged = new CurrentDiceChanged();
 		cd12 = new CurrentDicePile(12, cd12Button, diceChanged);
@@ -218,10 +216,9 @@ public class DiceSet {
 					answer_probability.setText("0%");
 				} else {
 					BigFraction f = r.distribution.getCumulativeProbability(r.target);
-					DecimalFormat formatter = new DecimalFormat(context.getString(R.string.answer_format));
 					final String approximatelyEqualTo = "\u2245";
 					answer_fraction.setText(f.toString() + " " + approximatelyEqualTo + " ");
-					answer_probability.setText(formatter.format(f.doubleValue()));
+					answer_probability.setText(answerFormatter.format(f.doubleValue()));
 				}
 				
 				graphSetter.setResult(r.distribution, r.target);

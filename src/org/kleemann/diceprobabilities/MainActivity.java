@@ -25,7 +25,6 @@ public class MainActivity extends Activity {
 		GraphView graph = (GraphView)findViewById(R.id.graph); 
 		
 		this.diceSet1 = new DiceSet(
-				getApplicationContext(),
 				(Button)findViewById(R.id.pool1_d12),
 				(Button)findViewById(R.id.pool1_d10),
 				(Button)findViewById(R.id.pool1_d8),
@@ -47,7 +46,6 @@ public class MainActivity extends Activity {
 				);
 
 		this.diceSet2 = new DiceSet(
-				getApplicationContext(),
 				(Button)findViewById(R.id.pool2_d12),
 				(Button)findViewById(R.id.pool2_d10),
 				(Button)findViewById(R.id.pool2_d8),
