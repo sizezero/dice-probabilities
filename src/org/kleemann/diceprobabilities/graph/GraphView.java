@@ -230,20 +230,20 @@ public class GraphView extends View {
 					// distributions at once
 					float y = BigFraction.ONE.subtract(dist[j].getCumulativeProbability(i)).floatValue();
 					
-					// scale unit coords to world coords
-					x *= cin.width;
-					y *= cin.height;
-					
-					pt[i] = new Point(x,y);
+					pt[i] = new Point(x*cin.width, y*cin.height); // scale to global coords
 				}
 		
 				Interpolate interpolate = new Interpolate(pt);
 				cout.path[j] = interpolate.getPath();
 				
 				// connect the path to origin and starting point
-				cout.path[j].lineTo(pt[pt.length-1].getX(), cin.height);
+				// move off the screen to the bottom and left a bit so we don't see the stroke
+				float leftWall = -cin.width/5; 
+				float bottomWall = cin.height * 1.2f; 
+				cout.path[j].lineTo(pt[pt.length-1].getX(), bottomWall);
 				cout.path[j].lineTo(0.0f, cin.height);
-				cout.path[j].lineTo(0.0f, 0.0f);
+				cout.path[j].lineTo(leftWall, bottomWall);
+				cout.path[j].lineTo(leftWall, 0.0f);
 				cout.path[j].lineTo(pt[0].getX(),pt[0].getY());
 				
 				cout.answer[j] = new Point(
