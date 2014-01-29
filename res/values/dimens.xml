@@ -7,5 +7,6 @@
     <dimen name="graph_stroke_width">5dp</dimen>
     <dimen name="answer_stroke_width">2dp</dimen>
     <dimen name="ruler_stroke_width">3dp</dimen>
+    <dimen name="crosshair_radius">5dp</dimen>
     
 </resources>

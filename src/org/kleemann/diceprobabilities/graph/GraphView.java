@@ -9,6 +9,7 @@ import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.Paint;
 import android.graphics.Path;
+import android.graphics.drawable.Drawable;
 import android.os.AsyncTask;
 import android.util.AttributeSet;
 import android.view.View;
@@ -47,7 +48,7 @@ public class GraphView extends View {
 		public Path [] path = new Path[2];
 		public Paint[] paint = new Paint[2];
 		public int[] target = new int[2];
-		public float [] answer = new float[2];
+		public Point[] answer = new Point[2];
 		public int ticks;
 	}
 	
@@ -64,6 +65,8 @@ public class GraphView extends View {
     private Paint pGraphStroke;
     private Paint pAnswer;
     private Paint pRuler;
+    private Drawable crosshairs;
+    private final float crosshairRadius;
     {
 		pBackground = new Paint();
 		pBackground.setColor(getResources().getColor(R.color.graph_background));		
@@ -87,6 +90,9 @@ public class GraphView extends View {
 		pRuler = new Paint(pGraphStroke);
     	pRuler.setStrokeWidth(getResources().getDimension(R.dimen.ruler_stroke_width));
 		pRuler.setColor(getResources().getColor(R.color.graph_ruler));
+		
+		crosshairs = getResources().getDrawable(R.drawable.crosshairs);
+		crosshairRadius = getResources().getDimension(R.dimen.crosshair_radius);
     }
 	
 	public GraphView(Context context, AttributeSet attrs, int defStyleAttr) {
@@ -158,20 +164,19 @@ public class GraphView extends View {
 			
 			// draw the larger distribution first
 			Distribution[] dist = new Distribution[2];
-			int[] target = new int[2];
 			if (greaterCumulative(cin.dist[0], cin.dist[1])) {
 				dist[0] = cin.dist[0];
-				target[0] = cin.target[0];
+				cout.target[0] = cin.target[0];
 				cout.paint[0] = pGraphSolid1;
 				dist[1] = cin.dist[1];
-				target[1] = cin.target[1];
+				cout.target[1] = cin.target[1];
 				cout.paint[1] = pGraphSolid2;
 			} else {
 				dist[0] = cin.dist[1];
-				target[0] = cin.target[1];
+				cout.target[0] = cin.target[1];
 				cout.paint[0] = pGraphSolid2;
 				dist[1] = cin.dist[0];
-				target[1] = cin.target[0];
+				cout.target[1] = cin.target[0];
 				cout.paint[1] = pGraphSolid1;
 			}
 			
@@ -187,7 +192,7 @@ public class GraphView extends View {
 				// don't display a trivial graph
 				if (dist[j].size() <= 1) {
 					cout.path[j] = new Path();
-					cout.answer[j] = cin.height;
+					cout.answer[j] = new Point(0.0f, cin.height);
 					continue;
 				}
 				
@@ -214,7 +219,9 @@ public class GraphView extends View {
 				cout.path[j].lineTo(0.0f, 0.0f);
 				cout.path[j].lineTo(pt[0].getX(),pt[0].getY());
 				
-				cout.answer[j] = (1.0f - dist[j].getCumulativeProbability(target[j]).floatValue()) * cin.height;
+				cout.answer[j] = new Point(
+						(float)cout.target[j]/cout.ticks * cin.width,
+						(1.0f - dist[j].getCumulativeProbability(cout.target[j]).floatValue()) * cin.height);
 			}
 
 			return cout;
@@ -261,7 +268,8 @@ public class GraphView extends View {
 
 		// draw answer line
 		for (int j=0 ; j<2 ; ++j) {
-			canvas.drawLine(0.0f, out.answer[j], (float)w, out.answer[j], pAnswer);
+			final float y = out.answer[j].getY();
+			canvas.drawLine(0.0f, y, (float)w, y, pAnswer);
 		}
 		
 		// add some tick marks to the 5 and 10 x spots
@@ -273,6 +281,17 @@ public class GraphView extends View {
 				final float x = (float)i/out.ticks * w;
 				canvas.drawLine(x, h, x, h-(float)h/20, pRuler);
 			}
+		}
+
+		for (int j=0 ; j<2 ; ++j) {
+			final float x = out.answer[j].getX();
+			final float y = out.answer[j].getY();
+			crosshairs.setBounds(
+					(int)(x-crosshairRadius),
+					(int)(y-crosshairRadius),
+					(int)(x+crosshairRadius),
+					(int)(y+crosshairRadius));
+			crosshairs.draw(canvas);
 		}
 		
 		/*
