@@ -11,6 +11,7 @@ import android.widget.TextView;
 public class MainActivity extends Activity {
 
 	private View topButtonGroup;
+	private GraphView graph;
 	
 	private DiceSet diceSet1;
 	private DiceSet diceSet2;
@@ -22,7 +23,7 @@ public class MainActivity extends Activity {
 		
 		this.topButtonGroup = (View)findViewById(R.id.top_button_group);
 
-		GraphView graph = (GraphView)findViewById(R.id.graph); 
+		graph = (GraphView)findViewById(R.id.graph); 
 		
 		this.diceSet1 = new DiceSet(
 				(Button)findViewById(R.id.pool1_d12),
@@ -94,8 +95,10 @@ public class MainActivity extends Activity {
 			// toggle visibility
 			if (topButtonGroup.getVisibility() == View.VISIBLE) {
 				topButtonGroup.setVisibility(View.INVISIBLE);
+				graph.setVerbose(true);
 			} else {
 				topButtonGroup.setVisibility(View.VISIBLE);
+				graph.setVerbose(false);
 			}
 		}		
 	}

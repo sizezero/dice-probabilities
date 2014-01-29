@@ -1,6 +1,7 @@
 package org.kleemann.diceprobabilities;
 
 import java.text.DecimalFormat;
+import java.util.ArrayList;
 
 import org.apache.commons.math3.fraction.BigFraction;
 import org.kleemann.diceprobabilities.distribution.ConstantDistribution;
@@ -171,6 +172,7 @@ public class DiceSet {
 		public int target;
 		public String answerFraction;
 		public String answerProbability;
+		public String answerFormula;
 	}
 	
 	private class CalculateDistribution extends AsyncTask<RecalculateIn, Void, RecalculateOut> {
@@ -184,22 +186,44 @@ public class DiceSet {
 			RecalculateIn r = arg0[0];
 			
 			Distribution d = new ZeroDistribution(); // identity
-			for (int i=0 ; i<r.d12 ; ++i) {
-				d = new MultinomialDistribution(d, new DieDistribution(12));
+			ArrayList<String> dice = new ArrayList<String>();
+			if (r.d12 > 0) {
+				dice.add(r.d12+"d12");
+				Distribution add = new DieDistribution(12);
+				for (int i=0 ; i<r.d12 ; ++i) {
+					d = new MultinomialDistribution(d, add);
+				}
 			}
-			for (int i=0 ; i<r.d10 ; ++i) {
-				d = new MultinomialDistribution(d, new DieDistribution(10));
+			if (r.d10 > 0) {
+				dice.add(r.d10+"d10");
+				Distribution add = new DieDistribution(10);
+				for (int i=0 ; i<r.d10 ; ++i) {
+					d = new MultinomialDistribution(d, add);
+				}
 			}
-			for (int i=0 ; i<r.d8 ; ++i) {
-				d = new MultinomialDistribution(d, new DieDistribution(8));
+			if (r.d8 > 0) {
+				dice.add(r.d8+"d8");
+				Distribution add = new DieDistribution(8);
+				for (int i=0 ; i<r.d8 ; ++i) {
+					d = new MultinomialDistribution(d, add);
+				}
 			}
-			for (int i=0 ; i<r.d6 ; ++i) {
-				d = new MultinomialDistribution(d, new DieDistribution(6));
+			if (r.d6 > 0) {
+				dice.add(r.d6+"d6");
+				Distribution add = new DieDistribution(6);
+				for (int i=0 ; i<r.d6 ; ++i) {
+					d = new MultinomialDistribution(d, add);
+				}
 			}
-			for (int i=0 ; i<r.d4 ; ++i) {
-				d = new MultinomialDistribution(d, new DieDistribution(4));
+			if (r.d4 > 0) {
+				dice.add(r.d4+"d4");
+				Distribution add = new DieDistribution(4);
+				for (int i=0 ; i<r.d4 ; ++i) {
+					d = new MultinomialDistribution(d, add);
+				}
 			}
 			if (r.constant > 0) {
+				dice.add(Integer.toString(r.constant));
 				d = new MultinomialDistribution(d, new ConstantDistribution(r.constant));
 			}
 			RecalculateOut out = new RecalculateOut();
@@ -216,6 +240,22 @@ public class DiceSet {
 				out.answerFraction = f.toString() + " " + APPROXIMATELY_EQUAL_TO + " ";
 				out.answerProbability = answerFormatter.format(f.doubleValue());
 			}
+			
+			if (dice.size()==0) {
+				out.answerFormula = "";
+			} else {
+				StringBuilder sb = new StringBuilder(dice.get(0));
+				for (int i=1 ; i<dice.size() ; ++i) {
+					sb.append(" + ");
+					sb.append(dice.get(i));
+				}
+				sb.append(" = ");
+				sb.append(r.target);
+				sb.append(" --> ");
+				sb.append(out.answerProbability);
+				out.answerFormula = sb.toString();
+			}
+			
 			return out;
 		}
 		
@@ -225,7 +265,7 @@ public class DiceSet {
 			if (r.serial == serial) {
 				answer_fraction.setText(r.answerFraction);
 				answer_probability.setText(r.answerProbability);
-				graphSetter.setResult(r.distribution, r.target);
+				graphSetter.setResult(r.distribution, r.target, r.answerFormula);
 			} else {
 				// the dice have changed since we started the background task
 				// run the calculation again

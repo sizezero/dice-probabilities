@@ -7,6 +7,7 @@ import org.kleemann.diceprobabilities.distribution.ZeroDistribution;
 
 import android.content.Context;
 import android.graphics.Canvas;
+import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Path;
 import android.graphics.drawable.Drawable;
@@ -23,6 +24,7 @@ public class GraphView extends View {
 		public long serial = -1;
 		public Distribution[] dist = new Distribution[]{ new ZeroDistribution(), new ZeroDistribution()};
 		public int[] target = new int[2];
+		public String[] answerText = new String[]{"", ""};
 		public int width;
 		public int height;
 		
@@ -33,6 +35,7 @@ public class GraphView extends View {
 			this.serial = that.serial;
 			this.dist = that.dist.clone();
 			this.target = that.target.clone();
+			this.answerText = that.answerText.clone();
 			this.width = that.width;
 			this.height = that.height;
 		}
@@ -50,12 +53,15 @@ public class GraphView extends View {
 		public int[] target = new int[2];
 		public Point[] answer = new Point[2];
 		public int ticks;
+		public String[] answerText = new String[2]; 
 	}
 	
 	private CalculateOut out = new CalculateOut();
 	
 	// true if the background distribution calculation is running
 	private boolean running = false;
+	
+	private boolean verbose = false;
 	
 	// drawing objects
 	
@@ -67,6 +73,7 @@ public class GraphView extends View {
     private Paint pRuler;
     private Drawable crosshairs;
     private final float crosshairRadius;
+    private Paint pAnswerText;
     {
 		pBackground = new Paint();
 		pBackground.setColor(getResources().getColor(R.color.graph_background));		
@@ -93,6 +100,11 @@ public class GraphView extends View {
 		
 		crosshairs = getResources().getDrawable(R.drawable.crosshairs);
 		crosshairRadius = getResources().getDimension(R.dimen.crosshair_radius);
+		
+		pAnswerText = new Paint();
+		pAnswerText.setColor(Color.WHITE);
+		pAnswerText.setTextSize(30f);
+		pAnswerText.setShadowLayer(5.0f, 3.0f, 3.0f, Color.BLACK);
     }
 	
 	public GraphView(Context context, AttributeSet attrs, int defStyleAttr) {
@@ -109,15 +121,16 @@ public class GraphView extends View {
 
     
 	public static interface Setter {
-		public void setResult(Distribution distribution, int target);
+		public void setResult(Distribution distribution, int target, String answerText);
 	}
 	
 	private class SetGraph implements Setter {
 		private final int i;
 		public SetGraph(int i) { this.i = i; }
-		public void setResult(Distribution d, int target) {
+		public void setResult(Distribution d, int target, String answerText) {
 			in.dist[i] = d;
 			in.target[i] = target;
+			in.answerText[i] = answerText;
 			++in.serial;
 			startCalculation();
 		}
@@ -126,6 +139,13 @@ public class GraphView extends View {
 	public Setter getSetter1() { return new SetGraph(0); }
 	
 	public Setter getSetter2() { return new SetGraph(1); }
+	
+	public void setVerbose(boolean verbose) {
+		if (this.verbose != verbose) {
+			this.verbose = verbose;
+			invalidate();
+		}
+	}
 	
 	@Override
 	protected void onSizeChanged(int w, int h, int oldw, int oldh) {
@@ -154,8 +174,6 @@ public class GraphView extends View {
 			CalculateIn cin = arg0[0];
 			CalculateOut cout = new CalculateOut();
 			cout.serial = cin.serial;
-			cout.target[0] = cout.target[0];
-			cout.target[1] = cout.target[1];
 
 			// don't display anything if both graphs are trivial
 			if (cin.dist[0].size() <= 1 && cin.dist[1].size() <= 1) {
@@ -168,16 +186,20 @@ public class GraphView extends View {
 				dist[0] = cin.dist[0];
 				cout.target[0] = cin.target[0];
 				cout.paint[0] = pGraphSolid1;
+				cout.answerText[0] = cin.answerText[0];
 				dist[1] = cin.dist[1];
 				cout.target[1] = cin.target[1];
 				cout.paint[1] = pGraphSolid2;
+				cout.answerText[1] = cin.answerText[1];
 			} else {
 				dist[0] = cin.dist[1];
 				cout.target[0] = cin.target[1];
 				cout.paint[0] = pGraphSolid2;
+				cout.answerText[0] = cin.answerText[1];
 				dist[1] = cin.dist[0];
 				cout.target[1] = cin.target[0];
 				cout.paint[1] = pGraphSolid1;
+				cout.answerText[1] = cin.answerText[0];
 			}
 			
 			final int largestSize = Math.max(dist[0].size(), dist[1].size());
@@ -283,6 +305,10 @@ public class GraphView extends View {
 			}
 		}
 
+		if (!verbose) {
+			return;
+		}
+		
 		for (int j=0 ; j<2 ; ++j) {
 			final float x = out.answer[j].getX();
 			final float y = out.answer[j].getY();
@@ -292,6 +318,10 @@ public class GraphView extends View {
 					(int)(x+crosshairRadius),
 					(int)(y+crosshairRadius));
 			crosshairs.draw(canvas);
+		}
+
+		for (int j=0 ; j<2 ; ++j) {
+			canvas.drawText(out.answerText[j], 0.0f, out.answer[j].getY(), pAnswerText);
 		}
 		
 		/*
