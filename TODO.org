@@ -85,12 +85,11 @@ This would take me forever.
 
 * DONE default value for target
 
-* TODO background graphic
+* DONE background graphic
 
 when background is showing
 
 - show contact points 
-- brighten answer lines
 - display text dice formula plus percentage along answer line
 
 * TODO more graphic cleanup
