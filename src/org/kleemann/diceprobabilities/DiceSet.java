@@ -12,6 +12,7 @@ import org.kleemann.diceprobabilities.distribution.ZeroDistribution;
 import org.kleemann.diceprobabilities.graph.GraphView;
 
 import android.os.AsyncTask;
+import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
@@ -119,6 +120,26 @@ public class DiceSet {
 		}		
 	}
 
+	public void saveInstanceState(Bundle savedInstanceState, String prefix) {
+		savedInstanceState.putInt(prefix+"d12", cd12.getCount());
+		savedInstanceState.putInt(prefix+"d10", cd10.getCount());
+		savedInstanceState.putInt(prefix+"d8", cd8.getCount());
+		savedInstanceState.putInt(prefix+"d6", cd6.getCount());
+		savedInstanceState.putInt(prefix+"d4", cd4.getCount());
+		savedInstanceState.putInt(prefix+"constant", cd1.getCount());
+		savedInstanceState.putInt(prefix+"target", cResult.getCount());
+	}
+	
+	public void restoreInstanceState(Bundle savedInstanceState, String prefix) {
+		cd12.setCount(savedInstanceState.getInt(prefix+"d12"));
+		cd10.setCount(savedInstanceState.getInt(prefix+"d10"));
+		cd8.setCount(savedInstanceState.getInt(prefix+"d8"));
+		cd6.setCount(savedInstanceState.getInt(prefix+"d6"));
+		cd4.setCount(savedInstanceState.getInt(prefix+"d4"));
+		cd1.setCount(savedInstanceState.getInt(prefix+"constant"));
+		cResult.setCount(savedInstanceState.getInt(prefix+"target"));
+	}
+	
 	private class CurrentDiceChanged implements View.OnClickListener {
 		@Override
 		public void onClick(View v) {

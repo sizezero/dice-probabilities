@@ -102,5 +102,18 @@ public class MainActivity extends Activity {
 			}
 		}		
 	}
+
+	@Override
+	public void onSaveInstanceState(Bundle savedInstanceState) {
+	    super.onSaveInstanceState(savedInstanceState);
+	    diceSet1.saveInstanceState(savedInstanceState, "1");
+	    diceSet2.saveInstanceState(savedInstanceState, "2");
+	}
 	
+	public void onRestoreInstanceState(Bundle savedInstanceState) {
+	    // Always call the superclass so it can restore the view hierarchy
+	    super.onRestoreInstanceState(savedInstanceState);
+	    diceSet1.restoreInstanceState(savedInstanceState, "1");
+	    diceSet2.restoreInstanceState(savedInstanceState, "2");
+	}
 }
