@@ -72,7 +72,7 @@ public class DiceSet {
 		cd6 = new CurrentDicePile(6, cd6Button, diceChanged);
 		cd4 = new CurrentDicePile(4, cd4Button, diceChanged);
 		cd1 = new CurrentDicePile(1, cd1Button, diceChanged);
-		cResult = new ToBeat(cResultButton, diceChanged);
+		cResult = new Target(cResultButton, diceChanged);
 
 		new PoolDicePile(12, pd12Button, cd12);
 		new PoolDicePile(10, pd10Button, cd10);

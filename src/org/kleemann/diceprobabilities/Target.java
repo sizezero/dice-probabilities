@@ -3,13 +3,13 @@ package org.kleemann.diceprobabilities;
 import android.view.View;
 import android.widget.Button;
 
-public class ToBeat extends CurrentDicePile {
+public class Target extends CurrentDicePile {
 
 	private static final String GREATER_THAN_OR_EQUAL_TO = "\u2265"; 
 	
 	private final int defaultTarget;
 	
-	public ToBeat(Button button, View.OnClickListener listener) {
+	public Target(Button button, View.OnClickListener listener) {
 		super(1, button, listener);
 		this.defaultTarget = button.getResources().getInteger(R.integer.default_target);
 		// slightly inefficient since constructor sets count to zero
