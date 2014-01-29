@@ -7,7 +7,6 @@ import org.kleemann.diceprobabilities.distribution.ZeroDistribution;
 
 import android.content.Context;
 import android.graphics.Canvas;
-import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Path;
 import android.graphics.drawable.Drawable;
@@ -74,6 +73,7 @@ public class GraphView extends View {
     private Drawable crosshairs;
     private final float crosshairRadius;
     private Paint pAnswerText;
+    private final float answerTextOffsetY;
     {
 		pBackground = new Paint();
 		pBackground.setColor(getResources().getColor(R.color.graph_background));		
@@ -102,9 +102,14 @@ public class GraphView extends View {
 		crosshairRadius = getResources().getDimension(R.dimen.crosshair_radius);
 		
 		pAnswerText = new Paint();
-		pAnswerText.setColor(Color.WHITE);
-		pAnswerText.setTextSize(30f);
-		pAnswerText.setShadowLayer(5.0f, 3.0f, 3.0f, Color.BLACK);
+		pAnswerText.setColor(getResources().getColor(R.color.graph_formula_text));
+		pAnswerText.setTextSize(getResources().getDimension(R.dimen.formula_text_size));
+		pAnswerText.setShadowLayer(
+				getResources().getDimension(R.dimen.formula_shadow_radius), 
+				getResources().getDimension(R.dimen.formula_shadow_offset_x), 
+				getResources().getDimension(R.dimen.formula_shadow_offset_y), 
+				getResources().getColor(R.color.graph_formula_shadow));
+		answerTextOffsetY = getResources().getDimension(R.dimen.formula_text_offset_y);
     }
 	
 	public GraphView(Context context, AttributeSet attrs, int defStyleAttr) {
@@ -321,7 +326,7 @@ public class GraphView extends View {
 		}
 
 		for (int j=0 ; j<2 ; ++j) {
-			canvas.drawText(out.answerText[j], 0.0f, out.answer[j].getY(), pAnswerText);
+			canvas.drawText(out.answerText[j], 0.0f, out.answer[j].getY()+answerTextOffsetY, pAnswerText);
 		}
 		
 		/*

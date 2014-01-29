@@ -51,6 +51,7 @@
 	<color name="graph_stroke">#ffffff</color>
 	<color name="graph_answer">#919191</color>
 	<color name="graph_ruler">#888888</color>
-	
-			
+	<color name="graph_formula_text">#ffffff</color>
+	<color name="graph_formula_shadow">#000000</color>
+				
 </resources>
