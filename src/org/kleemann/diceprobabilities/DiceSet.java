@@ -42,6 +42,8 @@ public class DiceSet {
 	private final DecimalFormat answerFormatter;
 
 	private static final String APPROXIMATELY_EQUAL_TO = "\u2245";
+	private static final String GREATER_THAN_OR_EQUAL_TO = "\u2265"; 
+	private static final String RIGHT_ARROW = "\u21e8"; 
 	
 	public DiceSet(
 			Button pd12Button,
@@ -249,9 +251,13 @@ public class DiceSet {
 					sb.append(" + ");
 					sb.append(dice.get(i));
 				}
-				sb.append(" = ");
+				sb.append(" ");
+				sb.append(GREATER_THAN_OR_EQUAL_TO);
+				sb.append(" ");
 				sb.append(r.target);
-				sb.append(" --> ");
+				sb.append(" ");
+				sb.append(RIGHT_ARROW);
+				sb.append(" ");
 				sb.append(out.answerProbability);
 				out.answerFormula = sb.toString();
 			}
