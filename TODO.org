@@ -83,7 +83,7 @@ This would take me forever.
 
 * DONE background tap toggles button visibility
 
-* TODO default value for target
+* DONE default value for target
 
 * TODO background graphic
 
