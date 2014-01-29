@@ -6,24 +6,19 @@ import android.widget.Button;
 public class PoolDicePile implements View.OnClickListener {
 
 	private int sides;
-	private Button button;
 	private CurrentDicePile current;
 	
-	public PoolDicePile(int sides, Button button) {
+	public PoolDicePile(int sides, Button button, CurrentDicePile current) {
 		this.sides = sides;
-		this.button = button;
+		this.current = current;
 		button.setText(render());
+		button.setOnClickListener(this);
 	}
 	
 	private String render() {
 		return sides==1 ? "+1" : "+d"+sides;
 	}
 
-	public void setIncrementer(CurrentDicePile current) {
-		this.current = current;
-		button.setOnClickListener(this);
-	}
-	
 	public void onClick(View v) {
 		current.increment();
 	}

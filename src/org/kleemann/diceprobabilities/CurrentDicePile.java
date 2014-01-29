@@ -8,14 +8,14 @@ public class CurrentDicePile implements View.OnClickListener {
 	private int sides;
 	private int count;
 	protected Button button;
-	private View.OnClickListener listener;
+	private View.OnClickListener changed;
 	
-	public CurrentDicePile(int sides, Button button, View.OnClickListener listener) {
+	public CurrentDicePile(int sides, Button button, View.OnClickListener changed) {
 		this.sides = sides;
 		this.count = 0;
 		this.button = button;
 		button.setOnClickListener(this);
-		this.listener = listener;
+		this.changed = changed;
 		updateButton();
 	}
 	
@@ -36,7 +36,7 @@ public class CurrentDicePile implements View.OnClickListener {
 		assert(count >= 0);
 		this.count = count;
 		updateButton();
-		listener.onClick(button);		
+		changed.onClick(button);		
 	}
 	
 	public void increment() { setCount(count+1); }

@@ -22,14 +22,6 @@ import android.widget.TextView;
  */
 public class DiceSet {
 
-	private PoolDicePile pd12;
-	private PoolDicePile pd10;
-	private PoolDicePile pd8;
-	private PoolDicePile pd6;
-	private PoolDicePile pd4;
-	private PoolDicePile pd1;
-	private PoolDicePile pResult;
-	
 	private CurrentDicePile cd12;
 	private CurrentDicePile cd10;
 	private CurrentDicePile cd8;
@@ -73,30 +65,23 @@ public class DiceSet {
 		
 		this.context = context;
 		
-		pd12 = new PoolDicePile(12, pd12Button);
-		pd10 = new PoolDicePile(10, pd10Button);
-		pd8 = new PoolDicePile(8, pd8Button);
-		pd6 = new PoolDicePile(6, pd6Button);
-		pd4 = new PoolDicePile(4, pd4Button);
-		pd1 = new PoolDicePile(1, pd1Button);
-		pResult = new PoolDicePile(1, pResultButton);
-		
 		CurrentDiceChanged diceChanged = new CurrentDiceChanged();
 		cd12 = new CurrentDicePile(12, cd12Button, diceChanged);
-		pd12.setIncrementer(cd12);
 		cd10 = new CurrentDicePile(10, cd10Button, diceChanged);
-		pd10.setIncrementer(cd10);
 		cd8 = new CurrentDicePile(8, cd8Button, diceChanged);
-		pd8.setIncrementer(cd8);
 		cd6 = new CurrentDicePile(6, cd6Button, diceChanged);
-		pd6.setIncrementer(cd6);
 		cd4 = new CurrentDicePile(4, cd4Button, diceChanged);
-		pd4.setIncrementer(cd4);
 		cd1 = new CurrentDicePile(1, cd1Button, diceChanged);
-		pd1.setIncrementer(cd1);
 		cResult = new ToBeat(cResultButton, diceChanged);
-		pResult.setIncrementer(cResult);
-		
+
+		new PoolDicePile(12, pd12Button, cd12);
+		new PoolDicePile(10, pd10Button, cd10);
+		new PoolDicePile(8, pd8Button, cd8);
+		new PoolDicePile(6, pd6Button, cd6);
+		new PoolDicePile(4, pd4Button, cd4);
+		new PoolDicePile(1, pd1Button, cd1);
+		new PoolDicePile(1, pResultButton, cResult);
+
 		clear.setOnClickListener(new Clear());
 		
 		this.answer_fraction = answer_fraction;
