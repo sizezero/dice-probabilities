@@ -98,7 +98,17 @@ when background is showing
 
 see if we can just pull the fractions out of apache math
 
-* TODO better layout in landscape mode
+* DONE better layout in landscape mode
+
+* TODO gridline verbose mode only
+
+add any drawing params to xml
+
+* TODO more efficient distribution add
+
+- add a static multiply method to MultiNomial
+- fix bug in MultiNomial + constant
+- remove DistributionZero add ZERO to ConstantDistribution
 
 * TODO Acquire private key
 
