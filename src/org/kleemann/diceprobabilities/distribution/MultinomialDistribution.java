@@ -14,16 +14,17 @@ public class MultinomialDistribution implements Distribution {
 	public MultinomialDistribution(Distribution d1, Distribution d2) {
 		// find the new range of the distribution.
 		// It should equal the sum of the highest values of the two distributions
-		// e.g. for two six sided dice, the new size would be 12
-		// note: vals is one based so we must allocate one more space
-		vals = new BigFraction[d1.size()+d2.size()+1];
+		
+		// d6 has size of 7; max sum is 12
+		// 7+7-1 equals allocation of 13 (we count zero)
+		vals = new BigFraction[d1.size()+d2.size()-1];
 
 		for (int i=0 ; i<vals.length ; ++i) {
 			vals[i] = BigFraction.ZERO;
 		}
 		
-		for (int i1=0 ; i1<=d1.size() ; ++i1) {
-			for (int i2=0 ; i2<=d2.size(); ++i2) {
+		for (int i1=0 ; i1<d1.size() ; ++i1) {
+			for (int i2=0 ; i2<d2.size(); ++i2) {
 				final int sum = i1 + i2;
 				final BigFraction prob = d1.getProbability(i1).multiply(d2.getProbability(i2));
 				vals[sum] = vals[sum].add(prob);

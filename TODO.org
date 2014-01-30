@@ -108,9 +108,9 @@ add any drawing params to xml
 
 * TODO more efficient distribution add
 
-- add a static multiply method to MultiNomial
 - fix bug in MultiNomial + constant
 - remove DistributionZero add ZERO to ConstantDistribution
+- add a static multiply method to MultiNomial
 
 * TODO Acquire private key
 

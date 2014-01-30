@@ -11,7 +11,7 @@ public class ConstantDistribution implements Distribution {
 	}
 	
 	@Override
-	public int size() { return x; }
+	public int size() { return x+1; }
 
 	@Override
 	public BigFraction getProbability(int x) {
