@@ -100,6 +100,31 @@ public class DistributionTest extends TestCase {
 		distSumsToOne(new MultinomialDistribution(new ConstantDistribution(6), new DieDistribution(6)));
 		distSumsToOne(new MultinomialDistribution(new DieDistribution(8), new DieDistribution(6)));
 	}
+
+	public void testMultiply() {
+		for (int i=1 ; i<12 ; ++i) {
+			multiply(i);
+		}
+	}
+	
+	private void multiply(int n) {
+		// need at least 4 dice to test
+		Distribution d6 = new DieDistribution(6);
+		
+		// simple way
+		Distribution sum1 = ConstantDistribution.ZERO;
+		for (int i=0 ; i<n ; ++i) {
+			sum1 = new MultinomialDistribution(sum1, d6);
+		}
+		
+		// complex way
+		Distribution sum2 = MultinomialDistribution.multiply(d6, n);
+		
+		assertEquals(sum1.size(), sum2.size());
+		for (int i=0 ; i<sum1.size() ; ++i) {
+			assertEquals(sum1.getProbability(i), sum2.getProbability(i));
+		}
+	}
 	
 	private void distSumsToOne(Distribution d) {
 		BigFraction sum = BigFraction.ZERO;

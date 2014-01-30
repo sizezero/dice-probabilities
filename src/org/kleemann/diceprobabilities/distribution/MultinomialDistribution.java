@@ -59,4 +59,47 @@ public class MultinomialDistribution implements Distribution {
 		return sum;
 	}
 
+	/**
+	 * <p>Adds the distribution by itself n times.  This acts like a multiply.
+	 * 
+	 * <p>The method batches the adds so that only log2(n) adds are made
+	 */
+	public static Distribution multiply(Distribution d, int n) {
+		// for small values of n there is no need to do anything special
+		if (n==0) {
+			return ConstantDistribution.ZERO;
+		} else if (n==1) {
+			return d;
+		} else if (n<4) {
+			Distribution sum = new MultinomialDistribution(d, d);
+			for (int i=2 ; i<n ; ++i ) {
+				sum = new MultinomialDistribution(sum, d);
+			}
+			return sum;
+		}
+		
+		// create the multiples of two that we will use to construct the sum
+		final int log = log2(n);
+		Distribution sums[] = new Distribution[log+1];
+		sums[0] = d;
+		for (int i=1 ; i<=log ; ++i) {
+			sums[i] = new MultinomialDistribution(sums[i-1], sums[i-1]);
+		}
+		
+		// reduce n to zero
+		Distribution r = ConstantDistribution.ZERO;
+		while (n > 0) {
+			// find the largest power of 2 that is less than or equal to n
+			final int lg = log2(n);
+			r = new MultinomialDistribution(r, sums[lg]);
+			n -= 1 << lg;
+		}
+		return r;
+	}
+	
+    private static int log2(int n) {
+        if (n <= 0)
+            throw new IllegalArgumentException();
+        return 31 - Integer.numberOfLeadingZeros(n);
+    }
 }

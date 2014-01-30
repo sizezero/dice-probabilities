@@ -211,38 +211,23 @@ public class DiceSet {
 			ArrayList<String> dice = new ArrayList<String>();
 			if (r.d12 > 0) {
 				dice.add(r.d12+"d12");
-				Distribution add = new DieDistribution(12);
-				for (int i=0 ; i<r.d12 ; ++i) {
-					d = new MultinomialDistribution(d, add);
-				}
+				d = new MultinomialDistribution(d, MultinomialDistribution.multiply(new DieDistribution(12), r.d12));
 			}
 			if (r.d10 > 0) {
 				dice.add(r.d10+"d10");
-				Distribution add = new DieDistribution(10);
-				for (int i=0 ; i<r.d10 ; ++i) {
-					d = new MultinomialDistribution(d, add);
-				}
+				d = new MultinomialDistribution(d, MultinomialDistribution.multiply(new DieDistribution(10), r.d10));
 			}
 			if (r.d8 > 0) {
 				dice.add(r.d8+"d8");
-				Distribution add = new DieDistribution(8);
-				for (int i=0 ; i<r.d8 ; ++i) {
-					d = new MultinomialDistribution(d, add);
-				}
+				d = new MultinomialDistribution(d, MultinomialDistribution.multiply(new DieDistribution(8), r.d8));
 			}
 			if (r.d6 > 0) {
 				dice.add(r.d6+"d6");
-				Distribution add = new DieDistribution(6);
-				for (int i=0 ; i<r.d6 ; ++i) {
-					d = new MultinomialDistribution(d, add);
-				}
+				d = new MultinomialDistribution(d, MultinomialDistribution.multiply(new DieDistribution(6), r.d6));
 			}
 			if (r.d4 > 0) {
 				dice.add(r.d4+"d4");
-				Distribution add = new DieDistribution(4);
-				for (int i=0 ; i<r.d4 ; ++i) {
-					d = new MultinomialDistribution(d, add);
-				}
+				d = new MultinomialDistribution(d, MultinomialDistribution.multiply(new DieDistribution(4), r.d4));
 			}
 			if (r.constant > 0) {
 				dice.add(Integer.toString(r.constant));
