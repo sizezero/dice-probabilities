@@ -89,17 +89,23 @@ public class MainActivity extends Activity {
 		}		
 	}
 	
+	private boolean getVerbose() { return graph.getVerbose(); }
+	
+	private void setVerbose(boolean verbose) {
+		if (verbose) {
+			topButtonGroup.setVisibility(View.INVISIBLE);
+			graph.setVerbose(true);
+		} else {
+			topButtonGroup.setVisibility(View.VISIBLE);
+			graph.setVerbose(false);
+		}
+	}
+
 	private class GraphPress implements View.OnClickListener {
 		@Override
 		public void onClick(View v) {
-			// toggle visibility
-			if (topButtonGroup.getVisibility() == View.VISIBLE) {
-				topButtonGroup.setVisibility(View.INVISIBLE);
-				graph.setVerbose(true);
-			} else {
-				topButtonGroup.setVisibility(View.VISIBLE);
-				graph.setVerbose(false);
-			}
+			// toggle
+			setVerbose(!getVerbose());
 		}		
 	}
 
@@ -108,6 +114,7 @@ public class MainActivity extends Activity {
 	    super.onSaveInstanceState(savedInstanceState);
 	    diceSet1.saveInstanceState(savedInstanceState, "1");
 	    diceSet2.saveInstanceState(savedInstanceState, "2");
+		savedInstanceState.putBoolean("verbosity", getVerbose());
 	}
 	
 	public void onRestoreInstanceState(Bundle savedInstanceState) {
@@ -115,5 +122,6 @@ public class MainActivity extends Activity {
 	    super.onRestoreInstanceState(savedInstanceState);
 	    diceSet1.restoreInstanceState(savedInstanceState, "1");
 	    diceSet2.restoreInstanceState(savedInstanceState, "2");
+	    setVerbose(savedInstanceState.getBoolean("verbosity"));
 	}
 }

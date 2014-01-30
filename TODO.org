@@ -104,7 +104,7 @@ see if we can just pull the fractions out of apache math
 
 add any drawing params to xml
 
-* TODO save verbose mode
+* DONE save verbose mode
 
 * TODO more efficient distribution add
 

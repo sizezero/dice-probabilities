@@ -155,6 +155,8 @@ public class GraphView extends View {
 		}
 	}
 	
+	public boolean getVerbose() { return verbose; }
+	
 	@Override
 	protected void onSizeChanged(int w, int h, int oldw, int oldh) {
 		in.width = w;
