@@ -26,15 +26,15 @@ public class MultinomialDistribution implements Distribution {
 		for (int i1=0 ; i1<d1.size() ; ++i1) {
 			for (int i2=0 ; i2<d2.size(); ++i2) {
 				final int sum = i1 + i2;
-				final BigFraction prob = d1.getProbability(i1).multiply(d2.getProbability(i2));
-				vals[sum] = vals[sum].add(prob);
+				final BigFraction product = d1.getProbability(i1).multiply(d2.getProbability(i2));
+				vals[sum] = vals[sum].add(product);
 			}
 		}
 	}
 	
 	@Override
 	public int size() {
-		return vals.length-1;
+		return vals.length;
 	}
 
 	@Override

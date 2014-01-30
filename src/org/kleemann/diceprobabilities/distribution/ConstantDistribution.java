@@ -4,6 +4,11 @@ import org.apache.commons.math3.fraction.BigFraction;
 
 public class ConstantDistribution implements Distribution {
 
+	/**
+	 * Useful as a starting value when summing lots of distributions
+	 */
+	static public final Distribution ZERO = new ConstantDistribution(0);
+	
 	private int x;
 	
 	public ConstantDistribution(int x) {
@@ -20,6 +25,6 @@ public class ConstantDistribution implements Distribution {
 
 	@Override
 	public BigFraction getCumulativeProbability(int x) {
-		return x>=this.x ? BigFraction.ONE : BigFraction.ZERO;
+		return x>this.x ? BigFraction.ZERO : BigFraction.ONE;
 	}
 }

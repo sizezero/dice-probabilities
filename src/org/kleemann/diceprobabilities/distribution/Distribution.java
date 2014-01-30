@@ -29,8 +29,8 @@ public interface Distribution {
 	BigFraction getProbability(int x);
 	
 	/**
-	 * <p>Returns the sum of all probabilities in this distribution up to
-	 * point x.  
+	 * <p>Returns the sum of all probabilities in this distribution from
+	 * point x onward.  
 	 */
 	BigFraction getCumulativeProbability(int x);
 }

@@ -2,8 +2,8 @@ package org.kleemann.diceprobabilities.graph;
 
 import org.apache.commons.math3.fraction.BigFraction;
 import org.kleemann.diceprobabilities.R;
+import org.kleemann.diceprobabilities.distribution.ConstantDistribution;
 import org.kleemann.diceprobabilities.distribution.Distribution;
-import org.kleemann.diceprobabilities.distribution.ZeroDistribution;
 
 import android.content.Context;
 import android.graphics.Canvas;
@@ -22,7 +22,7 @@ public class GraphView extends View {
 	 */
 	private static class CalculateIn {
 		public long serial = -1;
-		public Distribution[] dist = new Distribution[]{ new ZeroDistribution(), new ZeroDistribution()};
+		public Distribution[] dist = new Distribution[]{ ConstantDistribution.ZERO, ConstantDistribution.ZERO};
 		public int[] target = new int[2];
 		public String[] answerText = new String[]{"", ""};
 		public int width;

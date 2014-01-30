@@ -5,7 +5,6 @@ import org.kleemann.diceprobabilities.distribution.ConstantDistribution;
 import org.kleemann.diceprobabilities.distribution.DieDistribution;
 import org.kleemann.diceprobabilities.distribution.Distribution;
 import org.kleemann.diceprobabilities.distribution.MultinomialDistribution;
-import org.kleemann.diceprobabilities.distribution.ZeroDistribution;
 
 import junit.framework.TestCase;
 
@@ -13,6 +12,7 @@ public class DistributionTest extends TestCase {
 
 	public void testDSix() {
 		Distribution d6 = new DieDistribution(6);
+		assertEquals(BigFraction.ONE, d6.getCumulativeProbability(0));
 		assertEquals(BigFraction.ONE, d6.getCumulativeProbability(1));
 		assertEquals(new BigFraction(5,6), d6.getCumulativeProbability(2));
 		assertEquals(new BigFraction(4,6), d6.getCumulativeProbability(3));
@@ -47,8 +47,7 @@ public class DistributionTest extends TestCase {
 	
 	public void testIdentity() {
 		// 100% chance of rolling zero
-		Distribution identity = new ZeroDistribution();
-		//Distribution identity = new ConstantDistribution(1);
+		Distribution identity = ConstantDistribution.ZERO;
 		
 		Distribution d6 = new DieDistribution(6);
 		Distribution sum = new MultinomialDistribution(identity,d6);
@@ -74,5 +73,41 @@ public class DistributionTest extends TestCase {
 		assertEquals(new BigFraction(1,6), d.getProbability(8));
 		assertEquals(BigFraction.ZERO, d.getProbability(9));
 		assertEquals(BigFraction.ZERO, d.getProbability(10));
+	}
+	
+	public void testCumulativeConstant() {
+		Distribution c2 = new ConstantDistribution(2);
+		Distribution d6 = new DieDistribution(6);
+		Distribution d = new MultinomialDistribution(c2, d6);
+		
+		assertEquals(BigFraction.ONE, d.getCumulativeProbability(0));
+		assertEquals(BigFraction.ONE, d.getCumulativeProbability(1));
+		assertEquals(BigFraction.ONE, d.getCumulativeProbability(2));
+		assertEquals(BigFraction.ONE, d.getCumulativeProbability(3));
+		assertEquals(new BigFraction(5,6), d.getCumulativeProbability(4));
+		assertEquals(new BigFraction(4,6), d.getCumulativeProbability(5));
+		assertEquals(new BigFraction(3,6), d.getCumulativeProbability(6));
+		assertEquals(new BigFraction(2,6), d.getCumulativeProbability(7));
+		assertEquals(new BigFraction(1,6), d.getCumulativeProbability(8));
+		assertEquals(BigFraction.ZERO, d.getCumulativeProbability(9));
+		assertEquals(BigFraction.ZERO, d.getCumulativeProbability(10));
+	}
+	
+	public void testSums() {
+		distSumsToOne(ConstantDistribution.ZERO);
+		distSumsToOne(new ConstantDistribution(6));
+		distSumsToOne(new DieDistribution(6));
+		distSumsToOne(new MultinomialDistribution(new ConstantDistribution(6), new DieDistribution(6)));
+		distSumsToOne(new MultinomialDistribution(new DieDistribution(8), new DieDistribution(6)));
+	}
+	
+	private void distSumsToOne(Distribution d) {
+		BigFraction sum = BigFraction.ZERO;
+		for (int i=0 ; i<d.size(); ++i) {
+			sum = sum.add(d.getProbability(i));
+		}
+		assertEquals(BigFraction.ONE, sum);
+		assertEquals(BigFraction.ONE, d.getCumulativeProbability(0));
+		assertEquals(BigFraction.ZERO, d.getCumulativeProbability(d.size()));
 	}
 }

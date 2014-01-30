@@ -8,7 +8,6 @@ import org.kleemann.diceprobabilities.distribution.ConstantDistribution;
 import org.kleemann.diceprobabilities.distribution.DieDistribution;
 import org.kleemann.diceprobabilities.distribution.Distribution;
 import org.kleemann.diceprobabilities.distribution.MultinomialDistribution;
-import org.kleemann.diceprobabilities.distribution.ZeroDistribution;
 import org.kleemann.diceprobabilities.graph.GraphView;
 
 import android.os.AsyncTask;
@@ -208,7 +207,7 @@ public class DiceSet {
 		protected RecalculateOut doInBackground(RecalculateIn... arg0) {
 			RecalculateIn r = arg0[0];
 			
-			Distribution d = new ZeroDistribution(); // identity
+			Distribution d = ConstantDistribution.ZERO;
 			ArrayList<String> dice = new ArrayList<String>();
 			if (r.d12 > 0) {
 				dice.add(r.d12+"d12");
