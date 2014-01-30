@@ -7,6 +7,9 @@
     <dimen name="graph_stroke_width">5dp</dimen>
     <dimen name="answer_stroke_width">2dp</dimen>
     <dimen name="ruler_stroke_width">3dp</dimen>
+    <!--  these the length of the tick marks as percentages of the height of the screen -->
+    <item name="ruler_percent_5"  format="float" type="dimen">0.05</item>
+    <item name="ruler_percent_10" format="float" type="dimen">0.1</item>
     <dimen name="crosshair_radius">5dp</dimen>
     <dimen name="formula_text_size">20sp</dimen>
     <dimen name="formula_text_offset_y">-3dp</dimen>

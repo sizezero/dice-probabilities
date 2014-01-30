@@ -12,6 +12,7 @@ import android.graphics.Path;
 import android.graphics.drawable.Drawable;
 import android.os.AsyncTask;
 import android.util.AttributeSet;
+import android.util.TypedValue;
 import android.view.View;
 
 public class GraphView extends View {
@@ -70,6 +71,8 @@ public class GraphView extends View {
     private Paint pGraphStroke;
     private Paint pAnswer;
     private Paint pRuler;
+    private float rulerPercent5;
+    private float rulerPercent10;
     private Drawable crosshairs;
     private final float crosshairRadius;
     private Paint pAnswerText;
@@ -97,6 +100,11 @@ public class GraphView extends View {
 		pRuler = new Paint(pGraphStroke);
     	pRuler.setStrokeWidth(getResources().getDimension(R.dimen.ruler_stroke_width));
 		pRuler.setColor(getResources().getColor(R.color.graph_ruler));
+		TypedValue typedValue = new TypedValue();
+		getResources().getValue(R.dimen.ruler_percent_5, typedValue, true);
+		this.rulerPercent5 = typedValue.getFloat(); 
+		getResources().getValue(R.dimen.ruler_percent_10, typedValue, true);
+		this.rulerPercent10 = typedValue.getFloat(); 
 		
 		crosshairs = getResources().getDrawable(R.drawable.crosshairs);
 		crosshairRadius = getResources().getDimension(R.dimen.crosshair_radius);
@@ -294,21 +302,28 @@ public class GraphView extends View {
 			canvas.drawLine(0.0f, y, (float)w, y, pAnswer);
 		}
 		
-		// add some tick marks to the 5 and 10 x spots
-		for (int i=0 ; i<=out.ticks ; ++i) {
-			if (i % 10 == 0) {
-				final float x = (float)i/out.ticks * w;
-				canvas.drawLine(x, h, x, h-(float)h/10, pRuler);
-			} else if (i % 5 == 0) {
-				final float x = (float)i/out.ticks * w;
-				canvas.drawLine(x, h, x, h-(float)h/20, pRuler);
-			}
-		}
-
+		// anything after this line only appears in verbose mode
+		// (when the buttons are hidden)
 		if (!verbose) {
 			return;
 		}
-		
+
+		// add some tick marks to the 5 and 10 x spots
+		{
+			final float y10 = h-(float)h*rulerPercent10;
+			final float y5 = h-(float)h*rulerPercent5;
+			for (int i=0 ; i<=out.ticks ; ++i) {
+				if (i % 10 == 0) {
+					final float x = (float)i/out.ticks * w;
+					canvas.drawLine(x, h, x, y10, pRuler);
+				} else if (i % 5 == 0) {
+					final float x = (float)i/out.ticks * w;
+					canvas.drawLine(x, h, x, y5, pRuler);
+				}
+			}
+		}
+
+		// display the crosshairs on the target spot
 		for (int j=0 ; j<2 ; ++j) {
 			final float x = out.answer[j].getX();
 			final float y = out.answer[j].getY();
@@ -320,6 +335,7 @@ public class GraphView extends View {
 			crosshairs.draw(canvas);
 		}
 
+		// display the answer text
 		for (int j=0 ; j<2 ; ++j) {
 			canvas.drawText(out.answerText[j], 0.0f, out.answer[j].getY()+answerTextOffsetY, pAnswerText);
 		}

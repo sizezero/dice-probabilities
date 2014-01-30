@@ -100,9 +100,11 @@ see if we can just pull the fractions out of apache math
 
 * DONE better layout in landscape mode
 
-* TODO gridline verbose mode only
+* DONE gridline verbose mode only
 
 add any drawing params to xml
+
+* TODO save verbose mode
 
 * TODO more efficient distribution add
 
