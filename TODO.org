@@ -106,11 +106,11 @@ see if we can just pull the fractions out of apache math
 
 - screenshots
 - descriptions
+- tutorial linked to README.md
 
-* TODO license or EULA
+* DONE license or EULA
 
 * TODO deploy to Play store
-
 
 * TODO add rendered dice
 
