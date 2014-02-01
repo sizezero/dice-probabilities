@@ -28,6 +28,8 @@ public class CurrentDicePile implements View.OnClickListener {
 		return sides==1 ? "+"+count : count+"d"+sides; 
 	}
 
+	public int getSides() { return sides; }
+	
 	public int getCount() { return count; }
 	
 	public void onClick(View v) { decrement(); }

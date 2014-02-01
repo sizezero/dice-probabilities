@@ -12,6 +12,7 @@ import org.kleemann.diceprobabilities.graph.GraphView;
 
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.util.SparseIntArray;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
@@ -22,13 +23,22 @@ import android.widget.TextView;
  */
 public class DiceSet {
 
-	private CurrentDicePile cd12;
-	private CurrentDicePile cd10;
-	private CurrentDicePile cd8;
-	private CurrentDicePile cd6;
-	private CurrentDicePile cd4;
-	private CurrentDicePile cd1;
-	private CurrentDicePile cResult;
+	public static class DieType {
+		private int sides;
+		private Button pool;
+		private Button current;
+		public DieType(int sides, Button pool, Button current) {
+			this.sides = sides;
+			this.pool = pool;
+			this.current = current;
+		}
+		public int getSides() { return sides; }
+		public Button getPool() { return pool; }
+		public Button getCurrent() { return current; }
+	}
+	
+	private CurrentDicePile[] dice;
+	private CurrentDicePile target;
 	
 	private TextView answer_fraction;
 	private TextView answer_probability;
@@ -47,20 +57,7 @@ public class DiceSet {
 	private static final String RIGHT_ARROW = "\u21e8"; 
 	
 	public DiceSet(
-			Button pd12Button,
-			Button pd10Button,
-			Button pd8Button,
-			Button pd6Button,
-			Button pd4Button,
-			Button pd1Button,
-			Button pResultButton,
-			Button cd12Button,
-			Button cd10Button,
-			Button cd8Button,
-			Button cd6Button,
-			Button cd4Button,
-			Button cd1Button,
-			Button cResultButton,
+			DieType[] dieType,
 			Button clear,
 			TextView answer_fraction,
 			TextView answer_probability,
@@ -71,22 +68,20 @@ public class DiceSet {
 		this.maxFractionChars = clear.getResources().getInteger(R.integer.max_fraction_chars); 
 		
 		CurrentDiceChanged diceChanged = new CurrentDiceChanged();
-		cd12 = new CurrentDicePile(12, cd12Button, diceChanged);
-		cd10 = new CurrentDicePile(10, cd10Button, diceChanged);
-		cd8 = new CurrentDicePile(8, cd8Button, diceChanged);
-		cd6 = new CurrentDicePile(6, cd6Button, diceChanged);
-		cd4 = new CurrentDicePile(4, cd4Button, diceChanged);
-		cd1 = new CurrentDicePile(1, cd1Button, diceChanged);
-		cResult = new Target(cResultButton, diceChanged);
-
-		new PoolDicePile(12, pd12Button, cd12);
-		new PoolDicePile(10, pd10Button, cd10);
-		new PoolDicePile(8, pd8Button, cd8);
-		new PoolDicePile(6, pd6Button, cd6);
-		new PoolDicePile(4, pd4Button, cd4);
-		new PoolDicePile(1, pd1Button, cd1);
-		new PoolDicePile(1, pResultButton, cResult);
-
+		dice = new CurrentDicePile[dieType.length-1]; // don't allocate space for the target
+		int j=0;
+		for (int i=0 ; i<dieType.length ; ++i) {
+			DieType dt = dieType[i];
+			if (dt.getSides() == 0) {
+				target = new Target(dt.getCurrent(),diceChanged);
+				new PoolDicePile(dt.getPool(), target);
+			} else {
+				dice[j] = new CurrentDicePile(dt.getSides(), dt.getCurrent(), diceChanged);
+				new PoolDicePile(dt.getPool(), dice[j]);
+				++j;
+			}
+		}
+		
 		clear.setOnClickListener(new Clear());
 		
 		this.answer_fraction = answer_fraction;
@@ -98,47 +93,34 @@ public class DiceSet {
 	 * Copies all values from the specified "other" dice set
 	 */
 	public void copyFrom(DiceSet that) {
-		cd12.setCount(that.cd12.getCount());
-		cd10.setCount(that.cd10.getCount());
-		cd8.setCount(that.cd8.getCount());
-		cd6.setCount(that.cd6.getCount());
-		cd4.setCount(that.cd4.getCount());
-		cd1.setCount(that.cd1.getCount());
-		cResult.setCount(that.cResult.getCount());
-		
+		for (int i=0 ; i<dice.length ; ++i) {
+			dice[i].setCount(that.dice[i].getCount());
+		}
+		target.setCount(that.target.getCount());
 	}
 	
 	private class Clear implements View.OnClickListener {
 		@Override
 		public void onClick(View v) {
-			cd12.clear();
-			cd10.clear();
-			cd8.clear();
-			cd6.clear();
-			cd4.clear();
-			cd1.clear();
-			cResult.clear();
+			for (CurrentDicePile c : dice) {
+				c.clear();
+			}
+			target.clear();
 		}		
 	}
 
 	public void saveInstanceState(Bundle savedInstanceState, String prefix) {
-		savedInstanceState.putInt(prefix+"d12", cd12.getCount());
-		savedInstanceState.putInt(prefix+"d10", cd10.getCount());
-		savedInstanceState.putInt(prefix+"d8", cd8.getCount());
-		savedInstanceState.putInt(prefix+"d6", cd6.getCount());
-		savedInstanceState.putInt(prefix+"d4", cd4.getCount());
-		savedInstanceState.putInt(prefix+"constant", cd1.getCount());
-		savedInstanceState.putInt(prefix+"target", cResult.getCount());
+		for (CurrentDicePile c : dice) {
+			savedInstanceState.putInt(prefix+"d"+c.getSides(), c.getCount());
+		}
+		savedInstanceState.putInt(prefix+"target", target.getCount());
 	}
 	
 	public void restoreInstanceState(Bundle savedInstanceState, String prefix) {
-		cd12.setCount(savedInstanceState.getInt(prefix+"d12"));
-		cd10.setCount(savedInstanceState.getInt(prefix+"d10"));
-		cd8.setCount(savedInstanceState.getInt(prefix+"d8"));
-		cd6.setCount(savedInstanceState.getInt(prefix+"d6"));
-		cd4.setCount(savedInstanceState.getInt(prefix+"d4"));
-		cd1.setCount(savedInstanceState.getInt(prefix+"constant"));
-		cResult.setCount(savedInstanceState.getInt(prefix+"target"));
+		for (CurrentDicePile c : dice) {
+			c.setCount(savedInstanceState.getInt(prefix+"d"+c.getSides()));
+		}
+		target.setCount(savedInstanceState.getInt(prefix+"target"));
 	}
 	
 	private class CurrentDiceChanged implements View.OnClickListener {
@@ -158,13 +140,10 @@ public class DiceSet {
 			running = true;
 			RecalculateIn r = new RecalculateIn();
 			r.serial = serial;
-			r.d12 = cd12.getCount();
-			r.d10 = cd10.getCount();
-			r.d8 = cd8.getCount();
-			r.d6 = cd6.getCount();
-			r.d4 = cd4.getCount();
-			r.constant = cd1.getCount();
-			r.target = cResult.getCount();
+			for (CurrentDicePile c : dice) {
+				r.sidesToCount.put(c.getSides(),c.getCount());
+			}
+			r.target = target.getCount();
 			
 			answer_fraction.setText("");
 			answer_probability.setText("?");
@@ -178,12 +157,7 @@ public class DiceSet {
 	 */
 	private static class RecalculateIn {
 		public long serial;
-		public int d12;
-		public int d10;
-		public int d8;
-		public int d6;
-		public int d4;
-		public int constant;
+		public SparseIntArray sidesToCount = new SparseIntArray();
 		public int target;
 	}
 	
@@ -211,29 +185,13 @@ public class DiceSet {
 			
 			Distribution d = ConstantDistribution.ZERO;
 			ArrayList<String> dice = new ArrayList<String>();
-			if (r.d12 > 0) {
-				dice.add(r.d12+"d12");
-				d = new MultinomialDistribution(d, MultinomialDistribution.multiply(new DieDistribution(12), r.d12));
-			}
-			if (r.d10 > 0) {
-				dice.add(r.d10+"d10");
-				d = new MultinomialDistribution(d, MultinomialDistribution.multiply(new DieDistribution(10), r.d10));
-			}
-			if (r.d8 > 0) {
-				dice.add(r.d8+"d8");
-				d = new MultinomialDistribution(d, MultinomialDistribution.multiply(new DieDistribution(8), r.d8));
-			}
-			if (r.d6 > 0) {
-				dice.add(r.d6+"d6");
-				d = new MultinomialDistribution(d, MultinomialDistribution.multiply(new DieDistribution(6), r.d6));
-			}
-			if (r.d4 > 0) {
-				dice.add(r.d4+"d4");
-				d = new MultinomialDistribution(d, MultinomialDistribution.multiply(new DieDistribution(4), r.d4));
-			}
-			if (r.constant > 0) {
-				dice.add(Integer.toString(r.constant));
-				d = new MultinomialDistribution(d, new ConstantDistribution(r.constant));
+			for (int i=0 ; i<r.sidesToCount.size() ; ++i) {
+				final int sides = r.sidesToCount.keyAt(i);
+				final int count = r.sidesToCount.valueAt(i);
+				if (count != 0) {
+					dice.add(count+"d"+sides);
+					d = new MultinomialDistribution(d, MultinomialDistribution.multiply(new DieDistribution(sides), count));
+				}
 			}
 			RecalculateOut out = new RecalculateOut();
 			out.serial = r.serial;
