@@ -3,7 +3,6 @@
 
     <string name="app_name">Dice Probabilities</string>
     <string name="action_settings">Settings</string>
-    <string name="hello_world">Hello world!</string>
 
     <string name="clear">C</string>
     <string name="copy_down">\u2193</string>

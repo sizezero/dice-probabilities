@@ -112,19 +112,21 @@ add any drawing params to xml
 - remove DistributionZero add ZERO to ConstantDistribution
 - add a static multiply method to MultiNomial
 
+* DONE tutorial in README
+
 * TODO truncate maximum fraction size
 
 * TODO Acquire private key
 
-* TODO promotional material
+* TODO tag release version
 
-- screenshots
-- descriptions
-- tutorial linked to README.md
+* TODO screenshots
 
 * DONE license or EULA
 
 * TODO deploy to Play store
+
+- Description; link to github page
 
 * TODO add rendered dice
 
