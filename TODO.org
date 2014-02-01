@@ -120,7 +120,7 @@ add any drawing params to xml
 
 * TODO tag release version
 
-* TODO screenshots
+* DONE screenshots
 
 * DONE license or EULA
 
