@@ -40,6 +40,7 @@ public class DiceSet {
 	private boolean running = false;
 
 	private final DecimalFormat answerFormatter;
+	private final int maxFractionChars;
 
 	private static final String APPROXIMATELY_EQUAL_TO = "\u2245";
 	private static final String GREATER_THAN_OR_EQUAL_TO = "\u2265"; 
@@ -67,6 +68,7 @@ public class DiceSet {
 			) {
 		
 		this.answerFormatter = new DecimalFormat(clear.getResources().getString(R.string.answer_format));
+		this.maxFractionChars = clear.getResources().getInteger(R.integer.max_fraction_chars); 
 		
 		CurrentDiceChanged diceChanged = new CurrentDiceChanged();
 		cd12 = new CurrentDicePile(12, cd12Button, diceChanged);
@@ -244,7 +246,11 @@ public class DiceSet {
 				out.answerProbability = answerFormatter.format(0.0d);
 			} else {
 				BigFraction f = d.getCumulativeProbability(r.target);
-				out.answerFraction = f.toString() + " " + APPROXIMATELY_EQUAL_TO + " ";
+				String fraction = f.toString();
+				if (fraction.length() > maxFractionChars) {
+					fraction = "! / !";
+				}
+				out.answerFraction = fraction + " " + APPROXIMATELY_EQUAL_TO + " ";
 				out.answerProbability = answerFormatter.format(f.doubleValue());
 			}
 			

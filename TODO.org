@@ -114,7 +114,7 @@ add any drawing params to xml
 
 * DONE tutorial in README
 
-* TODO truncate maximum fraction size
+* DONE truncate maximum fraction size
 
 * TODO Acquire private key
 

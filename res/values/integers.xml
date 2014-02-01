@@ -2,5 +2,6 @@
 <resources>
     
     <integer name="default_target">10</integer>
+    <integer name="max_fraction_chars">30</integer>
     
 </resources>
