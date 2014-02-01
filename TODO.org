@@ -116,7 +116,7 @@ add any drawing params to xml
 
 * DONE truncate maximum fraction size
 
-* TODO Acquire private key
+* DONE Acquire private key
 
 * TODO tag release version
 
