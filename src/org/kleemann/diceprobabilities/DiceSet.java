@@ -69,16 +69,16 @@ public class DiceSet {
 		
 		CurrentDiceChanged diceChanged = new CurrentDiceChanged();
 		dice = new CurrentDicePile[dieType.length-1]; // don't allocate space for the target
-		int j=0;
-		for (int i=0 ; i<dieType.length ; ++i) {
-			DieType dt = dieType[i];
+		int i=0;
+		for (DieType dt : dieType) {
 			if (dt.getSides() == 0) {
+				// zero sides signifies target
 				target = new Target(dt.getCurrent(),diceChanged);
 				new PoolDicePile(dt.getPool(), target);
 			} else {
-				dice[j] = new CurrentDicePile(dt.getSides(), dt.getCurrent(), diceChanged);
-				new PoolDicePile(dt.getPool(), dice[j]);
-				++j;
+				dice[i] = new CurrentDicePile(dt.getSides(), dt.getCurrent(), diceChanged);
+				new PoolDicePile(dt.getPool(), dice[i]);
+				++i;
 			}
 		}
 		
