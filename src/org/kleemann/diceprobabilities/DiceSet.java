@@ -185,11 +185,17 @@ public class DiceSet {
 			
 			Distribution d = ConstantDistribution.ZERO;
 			ArrayList<String> dice = new ArrayList<String>();
-			for (int i=0 ; i<r.sidesToCount.size() ; ++i) {
+			// largest dice to smallest
+			for (int i=r.sidesToCount.size()-1 ; i>=0 ; --i) {
 				final int sides = r.sidesToCount.keyAt(i);
 				final int count = r.sidesToCount.valueAt(i);
 				if (count != 0) {
-					dice.add(count+"d"+sides);
+					if (sides==1) {
+						// d1 is really just adding a constant
+						dice.add(Integer.toString(count));
+					} else {
+						dice.add(count+"d"+sides);
+					}
 					d = new MultinomialDistribution(d, MultinomialDistribution.multiply(new DieDistribution(sides), count));
 				}
 			}
