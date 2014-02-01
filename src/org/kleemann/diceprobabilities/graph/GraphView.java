@@ -63,7 +63,7 @@ public class GraphView extends View {
 	
 	private boolean verbose = false;
 	
-	// drawing objects
+	// all data members below here are thread-safe
 	
 	private Paint pBackground;
     private Paint pGraphSolid1;
@@ -177,88 +177,96 @@ public class GraphView extends View {
 
 		/**
 		 * This thread is run in the background so it
-		 * shouldn't access any other objects in this class or call android gui methods.
+		 * shouldn't access any non-thread-safe objects in this class or 
+		 * call android gui methods.
 		 */
 		@Override
 		protected CalculateOut doInBackground(CalculateIn... arg0) {
-			CalculateIn cin = arg0[0];
-			CalculateOut cout = new CalculateOut();
-			cout.serial = cin.serial;
+			CalculateIn in = arg0[0];
+			CalculateOut out = new CalculateOut();
+			out.serial = in.serial;
 
 			// don't display anything if both graphs are trivial
-			if (cin.dist[0].size() <= 1 && cin.dist[1].size() <= 1) {
-				return cout;
+			if (in.dist[0].size() <= 1 && in.dist[1].size() <= 1) {
+				return out;
 			}
 			
-			// draw the larger distribution first
+			// draw the larger distribution first so that both 
+			// are visible
 			Distribution[] dist = new Distribution[2];
-			if (greaterCumulative(cin.dist[0], cin.dist[1])) {
-				dist[0] = cin.dist[0];
-				cout.target[0] = cin.target[0];
-				cout.paint[0] = pGraphSolid1;
-				cout.answerText[0] = cin.answerText[0];
-				dist[1] = cin.dist[1];
-				cout.target[1] = cin.target[1];
-				cout.paint[1] = pGraphSolid2;
-				cout.answerText[1] = cin.answerText[1];
+			if (greaterCumulative(in.dist[0], in.dist[1])) {
+				dist[0] = in.dist[0];
+				out.target[0] = in.target[0];
+				out.paint[0] = pGraphSolid1;
+				out.answerText[0] = in.answerText[0];
+				dist[1] = in.dist[1];
+				out.target[1] = in.target[1];
+				out.paint[1] = pGraphSolid2;
+				out.answerText[1] = in.answerText[1];
 			} else {
-				dist[0] = cin.dist[1];
-				cout.target[0] = cin.target[1];
-				cout.paint[0] = pGraphSolid2;
-				cout.answerText[0] = cin.answerText[1];
-				dist[1] = cin.dist[0];
-				cout.target[1] = cin.target[0];
-				cout.paint[1] = pGraphSolid1;
-				cout.answerText[1] = cin.answerText[0];
+				dist[0] = in.dist[1];
+				out.target[0] = in.target[1];
+				out.paint[0] = pGraphSolid2;
+				out.answerText[0] = in.answerText[1];
+				dist[1] = in.dist[0];
+				out.target[1] = in.target[0];
+				out.paint[1] = pGraphSolid1;
+				out.answerText[1] = in.answerText[0];
 			}
 			
 			final int largestSize = Math.max(dist[0].size(), dist[1].size());
 			
 			 // add a few extra values after the distribution peaks; multiples of 10
-			final int maxX = (largestSize+10) - (largestSize % 10);
-			cout.ticks = maxX;
-			Point[] pt = new Point[maxX];
+			out.ticks = (largestSize+10) - (largestSize % 10);
+			Point[] pt = new Point[out.ticks];
 			
+			// for each of the two distributions
 			for (int j=0 ; j<2 ; ++j) {
 				
 				// don't display a trivial graph
 				if (dist[j].size() <= 1) {
-					cout.path[j] = new Path();
-					cout.answer[j] = new Point(0.0f, cin.height);
+					out.path[j] = new Path();
+					out.answer[j] = new Point(0.0f, in.height);
 					continue;
 				}
-				
-				for (int i=0 ; i<maxX ; ++i) {
-					float x = (float)i/maxX;
+
+				// find the points of the curve
+				for (int i=0 ; i<out.ticks ; ++i) {
+					float x = (float)i/out.ticks;
 					
 					// TODO: it would be more efficient to compute all the cumulative
 					// distributions at once
 					float y = BigFraction.ONE.subtract(dist[j].getCumulativeProbability(i)).floatValue();
 					
-					pt[i] = new Point(x*cin.width, y*cin.height); // scale to global coords
+					pt[i] = new Point(x*in.width, y*in.height); // scale to global coords
 				}
 		
+				// smooth the curve and create a Path object
 				Interpolate interpolate = new Interpolate(pt);
-				cout.path[j] = interpolate.getPath();
+				out.path[j] = interpolate.getPath();
 				
 				// connect the path to origin and starting point
 				// move off the screen to the bottom and left a bit so we don't see the stroke
-				float leftWall = -cin.width/5; 
-				float bottomWall = cin.height * 1.2f; 
-				cout.path[j].lineTo(pt[pt.length-1].getX(), bottomWall);
-				cout.path[j].lineTo(0.0f, cin.height);
-				cout.path[j].lineTo(leftWall, bottomWall);
-				cout.path[j].lineTo(leftWall, 0.0f);
-				cout.path[j].lineTo(pt[0].getX(),pt[0].getY());
+				float leftWall = -in.width/5; 
+				float bottomWall = in.height * 1.2f; 
+				out.path[j].lineTo(pt[pt.length-1].getX(), bottomWall);
+				out.path[j].lineTo(0.0f, in.height);
+				out.path[j].lineTo(leftWall, bottomWall);
+				out.path[j].lineTo(leftWall, 0.0f);
+				out.path[j].lineTo(pt[0].getX(),pt[0].getY());
 				
-				cout.answer[j] = new Point(
-						(float)cout.target[j]/cout.ticks * cin.width,
-						(1.0f - dist[j].getCumulativeProbability(cout.target[j]).floatValue()) * cin.height);
+				out.answer[j] = new Point(
+						(float)out.target[j]/out.ticks * in.width,
+						(1.0f - dist[j].getCumulativeProbability(out.target[j]).floatValue()) * in.height);
 			}
 
-			return cout;
+			return out;
 		}
 		
+		/**
+		 * <p>Run from the GUI thread.  Safe to call GUI methods and access 
+		 * and data members in DiceSet.
+		 */
 		@Override
 		protected void onPostExecute(CalculateOut cout) {
 			running = false;
@@ -273,18 +281,11 @@ public class GraphView extends View {
 	}
 
 	
-	/* (non-Javadoc)
-	 * @see android.view.View#onDraw(android.graphics.Canvas)
-	 */
 	@Override
 	protected void onDraw(Canvas canvas) {
 		canvas.drawPaint(pBackground);
-		interpolatedSolid(canvas);
-	}
 
-	private void interpolatedSolid(Canvas canvas) {
-
-		// don't display anything if the background calculation has not occured once
+		// don't display anything if the background calculation has not occurred once
 		if (out.path[0] == null) {
 			return;
 		}
@@ -298,7 +299,7 @@ public class GraphView extends View {
 			canvas.drawPath(out.path[j], pGraphStroke);
 		}
 
-		// draw answer line
+		// draw horizontal answer line
 		for (int j=0 ; j<2 ; ++j) {
 			final float y = out.answer[j].getY();
 			canvas.drawLine(0.0f, y, (float)w, y, pAnswer);
@@ -357,7 +358,9 @@ public class GraphView extends View {
 	}
 	
 	/**
-	 * Returns true if d1>d2
+	 * <p>Returns true if d1>d2
+	 * 
+	 * <p>TODO: move to a utility class
 	 */
 	private static boolean greaterCumulative(Distribution d1, Distribution d2) {
 		// assumes cumulative distributions are strictly decreasing

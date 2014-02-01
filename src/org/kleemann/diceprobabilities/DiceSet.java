@@ -20,9 +20,21 @@ import android.widget.TextView;
 /**
  * <p>This class contains the behavior for a set of pool dice, 
  * current dice, and result values. 
+ * 
+ * <p>Changes to the dice cause a background task to calculate the 
+ * new result probability and distribution and report it to the 
+ * passed GraphSettor.
  */
 public class DiceSet {
 
+	/**
+	 * <p>Caller must pass an array of these objects to the DiceSet constructor.
+	 * A pressing a pool die adds to the target die.  Pressing a target die
+	 * decreases it's value.
+	 * 
+	 * <p>A dice with zero sides signifies the target value. e.g. the value 
+	 * we are trying to beat with the dice rolls.
+	 */
 	public static class DieType {
 		private int sides;
 		private Button pool;
@@ -46,9 +58,11 @@ public class DiceSet {
 	
 	// every time the dice are changed; this is incremented
 	private long serial = 0;
-	// true if the background distribution calculation is running
+	// true if the background distribution calculation job is running
 	private boolean running = false;
 
+	// data members below here are thread-safe
+	
 	private final DecimalFormat answerFormatter;
 	private final int maxFractionChars;
 
@@ -67,6 +81,7 @@ public class DiceSet {
 		this.answerFormatter = new DecimalFormat(clear.getResources().getString(R.string.answer_format));
 		this.maxFractionChars = clear.getResources().getInteger(R.integer.max_fraction_chars); 
 		
+		// associate each Button object with a behavioral object
 		CurrentDiceChanged diceChanged = new CurrentDiceChanged();
 		dice = new CurrentDicePile[dieType.length-1]; // don't allocate space for the target
 		int i=0;
@@ -81,6 +96,7 @@ public class DiceSet {
 				++i;
 			}
 		}
+		assert(target != null);
 		
 		clear.setOnClickListener(new Clear());
 		
@@ -99,6 +115,9 @@ public class DiceSet {
 		target.setCount(that.target.getCount());
 	}
 	
+	/**
+	 * <p>Resets current dice and target to their default values.
+	 */
 	private class Clear implements View.OnClickListener {
 		@Override
 		public void onClick(View v) {
@@ -122,49 +141,36 @@ public class DiceSet {
 		}
 		target.setCount(savedInstanceState.getInt(prefix+"target"));
 	}
-	
+
+	/**
+	 * <p>When any of the dice have changed, note the change by incrementing
+	 * serial and start the background job.
+	 */
 	private class CurrentDiceChanged implements View.OnClickListener {
 		@Override
 		public void onClick(View v) {
 			++serial;
-			startDistributionCalculation();
+			startBackgroundJob();
 		}
 	}
 
 	/**
-	 * Attempts to start a new background distribution calculation. If a calculation is already 
-	 * running then let it run.
+	 * <p>Just a payload into the background calculation job.
+	 * The background job cannot only write to these values.
 	 */
-	private void startDistributionCalculation() {
-		if (!running) {
-			running = true;
-			RecalculateIn r = new RecalculateIn();
-			r.serial = serial;
-			for (CurrentDicePile c : dice) {
-				r.sidesToCount.put(c.getSides(),c.getCount());
-			}
-			r.target = target.getCount();
-			
-			answer_fraction.setText("");
-			answer_probability.setText("?");
-			
-			new CalculateDistribution().execute(r);
-		}
-	}
-	
-	/**
-	 * Just a payload into the background calculation job
-	 */
-	private static class RecalculateIn {
+	private static class BackgroundIn {
 		public long serial;
+		// current dice: number of sides, and number of dice pairs
 		public SparseIntArray sidesToCount = new SparseIntArray();
 		public int target;
 	}
 	
 	/**
-	 * Just a payload out of the background calculation job
+	 * <p>Just a payload out of the background calculation job.
+	 * Used both to set the answer values as well as to update
+	 * the background graph.
 	 */
-	private static class RecalculateOut {
+	private static class BackgroundOut {
 		public long serial;
 		public Distribution distribution;
 		public int target;
@@ -173,22 +179,48 @@ public class DiceSet {
 		public String answerFormula;
 	}
 	
-	private class CalculateDistribution extends AsyncTask<RecalculateIn, Void, RecalculateOut> {
+	/**
+	 * Attempts to start a new background distribution calculation. If a calculation is already 
+	 * running then let it run, it will check that the data has changed and start 
+	 * another Job.
+	 */
+	private void startBackgroundJob() {
+		if (!running) {
+			running = true;
+			BackgroundIn in = new BackgroundIn();
+			in.serial = serial;
+			for (CurrentDicePile c : dice) {
+				in.sidesToCount.put(c.getSides(),c.getCount());
+			}
+			in.target = target.getCount();
+			
+			answer_fraction.setText("");
+			answer_probability.setText("?");
+			
+			new BackgroundJob().execute(in);
+		}
+	}
+	
+	private class BackgroundJob extends AsyncTask<BackgroundIn, Void, BackgroundOut> {
 
 		/**
 		 * Calculate the full distribution of the current dice. This thread is run in the background so it
-		 * shouldn't access any other objects in this class or call android gui methods.
+		 * shouldn't access any other non-threadsafe objects in DiceSet or call android gui methods.
+		 * The only threadsafe methods in DiceSet are those that are initialized in the constructor
+		 * and never changed such as loaded resource values. 
 		 */
 		@Override
-		protected RecalculateOut doInBackground(RecalculateIn... arg0) {
-			RecalculateIn r = arg0[0];
+		protected BackgroundOut doInBackground(BackgroundIn... arg0) {
+			BackgroundIn in = arg0[0];
 			
+			// calculate both the distribution and the textual description
+			// of the dice formula
 			Distribution d = ConstantDistribution.ZERO;
 			ArrayList<String> dice = new ArrayList<String>();
 			// largest dice to smallest
-			for (int i=r.sidesToCount.size()-1 ; i>=0 ; --i) {
-				final int sides = r.sidesToCount.keyAt(i);
-				final int count = r.sidesToCount.valueAt(i);
+			for (int i=in.sidesToCount.size()-1 ; i>=0 ; --i) {
+				final int sides = in.sidesToCount.keyAt(i);
+				final int count = in.sidesToCount.valueAt(i);
 				if (count != 0) {
 					if (sides==1) {
 						// d1 is really just adding a constant
@@ -196,20 +228,25 @@ public class DiceSet {
 					} else {
 						dice.add(count+"d"+sides);
 					}
-					d = new MultinomialDistribution(d, MultinomialDistribution.multiply(new DieDistribution(sides), count));
+					// this is the heart of the multinomial sum calculation
+					final Distribution singleDie = new DieDistribution(sides);
+					final Distribution allDiceOfOneType = MultinomialDistribution.multiply(singleDie, count);
+					d = new MultinomialDistribution(d, allDiceOfOneType);
 				}
 			}
-			RecalculateOut out = new RecalculateOut();
-			out.serial = r.serial;
-			out.distribution = d;
-			out.target = r.target;
 			
-			// if distribution is trivial then show minimal text
+			BackgroundOut out = new BackgroundOut();
+			out.serial = in.serial;
+			out.distribution = d;
+			out.target = in.target;
+			
+			// format the textual answer of the distribution at the target
 			if (d.size() <= 1) {
+				// if distribution is trivial then show minimal text
 				out.answerFraction = "";
 				out.answerProbability = answerFormatter.format(0.0d);
 			} else {
-				BigFraction f = d.getCumulativeProbability(r.target);
+				BigFraction f = d.getCumulativeProbability(in.target);
 				String fraction = f.toString();
 				if (fraction.length() > maxFractionChars) {
 					fraction = "! / !";
@@ -218,6 +255,7 @@ public class DiceSet {
 				out.answerProbability = answerFormatter.format(f.doubleValue());
 			}
 			
+			// convert the dice array into a formula String
 			if (dice.size()==0) {
 				out.answerFormula = "";
 			} else {
@@ -229,7 +267,7 @@ public class DiceSet {
 				sb.append(" ");
 				sb.append(GREATER_THAN_OR_EQUAL_TO);
 				sb.append(" ");
-				sb.append(r.target);
+				sb.append(in.target);
 				sb.append(" ");
 				sb.append(RIGHT_ARROW);
 				sb.append(" ");
@@ -240,17 +278,21 @@ public class DiceSet {
 			return out;
 		}
 		
+		/**
+		 * <p>Run from the GUI thread.  Safe to call GUI methods and access 
+		 * and data members in DiceSet.
+		 */
 		@Override
-		protected void onPostExecute(RecalculateOut r) {
+		protected void onPostExecute(BackgroundOut out) {
 			running = false;
-			if (r.serial == serial) {
-				answer_fraction.setText(r.answerFraction);
-				answer_probability.setText(r.answerProbability);
-				graphSetter.setResult(r.distribution, r.target, r.answerFormula);
+			if (out.serial == serial) {
+				answer_fraction.setText(out.answerFraction);
+				answer_probability.setText(out.answerProbability);
+				graphSetter.setResult(out.distribution, out.target, out.answerFormula);
 			} else {
 				// the dice have changed since we started the background task
 				// run the calculation again
-				startDistributionCalculation();
+				startBackgroundJob();
 			}
 		}
 	}

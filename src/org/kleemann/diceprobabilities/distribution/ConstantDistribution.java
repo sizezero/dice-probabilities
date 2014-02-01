@@ -2,6 +2,10 @@ package org.kleemann.diceprobabilities.distribution;
 
 import org.apache.commons.math3.fraction.BigFraction;
 
+/**
+ * <p>A distribution that has 100% chance at a single point.  This is useful 
+ * for representing constants that are added to dice rolls.
+ */
 public class ConstantDistribution implements Distribution {
 
 	/**
@@ -11,9 +15,7 @@ public class ConstantDistribution implements Distribution {
 	
 	private int x;
 	
-	public ConstantDistribution(int x) {
-		this.x = x;
-	}
+	public ConstantDistribution(int x) { this.x = x; }
 	
 	@Override
 	public int size() { return x+1; }

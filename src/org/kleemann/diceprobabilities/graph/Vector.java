@@ -1,5 +1,9 @@
 package org.kleemann.diceprobabilities.graph;
 
+/**
+ * <p>A vector (direction and magnitude) represented by a 
+ * Point object. 
+ */
 class Vector {
 
 	private final Point pt;
@@ -29,6 +33,7 @@ class Vector {
 	}
 	
 	public Vector scale(float f) {
+		// TODO: is this mathematically correct?
 		final Point n = new Point(pt.getX()*f, pt.getY()*f);
 		return new Vector(n);
 	}

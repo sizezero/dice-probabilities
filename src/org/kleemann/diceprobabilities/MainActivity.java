@@ -8,9 +8,17 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 
+/**
+ * <p>The main entry point for the program.  This android application consists 
+ * of a single activity. (screen)
+ * 
+ *  <p>All GUI resources (ids from xml layouts) are referenced from this class.
+ */
 public class MainActivity extends Activity {
 
+	// the topmost View that contains all the buttons 
 	private View topButtonGroup;
+	
 	private GraphView graph;
 	
 	private DiceSet diceSet1;
@@ -23,7 +31,7 @@ public class MainActivity extends Activity {
 		
 		this.topButtonGroup = (View)findViewById(R.id.top_button_group);
 
-		graph = (GraphView)findViewById(R.id.graph); 
+		this.graph = (GraphView)findViewById(R.id.graph); 
 		
 		this.diceSet1 = new DiceSet(
 				new DiceSet.DieType[]{
@@ -106,9 +114,15 @@ public class MainActivity extends Activity {
 			destination.copyFrom(source);
 		}		
 	}
-	
+
 	private boolean getVerbose() { return graph.getVerbose(); }
 	
+	/**
+	 * <p>Verbose refers to the verbosity of the graph.  When the 
+	 * graph is showing more detail in verbose mode, hide the buttons.
+	 * 
+	 *  <p>The user toggles between these modes by pressing on the graph.
+	 */
 	private void setVerbose(boolean verbose) {
 		if (verbose) {
 			topButtonGroup.setVisibility(View.INVISIBLE);
@@ -127,6 +141,11 @@ public class MainActivity extends Activity {
 		}		
 	}
 
+	/**
+	 * <p>We only save the "source" data items. e.g. the dice and target counts.
+	 * All other values such as probabilities and distribution curves are 
+	 * recalculated.
+	 */
 	@Override
 	public void onSaveInstanceState(Bundle savedInstanceState) {
 	    super.onSaveInstanceState(savedInstanceState);

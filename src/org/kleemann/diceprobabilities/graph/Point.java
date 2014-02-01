@@ -1,5 +1,8 @@
 package org.kleemann.diceprobabilities.graph;
 
+/**
+ * <p>A simple Point class with float values.
+ */
 class Point {
 
 	private final float x;

@@ -2,6 +2,11 @@ package org.kleemann.diceprobabilities.distribution;
 
 import org.apache.commons.math3.fraction.BigFraction;
 
+/**
+ * <p>This represents the distribution for a single die of some number
+ * of sides.  Each probability in the range 1 to sides is of equal value
+ * and sums to 1.
+ */
 public class DieDistribution implements Distribution {
 
 	// the total number of sides of the die

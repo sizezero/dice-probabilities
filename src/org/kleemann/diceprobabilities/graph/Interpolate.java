@@ -8,6 +8,9 @@ import android.graphics.Path;
  * <p>Given a set of points, interpolates the control points between them creating a smooth path.
  * 
  * <p>This is an immutable object
+ * 
+ * <p>This uses a fairly simple curve smoothing process found here:
+ * http://devmag.org.za/2011/06/23/bzier-path-algorithms/
  */
 class Interpolate {
 
@@ -55,15 +58,11 @@ class Interpolate {
 			final Point p2 = p[i+1];
 			
 			final Vector tangent0 = new Vector(p2,p0).normalize();
-			//Log.v("TAG", "tangent0 "+tangent0);
 			final Vector v0 = tangent0.scale(SCALE * new Vector(p1,p0).magnitude());
-			//Log.v("TAG", "v0 "+v0);
 			c[i*2] = v0.add(p1);
 			
 			final Vector tangent1 = new Vector(p0,p2).normalize();
-			//Log.v("TAG", "tangent1 "+tangent1);
 			final Vector v1 = tangent1.scale(SCALE * new Vector(p1,p2).magnitude());
-			//Log.v("TAG", "v1 "+v1);
 			c[i*2+1] = v1.add(p1);
 		}
 		
@@ -85,7 +84,11 @@ class Interpolate {
 	 * @return
 	 */
 	public Point getC2(int i) { return c[i*2+1]; }
-	
+
+	/**
+	 * <p>Returns the path represented by simple cubic bezier smoothing through
+	 * the points.
+	 */
 	public Path getPath() {
 		Path path = new Path();
 		path.moveTo(p[0].getX(), p[0].getY());
@@ -94,8 +97,6 @@ class Interpolate {
 			final Point p1 = p[i+1];
 			final Point c0 = c[i*2+1]; // second control point of first segment point
 			final Point c1 = c[i*2+2]; // first control point of second segment point
-			//Log.v("TAG", "p0"+p0+" c0"+c0+" c1"+c1+" p1"+p1);
-			//path.moveTo(p0.getX(), p0.getY());
 			path.cubicTo(c0.getX(), c0.getY(), c1.getX(), c1.getY(), p1.getX(), p1.getY());
 		}
 		return path;

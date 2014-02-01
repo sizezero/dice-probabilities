@@ -3,6 +3,14 @@ package org.kleemann.diceprobabilities;
 import android.view.View;
 import android.widget.Button;
 
+/*
+ * <p>Provides the behavior for a button that represents the current 
+ * number of dice of a particular type (number of sides) that is 
+ * to be rolled.  If number of sides==1 then the die is considerred a 
+ * constant and rendered differently.
+ * 
+ * <p>When the Pile's count has changed, it calls the passed listener.
+ */
 public class CurrentDicePile implements View.OnClickListener {
 
 	private int sides;
@@ -32,8 +40,6 @@ public class CurrentDicePile implements View.OnClickListener {
 	
 	public int getCount() { return count; }
 	
-	public void onClick(View v) { decrement(); }
-	
 	public void setCount(int count) {
 		assert(count >= 0);
 		this.count = count;
@@ -49,7 +55,8 @@ public class CurrentDicePile implements View.OnClickListener {
 		}
 	}
 	
-	public void clear() {
-		setCount(0);
-	}
+	public void clear() { setCount(0); }
+	
+	@Override
+	public void onClick(View v) { decrement(); }
 }

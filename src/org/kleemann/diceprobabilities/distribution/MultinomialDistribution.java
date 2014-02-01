@@ -39,12 +39,7 @@ public class MultinomialDistribution implements Distribution {
 
 	@Override
 	public BigFraction getProbability(int x) {
-		// TODO Auto-generated method stub
-		if (x>=0 && x<vals.length) {
-			return vals[x];
-		} else {
-			return BigFraction.ZERO;
-		}
+		return (x>=0 && x<vals.length) ? vals[x] : BigFraction.ZERO;
 	}
 
 	/**
