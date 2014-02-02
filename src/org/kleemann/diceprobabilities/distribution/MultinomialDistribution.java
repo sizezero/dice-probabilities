@@ -11,7 +11,7 @@ public class MultinomialDistribution implements Distribution {
 
 	private BigFraction[] vals;
 	
-	public MultinomialDistribution(Distribution d1, Distribution d2) {
+	private MultinomialDistribution(Distribution d1, Distribution d2) {
 		// find the new range of the distribution.
 		// It should equal the sum of the highest values of the two distributions
 		
@@ -32,11 +32,7 @@ public class MultinomialDistribution implements Distribution {
 		}
 	}
 
-	/**
-	 * <p>Add the given DieDistribution to itself n times.  Much more efficient
-	 * than repeated calls to Multinomial(Distribution,Distribution) 
-	 */
-	public MultinomialDistribution(DieDistribution d, int mult) {
+	private MultinomialDistribution(DieDistribution d, int mult) {
 
 		final BigFraction unit = d.getProbability(1).pow(mult);
 		
@@ -50,7 +46,6 @@ public class MultinomialDistribution implements Distribution {
 			long[] old = tgt.clone();
 			tgt = new long[old.length+(d.getSides()+1) - 1];
 			for (int o=0 ; o<old.length ; ++o) {
-				// TODO: may be able to replace loop with multiply
 				for (int s=1 ; s<=d.getSides() ; ++s) {
 					final int sum = o + s;
 					tgt[sum] = tgt[sum] + old[o];
@@ -87,12 +82,37 @@ public class MultinomialDistribution implements Distribution {
 		return sum;
 	}
 
+	public static Distribution add(Distribution d1, Distribution d2) {
+		// the only distribution with a size of one is ZERO 
+		if (d1.size()==1) {
+			return d2;
+		} else if (d2.size()==1) {
+			return d1;
+		} else {
+			return new MultinomialDistribution(d1, d2);
+		}
+	}
+	
+	/**
+	 * <p>Add the given DieDistribution to itself n times.  Much more efficient
+	 * than repeated calls to Multinomial(Distribution,Distribution) 
+	 */
+	public static Distribution multiply(DieDistribution d, int mult) {
+		if (mult==0) {
+			return ConstantDistribution.ZERO;
+		} else if (mult==1) {
+			return d;
+		} else {
+			return new MultinomialDistribution(d, mult);
+		}
+	}
+	
 	/**
 	 * <p>Adds the distribution by itself n times.  This acts like a multiply.
 	 * 
 	 * <p>The method batches the adds so that only log2(n) adds are made
 	 */
-	public static Distribution multiply(Distribution d, int n) {
+	public static Distribution multiplySlow(Distribution d, int n) {
 		// for small values of n there is no need to do anything special
 		if (n==0) {
 			return ConstantDistribution.ZERO;

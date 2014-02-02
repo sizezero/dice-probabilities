@@ -25,7 +25,7 @@ public class DistributionTest extends TestCase {
 	
 	public void testTwoDSix() {
 		Distribution d6 = new DieDistribution(6);
-		Distribution twoDSix = new MultinomialDistribution(d6,d6);
+		Distribution twoDSix = MultinomialDistribution.add(d6,d6);
 		assertEquals(BigFraction.ZERO, twoDSix.getProbability(0));
 		assertEquals(BigFraction.ZERO, twoDSix.getProbability(1));
 		assertEquals(new BigFraction(1,36), twoDSix.getProbability(2));
@@ -50,7 +50,7 @@ public class DistributionTest extends TestCase {
 		Distribution identity = ConstantDistribution.ZERO;
 		
 		Distribution d6 = new DieDistribution(6);
-		Distribution sum = new MultinomialDistribution(identity,d6);
+		Distribution sum = MultinomialDistribution.add(identity,d6);
 		
 		for (int x=0 ; x<10 ; ++x) {
 			assertEquals(d6.getProbability(x), sum.getProbability(x));
@@ -60,7 +60,7 @@ public class DistributionTest extends TestCase {
 	public void testConstant() {
 		Distribution c2 = new ConstantDistribution(2);
 		Distribution d6 = new DieDistribution(6);
-		Distribution d = new MultinomialDistribution(c2, d6);
+		Distribution d = MultinomialDistribution.add(c2, d6);
 
 		assertEquals(BigFraction.ZERO, d.getProbability(0));
 		assertEquals(BigFraction.ZERO, d.getProbability(1));
@@ -78,7 +78,7 @@ public class DistributionTest extends TestCase {
 	public void testCumulativeConstant() {
 		Distribution c2 = new ConstantDistribution(2);
 		Distribution d6 = new DieDistribution(6);
-		Distribution d = new MultinomialDistribution(c2, d6);
+		Distribution d = MultinomialDistribution.add(c2, d6);
 		
 		assertEquals(BigFraction.ONE, d.getCumulativeProbability(0));
 		assertEquals(BigFraction.ONE, d.getCumulativeProbability(1));
@@ -97,8 +97,8 @@ public class DistributionTest extends TestCase {
 		distSumsToOne(ConstantDistribution.ZERO);
 		distSumsToOne(new ConstantDistribution(6));
 		distSumsToOne(new DieDistribution(6));
-		distSumsToOne(new MultinomialDistribution(new ConstantDistribution(6), new DieDistribution(6)));
-		distSumsToOne(new MultinomialDistribution(new DieDistribution(8), new DieDistribution(6)));
+		distSumsToOne(MultinomialDistribution.add(new ConstantDistribution(6), new DieDistribution(6)));
+		distSumsToOne(MultinomialDistribution.add(new DieDistribution(8), new DieDistribution(6)));
 	}
 
 	public void testMultiply() {
@@ -114,11 +114,11 @@ public class DistributionTest extends TestCase {
 		// simple way
 		Distribution sum1 = ConstantDistribution.ZERO;
 		for (int i=0 ; i<n ; ++i) {
-			sum1 = new MultinomialDistribution(sum1, d6);
+			sum1 = MultinomialDistribution.add(sum1, d6);
 		}
 		
 		// complex way
-		Distribution sum2 = MultinomialDistribution.multiply(d6, n);
+		Distribution sum2 = MultinomialDistribution.multiplySlow(d6, n);
 		
 		assertEquals(sum1.size(), sum2.size());
 		for (int i=0 ; i<sum1.size() ; ++i) {
@@ -126,7 +126,7 @@ public class DistributionTest extends TestCase {
 		}
 		
 		// efficient way
-		Distribution sum3 = new MultinomialDistribution(d6, n);
+		Distribution sum3 = MultinomialDistribution.multiply(d6, n);
 		assertEquals(sum1.size(), sum3.size());
 		for (int i=0 ; i<sum1.size() ; ++i) {
 			assertEquals(sum1.getProbability(i), sum3.getProbability(i));

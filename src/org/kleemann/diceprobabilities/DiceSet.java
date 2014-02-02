@@ -230,8 +230,8 @@ public class DiceSet {
 					}
 					// this is the heart of the multinomial sum calculation
 					final DieDistribution singleDie = new DieDistribution(sides);
-					final Distribution allDiceOfOneType = new MultinomialDistribution(singleDie, count);
-					d = new MultinomialDistribution(d, allDiceOfOneType);
+					final Distribution allDiceOfOneType = MultinomialDistribution.multiply(singleDie, count);
+					d = MultinomialDistribution.add(d, allDiceOfOneType);
 				}
 			}
 			
