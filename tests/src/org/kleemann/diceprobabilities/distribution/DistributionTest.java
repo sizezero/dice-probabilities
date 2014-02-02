@@ -109,7 +109,7 @@ public class DistributionTest extends TestCase {
 	
 	private void multiply(int n) {
 		// need at least 4 dice to test
-		Distribution d6 = new DieDistribution(6);
+		DieDistribution d6 = new DieDistribution(6);
 		
 		// simple way
 		Distribution sum1 = ConstantDistribution.ZERO;
@@ -123,6 +123,13 @@ public class DistributionTest extends TestCase {
 		assertEquals(sum1.size(), sum2.size());
 		for (int i=0 ; i<sum1.size() ; ++i) {
 			assertEquals(sum1.getProbability(i), sum2.getProbability(i));
+		}
+		
+		// efficient way
+		Distribution sum3 = new MultinomialDistribution(d6, n);
+		assertEquals(sum1.size(), sum3.size());
+		for (int i=0 ; i<sum1.size() ; ++i) {
+			assertEquals(sum1.getProbability(i), sum3.getProbability(i));
 		}
 	}
 	

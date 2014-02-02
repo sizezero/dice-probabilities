@@ -31,6 +31,39 @@ public class MultinomialDistribution implements Distribution {
 			}
 		}
 	}
+
+	/**
+	 * <p>Add the given DieDistribution to itself n times.  Much more efficient
+	 * than repeated calls to Multinomial(Distribution,Distribution) 
+	 */
+	public MultinomialDistribution(DieDistribution d, int mult) {
+
+		final BigFraction unit = d.getProbability(1).pow(mult);
+		
+		long[] tgt = new long[d.getSides()+1];
+		for (int i=1 ; i<=d.getSides(); ++i) {
+			tgt[i] = 1;
+		}
+
+		for (int m=1 ; m<mult ; ++m) { // loop executes mult -1 times
+			// TODO: may be able to move allocations outside of loop
+			long[] old = tgt.clone();
+			tgt = new long[old.length+(d.getSides()+1) - 1];
+			for (int o=0 ; o<old.length ; ++o) {
+				// TODO: may be able to replace loop with multiply
+				for (int s=1 ; s<=d.getSides() ; ++s) {
+					final int sum = o + s;
+					tgt[sum] = tgt[sum] + old[o];
+				}
+			}
+		}
+		
+		// convert tgt to BigFraction
+		vals = new BigFraction[tgt.length];
+		for (int i=0 ; i<vals.length ; ++i) {
+			vals[i] = unit.multiply(tgt[i]);
+		}
+	}
 	
 	@Override
 	public int size() {

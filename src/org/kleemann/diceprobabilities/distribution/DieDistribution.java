@@ -21,6 +21,8 @@ public class DieDistribution implements Distribution {
 		this.probability = new BigFraction(1,sides); 
 	}
 	
+	public int getSides() { return sides; }
+	
 	@Override
 	public int size() {
 		// sides are one based. e.g. a six sided die uses the x values
