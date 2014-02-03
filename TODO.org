@@ -53,7 +53,7 @@ bigger buttons?
 
 Found RowLayout and increase the text size on the buttons
 
-* TODO create application icon
+* DONE create application icon
 
 Letting Emma take a crack at this first.
 This would take me forever.
@@ -118,7 +118,7 @@ add any drawing params to xml
 
 * DONE Acquire private key
 
-* TODO tag release version
+* DONE tag release version
 
 * DONE screenshots
 
@@ -127,6 +127,7 @@ add any drawing params to xml
 * TODO deploy to Play store
 
 - Description; link to github page
+- update github page with backlink to play store
 
 * TODO add rendered dice
 
