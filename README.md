@@ -3,7 +3,10 @@
 
 This is a small android app that calculates the probabilities of multiple dice exceeding a specified number.  It is particularly useful when playing the game [Pathfinder the card game](http://boardgamegeek.com/boardgame/133038/pathfinder-adventure-card-game-rise-of-the-runelor)
 
-TODO: 
+<a href="https://play.google.com/store/apps/details?id=org.kleemann.diceprobabilities">
+  <img alt="Android app on Google Play"
+       src="https://developer.android.com/images/brand/en_app_rgb_wo_45.png" />
+</a>
 
 ## Workflow
 
