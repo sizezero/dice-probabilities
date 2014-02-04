@@ -4,6 +4,7 @@ import java.text.DecimalFormat;
 import java.util.ArrayList;
 
 import org.apache.commons.math3.fraction.BigFraction;
+import org.kleemann.diceprobabilities.distribution.CachedCumulativeDistribution;
 import org.kleemann.diceprobabilities.distribution.ConstantDistribution;
 import org.kleemann.diceprobabilities.distribution.DieDistribution;
 import org.kleemann.diceprobabilities.distribution.Distribution;
@@ -234,6 +235,8 @@ public class DiceSet {
 					d = MultinomialDistribution.add(d, allDiceOfOneType);
 				}
 			}
+			// no modification to d after this; cache the cumulative values
+			d = new CachedCumulativeDistribution(d);
 			
 			BackgroundOut out = new BackgroundOut();
 			out.serial = in.serial;

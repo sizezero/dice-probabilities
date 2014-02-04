@@ -93,14 +93,6 @@ public class DistributionTest extends TestCase {
 		assertEquals(BigFraction.ZERO, d.getCumulativeProbability(10));
 	}
 	
-	public void testSums() {
-		distSumsToOne(ConstantDistribution.ZERO);
-		distSumsToOne(new ConstantDistribution(6));
-		distSumsToOne(new DieDistribution(6));
-		distSumsToOne(MultinomialDistribution.add(new ConstantDistribution(6), new DieDistribution(6)));
-		distSumsToOne(MultinomialDistribution.add(new DieDistribution(8), new DieDistribution(6)));
-	}
-
 	public void testMultiply() {
 		for (int i=1 ; i<12 ; ++i) {
 			multiply(i);
@@ -133,6 +125,19 @@ public class DistributionTest extends TestCase {
 		}
 	}
 	
+	public void testCumulative() {
+		cumulative(ConstantDistribution.ZERO);
+		cumulative(new ConstantDistribution(6));
+		cumulative(new DieDistribution(6));
+		cumulative(MultinomialDistribution.add(new ConstantDistribution(6), new DieDistribution(6)));
+		cumulative(MultinomialDistribution.add(new DieDistribution(8), new DieDistribution(6)));
+	}
+
+	private void cumulative(Distribution d) {
+		distSumsToOne(d);
+		cachedCumulativeEquals(d);
+	}
+	
 	private void distSumsToOne(Distribution d) {
 		BigFraction sum = BigFraction.ZERO;
 		for (int i=0 ; i<d.size(); ++i) {
@@ -141,5 +146,13 @@ public class DistributionTest extends TestCase {
 		assertEquals(BigFraction.ONE, sum);
 		assertEquals(BigFraction.ONE, d.getCumulativeProbability(0));
 		assertEquals(BigFraction.ZERO, d.getCumulativeProbability(d.size()));
+	}
+	
+	private void cachedCumulativeEquals(Distribution d) {
+		Distribution c = new CachedCumulativeDistribution(d);
+		assertEquals(d.size(), c.size());
+		for (int i=0 ; i<d.size(); ++i) {
+			assertEquals(d.getCumulativeProbability(i), c.getCumulativeProbability(i));
+		}
 	}
 }
