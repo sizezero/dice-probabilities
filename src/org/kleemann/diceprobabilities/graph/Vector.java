@@ -33,7 +33,7 @@ class Vector {
 	}
 	
 	public Vector scale(float f) {
-		// TODO: is this mathematically correct?
+		// scaling both axes scales the diagonal in the same proportion
 		final Point n = new Point(pt.getX()*f, pt.getY()*f);
 		return new Vector(n);
 	}
