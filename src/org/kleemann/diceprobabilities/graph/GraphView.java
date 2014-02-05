@@ -169,7 +169,7 @@ public class GraphView extends View {
 		if (!running) {
 			running = true;
 			// not sure if cloning is necessary to protect thread access
-			new CalculatePoints().execute(new CalculateIn(in));
+			new CalculatePoints().executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR, new CalculateIn(in));
 		}
 	}
 	

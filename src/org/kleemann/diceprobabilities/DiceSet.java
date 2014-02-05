@@ -198,7 +198,7 @@ public class DiceSet {
 			answer_fraction.setText("");
 			answer_probability.setText("?");
 			
-			new BackgroundJob().execute(in);
+			new BackgroundJob().executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR, in);
 		}
 	}
 	
