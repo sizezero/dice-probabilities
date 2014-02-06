@@ -93,34 +93,43 @@ public class DistributionTest extends TestCase {
 		assertEquals(BigFraction.ZERO, d.getCumulativeProbability(10));
 	}
 	
-	public void testMultiply() {
-		for (int i=1 ; i<12 ; ++i) {
-			multiply(i);
+	public void testManyMultiply() {
+		int[] sides = {4,6,8,12};
+		for (int s : sides) {
+			for (int mult=0 ; mult<=10 ; ++mult) {
+				multiply(s, mult);
+			}
 		}
 	}
-	
-	private void multiply(int n) {
-		// need at least 4 dice to test
-		DieDistribution d6 = new DieDistribution(6);
+
+	public void testLargeMultiply() {
+		for (int mult=8 ; mult<=25 ; ++mult) {
+			multiply(12, mult);
+		}
+	}
+
+	private void multiply(int s, int n) {
+		DieDistribution die = new DieDistribution(s);
 		
 		// simple way
 		Distribution sum1 = ConstantDistribution.ZERO;
 		for (int i=0 ; i<n ; ++i) {
-			sum1 = MultinomialDistribution.add(sum1, d6);
-		}
-		
-		// complex way
-		Distribution sum2 = MultinomialDistribution.multiplySlow(d6, n);
-		
-		assertEquals(sum1.size(), sum2.size());
-		for (int i=0 ; i<sum1.size() ; ++i) {
-			assertEquals(sum1.getProbability(i), sum2.getProbability(i));
+			sum1 = MultinomialDistribution.add(sum1, die);
 		}
 		
 		// efficient way
-		Distribution sum3 = MultinomialDistribution.multiply(d6, n);
+		Distribution d = die;
+		Distribution sum2 = MultinomialDistribution.multiply(d, n);
+		
+		assertEquals(sum1.size(), sum2.size());
+		for (int i=-2 ; i<sum1.size()+2 ; ++i) {
+			assertEquals(sum1.getProbability(i), sum2.getProbability(i));
+		}
+		
+		// most efficient way
+		Distribution sum3 = MultinomialDistribution.multiply(die, n);
 		assertEquals(sum1.size(), sum3.size());
-		for (int i=0 ; i<sum1.size() ; ++i) {
+		for (int i=-2 ; i<sum1.size()+2 ; ++i) {
 			assertEquals(sum1.getProbability(i), sum3.getProbability(i));
 		}
 	}
