@@ -54,13 +54,10 @@ public class MultinomialDistribution implements Distribution {
 	 * <p>The method batches the adds so around log2(n) adds are made instead of
 	 * n adds.
 	 */
-	public static Distribution multiplyLog(Distribution d, int n) {
+	private static Distribution multiplyLog(Distribution d, int n) {
+		assert(n>1);
 		// for small values of n there is no need to do anything special
-		if (n==0) {
-			return ConstantDistribution.ZERO;
-		} else if (n==1) {
-			return d;
-		} else if (n<4) {
+		if (n<4) {
 			Distribution sum = new MultinomialDistribution(d, d);
 			for (int i=2 ; i<n ; ++i ) {
 				sum = new MultinomialDistribution(sum, d);
@@ -77,11 +74,11 @@ public class MultinomialDistribution implements Distribution {
 		}
 		
 		// reduce n to zero
-		Distribution r = ConstantDistribution.ZERO;
+		Distribution r = null;
 		while (n > 0) {
 			// find the largest power of 2 that is less than or equal to n
 			final int lg = log2(n);
-			r = new MultinomialDistribution(r, sums[lg]);
+			r = r==null ? sums[lg] : new MultinomialDistribution(r, sums[lg]);
 			n -= 1 << lg;
 		}
 		return r;
