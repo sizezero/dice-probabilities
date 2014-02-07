@@ -242,11 +242,12 @@ public class GraphView extends View {
 				}
 		
 				// smooth the curve and create a Path object
-				Interpolate interpolate = new Interpolate(pt);
-				out.path[j] = interpolate.getPath();
-				
-				// connect the path to origin and starting point
-				// move off the screen to the bottom and left a bit so we don't see the stroke
+				out.path[j] = new Interpolate(pt).getPath();
+
+				// Right now we just have a curvy line.  Connect it the end point
+				// to the origin and then to the starting point to make a 2d solid.
+				// Move off the screen to the bottom and left a bit so we don't see the stroke
+				// on that part of the solid.
 				float leftWall = -in.width/5; 
 				float bottomWall = in.height * 1.2f; 
 				out.path[j].lineTo(pt[pt.length-1].getX(), bottomWall);
