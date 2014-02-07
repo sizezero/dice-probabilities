@@ -3,8 +3,9 @@ package org.kleemann.diceprobabilities.distribution;
 import org.apache.commons.math3.fraction.BigFraction;
 
 /**
- * <p>This is a simple way to cache values from cumulative distribution. It should 
- * wrapped around a distribution after all the sums and multiplies are done. 
+ * <p>This is a simple way to cache values called from Distribution.getCumulativeDistribution() 
+ * so that the call is O(1) instead of O(n).
+ * It should wrapped around a distribution after all the sums and multiplies are done. 
  */
 public class CachedCumulativeDistribution implements Distribution {
 

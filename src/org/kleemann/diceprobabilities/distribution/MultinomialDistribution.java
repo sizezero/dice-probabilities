@@ -53,6 +53,17 @@ public class MultinomialDistribution implements Distribution {
 	 * 
 	 * <p>The method batches the adds so around log2(n) adds are made instead of
 	 * n adds.
+	 * 
+	 * <pre>
+	 * e.g. a call of multiplyLog(DiceDistribution(6), 10)
+	 * results in arithmetic similar to the following:
+	 * 
+	 * 2d = d.add(d)
+	 * 4d = 2d.add(2d)
+	 * 8d = 4d.add(4d)
+	 * 10d = 8d.add(2d)
+	 *  
+	 * </pre>
 	 */
 	private static Distribution multiplyLog(Distribution d, int n) {
 		assert(n>1);
@@ -73,7 +84,7 @@ public class MultinomialDistribution implements Distribution {
 			sums[i] = new MultinomialDistribution(sums[i-1], sums[i-1]);
 		}
 		
-		// reduce n to zero
+		// add large multiples that are less than n until the entire sum is reached
 		Distribution r = null;
 		while (n > 0) {
 			// find the largest power of 2 that is less than or equal to n
@@ -94,7 +105,7 @@ public class MultinomialDistribution implements Distribution {
 	 * <p>This is a form of multiply that uses longs to multiply a distribution
 	 * that has equal occurrences (dice) for most of the calculations.
 	 * Only works for multiplies < 20 for 12 sided dice.  Anything beyond that 
-	 * result in a long underflow and an incorrect result.  
+	 * result in a long underflow and an incorrect result.
 	 */
 	private MultinomialDistribution(DieDistribution d, int mult) {
 
@@ -106,7 +117,6 @@ public class MultinomialDistribution implements Distribution {
 		}
 
 		for (int m=1 ; m<mult ; ++m) { // loop executes mult -1 times
-			// TODO: may be able to move allocations outside of loop
 			long[] old = tgt.clone();
 			tgt = new long[old.length+(d.getSides()+1) - 1];
 			for (int o=0 ; o<old.length ; ++o) {
