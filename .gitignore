@@ -1,8 +1,10 @@
 # generated files
 bin/
 gen/
+.project
 
 tests/bin/
 tests/gen/
+tests/.project
 
 # leaving eclipse project files in for now
