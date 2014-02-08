@@ -1,0 +1,130 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_weight="2"
+    android:orientation="vertical" >
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center" >
+
+        <Button
+            android:id="@+id/pool2_d12"
+            style="@style/die_button"
+            android:background="@drawable/d12_btn" />
+
+        <Button
+            android:id="@+id/pool2_d10"
+            style="@style/die_button"
+            android:background="@drawable/d10_btn" />
+
+        <Button
+            android:id="@+id/pool2_d8"
+            style="@style/die_button"
+            android:background="@drawable/d08_btn" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center" >
+
+        <Button
+            android:id="@+id/pool2_d6"
+            style="@style/die_button"
+            android:background="@drawable/d06_btn" />
+
+        <Button
+            android:id="@+id/pool2_d4"
+            style="@style/die_button"
+            android:background="@drawable/d04_btn" />
+
+        <Button
+            android:id="@+id/pool2_constant"
+            style="@style/die_button"
+            android:background="@drawable/constant_btn" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center" >
+
+        <Button
+            android:id="@+id/pool2_target"
+            style="@style/die_button"
+            android:background="@drawable/target_btn" />
+
+        <Button
+            android:id="@+id/current2_target"
+            style="@style/die_button"
+            android:background="@drawable/target_btn" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="left" >
+
+        <TextView
+            android:id="@+id/answer2_probability"
+            style="@style/probability"
+            android:background="@drawable/result_btn" />
+
+        <TextView
+            android:id="@+id/answer2_fraction"
+            style="@style/fraction"
+            android:background="@drawable/result_btn" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:animateLayoutChanges="true"
+        android:orientation="horizontal" >
+
+        <Button
+            android:id="@+id/current2_d12"
+            style="@style/die_button"
+            android:background="@drawable/d12_btn" />
+
+        <Button
+            android:id="@+id/current2_d10"
+            style="@style/die_button"
+            android:background="@drawable/d10_btn" />
+
+        <Button
+            android:id="@+id/current2_d8"
+            style="@style/die_button"
+            android:background="@drawable/d08_btn" />
+
+        <Button
+            android:id="@+id/current2_d6"
+            style="@style/die_button"
+            android:background="@drawable/d06_btn" />
+
+        <Button
+            android:id="@+id/current2_d4"
+            style="@style/die_button"
+            android:background="@drawable/d04_btn" />
+
+        <Button
+            android:id="@+id/current2_constant"
+            style="@style/die_button"
+            android:background="@drawable/constant_btn" />
+
+        <!--
+             TODO: clear button is here to prevent LinearLayout vert size from 
+			shrinking to zero when all dice are gone. Need a better way to do this
+        -->
+
+        <Button
+            android:id="@+id/clear2"
+            style="@style/die_button"
+            android:text="@string/clear" />
+    </LinearLayout>
+
+</LinearLayout>

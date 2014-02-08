@@ -254,7 +254,7 @@ public class DiceSet {
 				if (fraction.length() > maxFractionChars) {
 					fraction = "! / !";
 				}
-				out.answerFraction = fraction + " " + APPROXIMATELY_EQUAL_TO + " ";
+				out.answerFraction = " " + APPROXIMATELY_EQUAL_TO + " " + fraction;
 				out.answerProbability = answerFormatter.format(f.doubleValue());
 			}
 			
