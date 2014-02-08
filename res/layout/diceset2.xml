@@ -12,17 +12,17 @@
         android:layout_gravity="center" >
 
         <Button
-            android:id="@+id/pool2_d12"
+            android:id="@+id/ds2_pool_d12"
             style="@style/die_button"
             android:background="@drawable/d12_btn" />
 
         <Button
-            android:id="@+id/pool2_d10"
+            android:id="@+id/ds2_pool_d10"
             style="@style/die_button"
             android:background="@drawable/d10_btn" />
 
         <Button
-            android:id="@+id/pool2_d8"
+            android:id="@+id/ds2_pool_d8"
             style="@style/die_button"
             android:background="@drawable/d08_btn" />
     </LinearLayout>
@@ -33,17 +33,17 @@
         android:layout_gravity="center" >
 
         <Button
-            android:id="@+id/pool2_d6"
+            android:id="@+id/ds2_pool_d6"
             style="@style/die_button"
             android:background="@drawable/d06_btn" />
 
         <Button
-            android:id="@+id/pool2_d4"
+            android:id="@+id/ds2_pool_d4"
             style="@style/die_button"
             android:background="@drawable/d04_btn" />
 
         <Button
-            android:id="@+id/pool2_constant"
+            android:id="@+id/ds2_pool_constant"
             style="@style/die_button"
             android:background="@drawable/constant_btn" />
     </LinearLayout>
@@ -54,12 +54,12 @@
         android:layout_gravity="center" >
 
         <Button
-            android:id="@+id/pool2_target"
+            android:id="@+id/ds2_pool_target"
             style="@style/die_button"
             android:background="@drawable/target_btn" />
 
         <Button
-            android:id="@+id/current2_target"
+            android:id="@+id/ds2_current_target"
             style="@style/die_button"
             android:background="@drawable/target_btn" />
     </LinearLayout>
@@ -70,12 +70,12 @@
         android:layout_gravity="left" >
 
         <TextView
-            android:id="@+id/answer2_probability"
+            android:id="@+id/ds2_answer_probability"
             style="@style/probability"
             android:background="@drawable/result_btn" />
 
         <TextView
-            android:id="@+id/answer2_fraction"
+            android:id="@+id/ds2_answer_fraction"
             style="@style/fraction"
             android:background="@drawable/result_btn" />
     </LinearLayout>
@@ -87,32 +87,32 @@
         android:orientation="horizontal" >
 
         <Button
-            android:id="@+id/current2_d12"
+            android:id="@+id/ds2_current_d12"
             style="@style/die_button"
             android:background="@drawable/d12_btn" />
 
         <Button
-            android:id="@+id/current2_d10"
+            android:id="@+id/ds2_current_d10"
             style="@style/die_button"
             android:background="@drawable/d10_btn" />
 
         <Button
-            android:id="@+id/current2_d8"
+            android:id="@+id/ds2_current_d8"
             style="@style/die_button"
             android:background="@drawable/d08_btn" />
 
         <Button
-            android:id="@+id/current2_d6"
+            android:id="@+id/ds2_current_d6"
             style="@style/die_button"
             android:background="@drawable/d06_btn" />
 
         <Button
-            android:id="@+id/current2_d4"
+            android:id="@+id/ds2_current_d4"
             style="@style/die_button"
             android:background="@drawable/d04_btn" />
 
         <Button
-            android:id="@+id/current2_constant"
+            android:id="@+id/ds2_current_constant"
             style="@style/die_button"
             android:background="@drawable/constant_btn" />
 
@@ -122,7 +122,7 @@
         -->
 
         <Button
-            android:id="@+id/clear2"
+            android:id="@+id/ds2_clear"
             style="@style/die_button"
             android:text="@string/clear" />
     </LinearLayout>
