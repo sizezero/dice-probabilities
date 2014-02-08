@@ -14,5 +14,6 @@ PNAME="$1"
 
 cp .project.example .project
 cp tests/.project.example tests/.project
+cp tests/.classpath.example tests/.classpath
 
-perl -p -i -e "s/DiceProbabilities/$PNAME/g" .project tests/.project
+perl -p -i -e "s/DiceProbabilities/$PNAME/g" .project tests/.project tests/.classpath
