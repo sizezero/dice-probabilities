@@ -6,5 +6,6 @@ gen/
 tests/bin/
 tests/gen/
 tests/.project
+tests/.classpath
 
 # leaving eclipse project files in for now
