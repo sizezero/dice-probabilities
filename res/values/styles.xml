@@ -34,8 +34,10 @@
     </style>
 
     <style name="pool" parent="die_button">
-        
-    </style>
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_gravity">fill</item>
+        <item name="android:minWidth">@dimen/pool_button_min_width</item>
+        </style>
     
     <style name="fraction" parent="die_button">
         <item name="android:textSize">15sp</item>
