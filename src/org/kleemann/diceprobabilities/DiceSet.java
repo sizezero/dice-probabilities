@@ -101,7 +101,7 @@ public class DiceSet {
 		dice = new CurrentDicePile[dieType.length];
 		int i = 0;
 		for (DieType dt : dieType) {
-			dice[i] = new CurrentDicePile(dt.getSides(), dt.getCurrent(), diceChanged);
+			dice[i] = CurrentDicePile.create(dt.getSides(), dt.getCurrent(), diceChanged);
 			new PoolDicePile(dt.getPool(), dice[i]);
 			++i;
 		}
@@ -113,11 +113,15 @@ public class DiceSet {
 		
 		assert(target != null);
 		
-		clear.setOnClickListener(new Clear());
-		
 		this.answer_fraction = answer_fraction;
 		this.answer_probability = answer_probability;
 		this.graphSetter = graphSetter;
+
+		
+		final View.OnClickListener clearListener = new Clear();
+		clear.setOnClickListener(clearListener);
+		// explicit clear is necessary to set current constant to GONE
+		clearListener.onClick(clear);
 	}
 
 	/**
@@ -237,15 +241,16 @@ public class DiceSet {
 				final int sides = in.sidesToCount.keyAt(i);
 				final int count = in.sidesToCount.valueAt(i);
 				if (count != 0) {
+					final Distribution allDiceOfOneType;
 					if (sides==1) {
 						// d1 is really just adding a constant
 						dice.add(Integer.toString(count));
+						allDiceOfOneType = new ConstantDistribution(count);
 					} else {
 						dice.add(count+"d"+sides);
+						final DieDistribution singleDie = new DieDistribution(sides);
+						allDiceOfOneType = MultinomialDistribution.multiply(singleDie, count);
 					}
-					// this is the heart of the multinomial sum calculation
-					final DieDistribution singleDie = new DieDistribution(sides);
-					final Distribution allDiceOfOneType = MultinomialDistribution.multiply(singleDie, count);
 					d = MultinomialDistribution.add(d, allDiceOfOneType);
 				}
 			}
@@ -258,7 +263,7 @@ public class DiceSet {
 			out.target = in.target;
 			
 			// format the textual answer of the distribution at the target
-			if (d.size() <= 1) {
+			if (d.upperBound()-d.lowerBound() <= 1) {
 				// if distribution is trivial then show minimal text
 				out.answerFraction = "";
 				out.answerProbability = answerFormatter.format(0.0d);

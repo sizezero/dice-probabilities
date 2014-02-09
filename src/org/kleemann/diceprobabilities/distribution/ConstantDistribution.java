@@ -18,7 +18,10 @@ public class ConstantDistribution implements Distribution {
 	public ConstantDistribution(int x) { this.x = x; }
 	
 	@Override
-	public int size() { return x+1; }
+	public int lowerBound() { return x; }
+
+	@Override
+	public int upperBound() { return x+1; }
 
 	@Override
 	public BigFraction getProbability(int x) {

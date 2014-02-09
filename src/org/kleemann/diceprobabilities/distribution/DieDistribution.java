@@ -17,6 +17,7 @@ public class DieDistribution implements Distribution {
 	private BigFraction probability;
 	
 	public DieDistribution(int sides) {
+		assert(sides>0);
 		this.sides = sides;
 		this.probability = new BigFraction(1,sides); 
 	}
@@ -24,7 +25,12 @@ public class DieDistribution implements Distribution {
 	public int getSides() { return sides; }
 	
 	@Override
-	public int size() {
+	public int lowerBound() {
+		return 1;
+	}
+
+	@Override
+	public int upperBound() {
 		// sides are one based. e.g. a six sided die uses the x values
 		// 1 through 6 inclusive
 		return sides+1;
@@ -41,7 +47,7 @@ public class DieDistribution implements Distribution {
 
 	@Override
 	public BigFraction getCumulativeProbability(int x) {
-		if (x>1 && x<=sides) {
+		if (x>=1 && x<=sides) {
 			return probability.multiply(sides-x+1);
 		} else if (x>sides) {
 			return BigFraction.ZERO;

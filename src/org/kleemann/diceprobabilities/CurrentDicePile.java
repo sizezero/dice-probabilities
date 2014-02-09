@@ -15,10 +15,11 @@ public class CurrentDicePile implements View.OnClickListener {
 
 	private int sides;
 	protected int count;
-	protected Button button;
-	private View.OnClickListener changed;
-	
-	public CurrentDicePile(int sides, Button button, View.OnClickListener changed) {
+	final protected Button button;
+	final protected View.OnClickListener changed;
+
+	protected CurrentDicePile(int sides, Button button,
+			View.OnClickListener changed) {
 		this.sides = sides;
 		this.count = 0;
 		this.button = button;
@@ -26,33 +27,52 @@ public class CurrentDicePile implements View.OnClickListener {
 		this.changed = changed;
 		updateButton();
 	}
-	
-	private void updateButton() {
-		button.setText(sides==1 ? "+"+count : count+"d"+sides);
-		button.setVisibility(count==0 ? View.GONE : View.VISIBLE);
-	}
-	
-	public int getSides() { return sides; }
-	
-	public int getCount() { return count; }
-	
-	public void setCount(int count) {
-		assert(count >= 0);
-		this.count = count;
-		updateButton();
-		changed.onClick(button);		
-	}
-	
-	public void increment() { setCount(count+1); }
 
-	public void decrement() {
-		if (count>0) {
-			setCount(count-1);
+	public static CurrentDicePile create(int sides, Button button,
+			View.OnClickListener changed) {
+		if (sides == 1) {
+			return new ConstantCurrentDicePile(button, changed);
+		} else {
+			return new CurrentDicePile(sides, button, changed);
 		}
 	}
 	
-	public void clear() { setCount(0); }
-	
+	protected void updateButton() {
+		button.setText(count + "d" + sides);
+		button.setVisibility(count == 0 ? View.GONE
+				: View.VISIBLE);
+	}
+
+	public int getSides() {
+		return sides;
+	}
+
+	public int getCount() {
+		return count;
+	}
+
+	public void setCount(int count) {
+		if (count >= 0) {
+			this.count = count;
+			updateButton();
+			changed.onClick(button);
+		}
+	}
+
+	public void increment() {
+		setCount(count + 1);
+	}
+
+	public void decrement() {
+		setCount(count - 1);
+	}
+
+	public void clear() {
+		setCount(0);
+	}
+
 	@Override
-	public void onClick(View v) { decrement(); }
+	public void onClick(View v) {
+		decrement();
+	}
 }

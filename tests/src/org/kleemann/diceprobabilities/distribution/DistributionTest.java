@@ -121,15 +121,17 @@ public class DistributionTest extends TestCase {
 		Distribution d = die;
 		Distribution sum2 = MultinomialDistribution.multiply(d, n);
 		
-		assertEquals(sum1.size(), sum2.size());
-		for (int i=-2 ; i<sum1.size()+2 ; ++i) {
+		assertEquals(sum1.lowerBound(), sum2.lowerBound());
+		assertEquals(sum1.upperBound(), sum2.upperBound());
+		for (int i=sum1.lowerBound()-2 ; i<sum1.lowerBound()+2 ; ++i) {
 			assertEquals(sum1.getProbability(i), sum2.getProbability(i));
 		}
 		
 		// most efficient way
 		Distribution sum3 = MultinomialDistribution.multiply(die, n);
-		assertEquals(sum1.size(), sum3.size());
-		for (int i=-2 ; i<sum1.size()+2 ; ++i) {
+		assertEquals(sum1.lowerBound(), sum3.lowerBound());
+		assertEquals(sum1.upperBound(), sum3.upperBound());
+		for (int i=sum1.lowerBound()-2 ; i<sum1.upperBound()+2 ; ++i) {
 			assertEquals(sum1.getProbability(i), sum3.getProbability(i));
 		}
 	}
@@ -149,19 +151,38 @@ public class DistributionTest extends TestCase {
 	
 	private void distSumsToOne(Distribution d) {
 		BigFraction sum = BigFraction.ZERO;
-		for (int i=0 ; i<d.size(); ++i) {
+		for (int i=d.lowerBound() ; i<d.upperBound(); ++i) {
 			sum = sum.add(d.getProbability(i));
 		}
 		assertEquals(BigFraction.ONE, sum);
-		assertEquals(BigFraction.ONE, d.getCumulativeProbability(0));
-		assertEquals(BigFraction.ZERO, d.getCumulativeProbability(d.size()));
+		assertEquals(BigFraction.ONE, d.getCumulativeProbability(d.lowerBound()));
+		assertEquals(BigFraction.ZERO, d.getCumulativeProbability(d.upperBound()));
 	}
 	
 	private void cachedCumulativeEquals(Distribution d) {
 		Distribution c = new CachedCumulativeDistribution(d);
-		assertEquals(d.size(), c.size());
-		for (int i=0 ; i<d.size(); ++i) {
+		assertEquals(d.lowerBound(), c.lowerBound());
+		assertEquals(d.upperBound(), c.upperBound());
+		for (int i=d.lowerBound() ; i<d.upperBound(); ++i) {
 			assertEquals(d.getCumulativeProbability(i), c.getCumulativeProbability(i));
 		}
+	}
+	
+	public void testNegativeConstant() {
+		Distribution cn4 = new ConstantDistribution(-4);
+		Distribution d6 = new DieDistribution(6);
+		Distribution d = MultinomialDistribution.add(cn4, d6);
+
+		assertEquals(BigFraction.ZERO, d.getProbability(-6));
+		assertEquals(BigFraction.ZERO, d.getProbability(-5));
+		assertEquals(BigFraction.ZERO, d.getProbability(-4));
+		assertEquals(new BigFraction(1,6), d.getProbability(-3));
+		assertEquals(new BigFraction(1,6), d.getProbability(-2));
+		assertEquals(new BigFraction(1,6), d.getProbability(-1));
+		assertEquals(new BigFraction(1,6), d.getProbability(0));
+		assertEquals(new BigFraction(1,6), d.getProbability(1));
+		assertEquals(new BigFraction(1,6), d.getProbability(2));
+		assertEquals(BigFraction.ZERO, d.getProbability(3));
+		assertEquals(BigFraction.ZERO, d.getProbability(4));
 	}
 }

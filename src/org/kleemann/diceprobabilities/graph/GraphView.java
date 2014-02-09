@@ -187,7 +187,8 @@ public class GraphView extends View {
 			out.serial = in.serial;
 
 			// don't display anything if both graphs are trivial
-			if (in.dist[0].size() <= 1 && in.dist[1].size() <= 1) {
+			if (in.dist[0].upperBound()-in.dist[0].upperBound() <= 1 
+					&& in.dist[1].upperBound()-in.dist[1].upperBound() <= 1) {
 				return out;
 			}
 			
@@ -214,7 +215,7 @@ public class GraphView extends View {
 				out.answerText[1] = in.answerText[0];
 			}
 			
-			final int largestSize = Math.max(dist[0].size(), dist[1].size());
+			final int largestSize = Math.max(dist[0].upperBound(), dist[1].upperBound());
 			
 			 // add a few extra values after the distribution peaks; multiples of 10
 			out.ticks = (largestSize+10) - (largestSize % 10);
@@ -224,7 +225,7 @@ public class GraphView extends View {
 			for (int j=0 ; j<2 ; ++j) {
 				
 				// don't display a trivial graph
-				if (dist[j].size() <= 1) {
+				if (dist[j].upperBound()-dist[j].lowerBound() <= 1) {
 					out.path[j] = new Path();
 					out.answer[j] = new Point(0.0f, in.height);
 					continue;
@@ -281,7 +282,6 @@ public class GraphView extends View {
 		}
 	}
 
-	
 	@Override
 	protected void onDraw(Canvas canvas) {
 		canvas.drawPaint(pBackground);
@@ -365,7 +365,7 @@ public class GraphView extends View {
 	 */
 	private static boolean greaterCumulative(Distribution d1, Distribution d2) {
 		// assumes cumulative distributions are strictly decreasing
-		final int n = Math.max(d1.size(),d2.size())+1;
+		final int n = Math.max(d1.upperBound(),d2.upperBound())+1;
 		for (int i=0 ; i<n ; ++i) {
 			// TODO this looks O(n*m) due to the slow implementation of getCumulativeProbability()
 			if (d1.getCumulativeProbability(i).compareTo(d2.getCumulativeProbability(i)) == 1) {

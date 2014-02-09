@@ -20,7 +20,9 @@ import org.apache.commons.math3.fraction.BigFraction;
  */
 public class MultinomialDistribution implements Distribution {
 
-	private BigFraction[] vals;
+	final private BigFraction[] vals;
+	final private int lower;
+	final private int upper;
 
 	/**
 	 * <p>This is the simplest form of summation.  It is guaranteed to work for 
@@ -29,21 +31,25 @@ public class MultinomialDistribution implements Distribution {
 	 */
 	private MultinomialDistribution(Distribution d1, Distribution d2) {
 		// find the new range of the distribution.
-		// It should equal the sum of the highest values of the two distributions
+		// It should be bounded by the sum of the lowest two values and the sum
+		// of the highest two values
+		lower = d1.lowerBound()+d2.lowerBound();
+		upper = d1.upperBound()+d2.upperBound()-1;
 		
 		// d6 has size of 7; max sum is 12
 		// 7+7-1 equals allocation of 13 (we count zero)
-		vals = new BigFraction[d1.size()+d2.size()-1];
+		vals = new BigFraction[upper-lower];
 
 		for (int i=0 ; i<vals.length ; ++i) {
 			vals[i] = BigFraction.ZERO;
 		}
 		
-		for (int i1=0 ; i1<d1.size() ; ++i1) {
-			for (int i2=0 ; i2<d2.size(); ++i2) {
+		for (int i1=d1.lowerBound() ; i1<d1.upperBound() ; ++i1) {
+			for (int i2=d2.lowerBound() ; i2<d2.upperBound(); ++i2) {
 				final int sum = i1 + i2;
 				final BigFraction product = d1.getProbability(i1).multiply(d2.getProbability(i2));
-				vals[sum] = vals[sum].add(product);
+				final int i = sum-lower;
+				vals[i] = vals[i].add(product);
 			}
 		}
 	}
@@ -109,8 +115,11 @@ public class MultinomialDistribution implements Distribution {
 	 */
 	private MultinomialDistribution(DieDistribution d, int mult) {
 
-		final BigFraction unit = d.getProbability(1).pow(mult);
+		lower = mult;
+		upper = d.getSides() * mult + 1;
 		
+		final BigFraction unit = d.getProbability(1).pow(mult);
+
 		long[] tgt = new long[d.getSides()+1];
 		for (int i=1 ; i<=d.getSides(); ++i) {
 			tgt[i] = 1;
@@ -118,7 +127,7 @@ public class MultinomialDistribution implements Distribution {
 
 		for (int m=1 ; m<mult ; ++m) { // loop executes mult -1 times
 			long[] old = tgt.clone();
-			tgt = new long[old.length+(d.getSides()+1) - 1];
+			tgt = new long[old.length+d.getSides()];
 			for (int o=0 ; o<old.length ; ++o) {
 				for (int s=1 ; s<=d.getSides() ; ++s) {
 					final int sum = o + s;
@@ -128,18 +137,21 @@ public class MultinomialDistribution implements Distribution {
 		}
 		
 		// convert tgt to BigFraction
-		vals = new BigFraction[tgt.length];
+		vals = new BigFraction[upper-lower];
 		for (int i=0 ; i<vals.length ; ++i) {
-			vals[i] = unit.multiply(tgt[i]);
+			vals[i] = unit.multiply(tgt[i+lower]);
 		}
 	}
 	
 	@Override
-	public int size() { return vals.length; }
+	public int lowerBound() { return lower; }
+
+	@Override
+	public int upperBound() { return upper; }
 
 	@Override
 	public BigFraction getProbability(int x) {
-		return (x>=0 && x<vals.length) ? vals[x] : BigFraction.ZERO;
+		return (x>=lower && x<upper) ? vals[x-lower] : BigFraction.ZERO;
 	}
 
 	/**
@@ -148,8 +160,9 @@ public class MultinomialDistribution implements Distribution {
 	@Override
 	public BigFraction getCumulativeProbability(int x) {
 		BigFraction sum = BigFraction.ZERO;
-		for (int i=x ; i<vals.length ; ++i) {
-			sum = sum.add(vals[i]);
+		x = Math.max(x, lower); // no need to add up a bunch of zeros
+		for ( ; x<upper ; ++x) {
+			sum = sum.add(getProbability(x));
 		}
 		return sum;
 	}
@@ -158,14 +171,18 @@ public class MultinomialDistribution implements Distribution {
 	 * <p>Sums two distributions. 
 	 */
 	public static Distribution add(Distribution d1, Distribution d2) {
-		// the only distribution with a size of one is ZERO 
-		if (d1.size()==1) {
+		if (isZero(d1)) {
 			return d2;
-		} else if (d2.size()==1) {
+		} else if (isZero(d2)) {
 			return d1;
 		} else {
 			return new MultinomialDistribution(d1, d2);
 		}
+	}
+	
+	private static boolean isZero(Distribution d) {
+		return d.lowerBound()==0 && d.upperBound()==1 
+				&& d.getProbability(0).equals(BigFraction.ONE);
 	}
 	
 	/**

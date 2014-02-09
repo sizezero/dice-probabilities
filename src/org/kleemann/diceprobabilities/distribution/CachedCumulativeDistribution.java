@@ -14,11 +14,13 @@ public class CachedCumulativeDistribution implements Distribution {
 	
 	public CachedCumulativeDistribution(Distribution d) {
 		this.d = d;
-		if (d.size() > 0) {
-			cums = new BigFraction[d.size()];
-			cums[d.size()-1] = d.getProbability(d.size()-1);
-			for (int x=d.size()-2 ; x>=0 ; --x) {
-				cums[x] = cums[x+1].add(d.getProbability(x));
+		if (d.lowerBound() < d.upperBound()) {
+			cums = new BigFraction[d.upperBound()-d.lowerBound()];
+			int i=cums.length-1;
+			cums[i] = d.getProbability(d.upperBound()-1);
+			--i;
+			for (int x=d.upperBound()-2 ; x>=d.lowerBound() ; --x, --i) {
+				cums[i] = cums[i+1].add(d.getProbability(x));
 			}
 		} else {
 			cums = null;
@@ -26,7 +28,10 @@ public class CachedCumulativeDistribution implements Distribution {
 	}
 
 	@Override
-	public int size() { return d.size(); }
+	public int lowerBound() { return d.lowerBound(); }
+
+	@Override
+	public int upperBound() { return d.upperBound(); }
 
 	@Override
 	public BigFraction getProbability(int x) {
@@ -35,12 +40,12 @@ public class CachedCumulativeDistribution implements Distribution {
 
 	@Override
 	public BigFraction getCumulativeProbability(int x) {
-		if (x < 0) {
+		if (x < d.lowerBound()) {
 			return BigFraction.ONE;
-		} else if (x >= d.size()) {
+		} else if (x >= d.upperBound()) {
 			return BigFraction.ZERO;
 		} else {
-			return cums[x];
+			return cums[x-d.lowerBound()];
 		}
 	}
 

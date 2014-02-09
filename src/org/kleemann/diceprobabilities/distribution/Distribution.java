@@ -14,9 +14,11 @@ public interface Distribution {
 	/**
 	 * Although the distribution returns legal values across all integers,
 	 * it is guaranteed that there are no non-zero values in the 
-	 * range of 0 to size()-1.  This can help with enumeration. 
+	 * range of lowerBound() to upperBound()-1.  This can help with enumeration. 
 	 */
-	int size();
+	int lowerBound();
+
+	int upperBound();
 	
 	/**
 	 * <p>Returns the probability of the random variable at the point x.
