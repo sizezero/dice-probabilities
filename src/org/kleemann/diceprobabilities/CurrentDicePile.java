@@ -49,13 +49,14 @@ public class CurrentDicePile implements View.OnClickListener {
 	
 	public void increment() { setCount(count+1); }
 
-	public void decrement() {
-		if (count != 0) {
-			setCount(count-1);
-		}
-	}
+	public void decrement() { add(-1); }
 	
 	public void clear() { setCount(0); }
+	
+	public void add(int count) {
+		int n = getCount() + count;
+		setCount(n<0 ? 0 : n);
+	}
 	
 	@Override
 	public void onClick(View v) { decrement(); }

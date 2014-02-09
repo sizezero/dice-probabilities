@@ -54,30 +54,24 @@
         android:layout_gravity="center" >
 
         <Button
-            android:id="@+id/ds2_pool_target"
+            android:id="@+id/ds2_pool_target_m5"
             style="@style/die_button"
             android:background="@drawable/target_btn" />
 
         <Button
-            android:id="@+id/ds2_current_target"
+            android:id="@+id/ds2_pool_target_m1"
             style="@style/die_button"
             android:background="@drawable/target_btn" />
-    </LinearLayout>
 
-    <LinearLayout
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="left" >
+        <Button
+            android:id="@+id/ds2_pool_target_1"
+            style="@style/die_button"
+            android:background="@drawable/target_btn" />
 
-        <TextView
-            android:id="@+id/ds2_answer_probability"
-            style="@style/probability"
-            android:background="@drawable/result_btn" />
-
-        <TextView
-            android:id="@+id/ds2_answer_fraction"
-            style="@style/fraction"
-            android:background="@drawable/result_btn" />
+        <Button
+            android:id="@+id/ds2_pool_target_5"
+            style="@style/die_button"
+            android:background="@drawable/target_btn" />
     </LinearLayout>
 
     <LinearLayout
@@ -122,9 +116,30 @@
         -->
 
         <Button
+            android:id="@+id/ds2_current_target"
+            style="@style/die_button"
+            android:background="@drawable/target_btn" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="left" >
+
+        <Button
             android:id="@+id/ds2_clear"
             style="@style/die_button"
             android:text="@string/clear" />
+
+        <TextView
+            android:id="@+id/ds2_answer_probability"
+            style="@style/probability"
+            android:background="@drawable/result_btn" />
+
+        <TextView
+            android:id="@+id/ds2_answer_fraction"
+            style="@style/fraction"
+            android:background="@drawable/result_btn" />
     </LinearLayout>
 
 </LinearLayout>

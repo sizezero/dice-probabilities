@@ -50,8 +50,19 @@ public class DiceSet {
 		public Button getCurrent() { return current; }
 	}
 	
+	public static class TargetParam {
+		private int increment;
+		private Button button;
+		public TargetParam(int increment, Button button) {
+			this.increment = increment;
+			this.button = button;
+		}
+		public int getIncrement() { return increment; }
+		public Button getButton() { return button; }
+	}
+	
 	private CurrentDicePile[] dice;
-	private CurrentDicePile target;
+	private Target target;
 	
 	private TextView answer_fraction;
 	private TextView answer_probability;
@@ -73,6 +84,8 @@ public class DiceSet {
 	
 	public DiceSet(
 			DieType[] dieType,
+			TargetParam[] targetParam,
+			Button targetButton,
 			Button clear,
 			TextView answer_fraction,
 			TextView answer_probability,
@@ -84,19 +97,19 @@ public class DiceSet {
 		
 		// associate each Button object with a behavioral object
 		CurrentDiceChanged diceChanged = new CurrentDiceChanged();
-		dice = new CurrentDicePile[dieType.length-1]; // don't allocate space for the target
-		int i=0;
+		dice = new CurrentDicePile[dieType.length];
+		int i = 0;
 		for (DieType dt : dieType) {
-			if (dt.getSides() == 0) {
-				// zero sides signifies target
-				target = new Target(dt.getCurrent(),diceChanged);
-				new PoolDicePile(dt.getPool(), target);
-			} else {
-				dice[i] = new CurrentDicePile(dt.getSides(), dt.getCurrent(), diceChanged);
-				new PoolDicePile(dt.getPool(), dice[i]);
-				++i;
-			}
+			dice[i] = new CurrentDicePile(dt.getSides(), dt.getCurrent(), diceChanged);
+			new PoolDicePile(dt.getPool(), dice[i]);
+			++i;
 		}
+		
+		target = new Target(targetButton, diceChanged);
+		for (TargetParam tp : targetParam) {
+			new TargetPool(tp.getIncrement(), tp.getButton(), target);
+		}
+		
 		assert(target != null);
 		
 		clear.setOnClickListener(new Clear());
