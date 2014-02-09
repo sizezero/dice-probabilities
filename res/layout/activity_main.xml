@@ -23,17 +23,16 @@
         <Space
             android:layout_width="match_parent"
             android:layout_height="0dp"
-            android:layout_weight="1" />
+            android:layout_weight="3" />
 
         <LinearLayout
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
-            android:layout_weight="2"
             android:orientation="horizontal" >
 
             <Space
-                android:layout_height="match_parent"
                 android:layout_width="0dp"
+                android:layout_height="match_parent"
                 android:layout_weight="1" />
 
             <Button
@@ -42,8 +41,8 @@
                 android:text="@string/copy_down" />
 
             <Space
-                android:layout_height="match_parent"
                 android:layout_width="0dp"
+                android:layout_height="match_parent"
                 android:layout_weight="1" />
 
             <Button
@@ -52,15 +51,15 @@
                 android:text="@string/copy_up" />
 
             <Space
-                android:layout_height="match_parent"
                 android:layout_width="0dp"
+                android:layout_height="match_parent"
                 android:layout_weight="1" />
         </LinearLayout>
 
         <Space
             android:layout_width="match_parent"
             android:layout_height="0dp"
-            android:layout_weight="1" />
+            android:layout_weight="3" />
 
         <include layout="@layout/diceset2" />
 
