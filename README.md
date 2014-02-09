@@ -48,6 +48,8 @@ The colors of the buttons were chosen to match the color of the dice that my pla
 
 The code is open source under a fairly free license.  Feel free to play around with it.
 
+Start by downloading the the [android development tools](http://developer.android.com).
+
 ### Command Line
 
 ```bash
