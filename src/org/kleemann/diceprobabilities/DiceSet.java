@@ -32,9 +32,6 @@ public class DiceSet {
 	 * <p>Caller must pass an array of these objects to the DiceSet constructor.
 	 * A pressing a pool die adds to the target die.  Pressing a target die
 	 * decreases it's value.
-	 * 
-	 * <p>A dice with zero sides signifies the target value. e.g. the value 
-	 * we are trying to beat with the dice rolls.
 	 */
 	public static class DieType {
 		private int sides;
