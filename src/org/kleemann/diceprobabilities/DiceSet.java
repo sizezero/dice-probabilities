@@ -244,7 +244,11 @@ public class DiceSet {
 					final Distribution allDiceOfOneType;
 					if (sides==1) {
 						// d1 is really just adding a constant
-						dice.add(Integer.toString(count));
+						if (count < 0) {
+							dice.add("- "+Integer.toString(-count));
+						} else {
+							dice.add(Integer.toString(count));
+						}
 						allDiceOfOneType = new ConstantDistribution(count);
 					} else {
 						dice.add(count+"d"+sides);
@@ -289,8 +293,13 @@ public class DiceSet {
 			} else {
 				StringBuilder sb = new StringBuilder(dice.get(0));
 				for (int i=1 ; i<dice.size() ; ++i) {
-					sb.append(" + ");
-					sb.append(dice.get(i));
+					final String die = dice.get(i);
+					if (die.startsWith("-")) {
+						sb.append(" ");
+					} else {
+						sb.append(" + ");
+					}
+					sb.append(die);
 				}
 				sb.append(" ");
 				sb.append(GREATER_THAN_OR_EQUAL_TO);
