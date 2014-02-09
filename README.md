@@ -1,7 +1,7 @@
 
 # Dice Probabilities
 
-This is a small android app that calculates the probabilities of multiple dice exceeding a specified number.  It is particularly useful when playing the game [Pathfinder the card game](http://boardgamegeek.com/boardgame/133038/pathfinder-adventure-card-game-rise-of-the-runelor)
+This is a small android app that calculates the probabilities of multiple dice exceeding a specified number.  It is particularly designed for playing the game [Pathfinder the card game](http://boardgamegeek.com/boardgame/133038/pathfinder-adventure-card-game-rise-of-the-runelor)
 
 <a href="https://play.google.com/store/apps/details?id=org.kleemann.diceprobabilities">
   <img alt="Android app on Google Play"
@@ -10,7 +10,15 @@ This is a small android app that calculates the probabilities of multiple dice e
 
 ## Workflow
 
-The app is a simple dashboard that lets you easily choose a set of dice and a target value, copy the dice set to a second dice set, modify the second dice set and compare the two probabilities.
+The app is a simple dashboard that lets you quickly choose a set of dice and a target value, copy the dice set to a second dice set, modify the second dice set and compare the two probabilities. The app is design for speed of use not ease of learning.
+
+## Hints
+
+The following are some of the more obscure features:
+
+1. To remove a die from the dice set, press the die that is in the target that dice set. (just above the answer percentage)
+
+2. To display a detailed graph of the results, press the background graph (any part of the display that is not a button)
 
 ## Tutorial
 
@@ -36,6 +44,28 @@ The app starts to bog down if you add more than a dozen dice to the dice set. Th
 
 The colors of the buttons were chosen to match the color of the dice that my play group uses. I understand that they are not the most subtle colors.
 
+## Development
+
+The code is open source under a fairly free license.  Feel free to play around with it.
+
+### Command Line
+
+```bash
+$ git clone http://github.com/sizezero/dice-probabilities.git DiceProbabilities
+$ android update project -n DiceProbabilities -p DiceProbabilities
+$ android update test-project -p DiceProbabilities/tests -m ..
+$ cd DiceProbabilities
+$ ant -p
+$ ant debug
+$ ant install
+$ cd tests
+$ ant test
+```
+
+### Eclipse
+
+TODO
+
 ## Background
 
 The game has borrowed from the interfaces of two other apps:
@@ -48,5 +78,3 @@ The main purpose of this project is:
 * to provide a useful app to my game group
 * to allow me to learn android development
 * to try out github
-
-
