@@ -29,7 +29,7 @@
         <item name="android:includeFontPadding">false</item>
         <item name="android:minWidth">0dp</item>
         <item name="android:minHeight">0dp</item>
-        <item name="android:textSize">22sp</item>
+        <item name="android:textSize">@dimen/die_text_size</item>
         <item name="android:layout_margin">2dp</item>
     </style>
 
@@ -40,12 +40,12 @@
         </style>
     
     <style name="fraction" parent="die_button">
-        <item name="android:textSize">15sp</item>
+        <item name="android:textSize">@dimen/fraction_text_size</item>
         <item name="android:layout_gravity">center</item>
     </style>
 
     <style name="probability" parent="die_button">
-        <item name="android:textSize">30sp</item>
+        <item name="android:textSize">@dimen/probability_text_size</item>
         <item name="android:layout_gravity">center</item>
     </style>
 

@@ -5,4 +5,10 @@
          screen margins) for sw600dp devices (e.g. 7" tablets) here.
     -->
 
+    <dimen name="activity_horizontal_margin">128dp</dimen>
+    <dimen name="die_text_size">40sp</dimen>
+    <dimen name="fraction_text_size">25sp</dimen>
+    <dimen name="probability_text_size">60sp</dimen>
+    <dimen name="pool_button_min_width">100dp</dimen>
+
 </resources>

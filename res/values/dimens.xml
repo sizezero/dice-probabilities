@@ -4,6 +4,11 @@
     <dimen name="activity_horizontal_margin">16dp</dimen>
     <dimen name="activity_vertical_margin">16dp</dimen>
 
+    <dimen name="die_text_size">22sp</dimen>
+    <dimen name="fraction_text_size">15sp</dimen>
+    <dimen name="probability_text_size">30sp</dimen>
+    <dimen name="pool_button_min_width">70dp</dimen>
+    
     <dimen name="graph_stroke_width">5dp</dimen>
     <dimen name="answer_stroke_width">2dp</dimen>
     <dimen name="ruler_stroke_width">3dp</dimen>
@@ -13,6 +18,5 @@
     <dimen name="crosshair_radius">5dp</dimen>
     <dimen name="formula_text_size">20sp</dimen>
     <dimen name="formula_text_offset_y">-3dp</dimen>
-    <dimen name="pool_button_min_width">70dp</dimen>
     
 </resources>
