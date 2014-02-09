@@ -10,17 +10,17 @@
 
         <Button
             android:id="@+id/ds1_pool_d12"
-            style="@style/die_button"
+            style="@style/pool"
             android:background="@drawable/d12_btn" />
 
         <Button
             android:id="@+id/ds1_pool_d10"
-            style="@style/die_button"
+            style="@style/pool"
             android:background="@drawable/d10_btn" />
 
         <Button
             android:id="@+id/ds1_pool_d8"
-            style="@style/die_button"
+            style="@style/pool"
             android:background="@drawable/d08_btn" />
     </LinearLayout>
 
@@ -32,17 +32,17 @@
 
         <Button
             android:id="@+id/ds1_pool_d6"
-            style="@style/die_button"
+            style="@style/pool"
             android:background="@drawable/d06_btn" />
 
         <Button
             android:id="@+id/ds1_pool_d4"
-            style="@style/die_button"
+            style="@style/pool"
             android:background="@drawable/d04_btn" />
 
         <Button
             android:id="@+id/ds1_pool_constant"
-            style="@style/die_button"
+            style="@style/pool"
             android:background="@drawable/constant_btn" />
     </LinearLayout>
 
@@ -54,22 +54,22 @@
 
         <Button
             android:id="@+id/ds1_pool_target_m5"
-            style="@style/die_button"
+            style="@style/pool"
             android:background="@drawable/target_btn" />
 
         <Button
             android:id="@+id/ds1_pool_target_m1"
-            style="@style/die_button"
+            style="@style/pool"
             android:background="@drawable/target_btn" />
 
         <Button
             android:id="@+id/ds1_pool_target_1"
-            style="@style/die_button"
+            style="@style/pool"
             android:background="@drawable/target_btn" />
 
         <Button
             android:id="@+id/ds1_pool_target_5"
-            style="@style/die_button"
+            style="@style/pool"
             android:background="@drawable/target_btn" />
     </LinearLayout>
 
@@ -132,7 +132,7 @@
 
         <Button
             android:id="@+id/ds1_clear"
-            style="@style/die_button"
+            style="@style/clear"
             android:text="@string/clear" />
 
         <TextView

@@ -31,23 +31,28 @@
         <item name="android:minHeight">0dp</item>
         <item name="android:textSize">22sp</item>
         <item name="android:layout_margin">2dp</item>
-        <!--  
-        <item name="android:gravity">left</item>
-        <item name="android:layout_marginLeft">45dip</item>
-        <item name="android:layout_marginRight">45dip</item>
-        <item name="android:paddingLeft">-30dip</item>
-        <item name="android:paddingRight">-30dip</item>
-        -->
     </style>
 
+    <style name="pool" parent="die_button">
+        
+    </style>
+    
     <style name="fraction" parent="die_button">
         <item name="android:textSize">15sp</item>
         <item name="android:layout_gravity">center</item>
     </style>
-    
+
     <style name="probability" parent="die_button">
         <item name="android:textSize">30sp</item>
         <item name="android:layout_gravity">center</item>
+    </style>
+
+    <style name="copy" parent="die_button">
+        <item name="android:textScaleX">2.5</item>
+    </style>
+
+    <style name="clear" parent="die_button">
+        <item name="android:textScaleX">2.0</item>
     </style>
 
 </resources>

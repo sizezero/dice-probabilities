@@ -132,7 +132,7 @@
 
         <Button
             android:id="@+id/ds2_clear"
-            style="@style/die_button"
+            style="@style/clear"
             android:text="@string/clear" />
 
         <TextView

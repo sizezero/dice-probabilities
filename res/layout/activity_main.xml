@@ -37,8 +37,9 @@
 
             <Button
                 android:id="@+id/copy_down"
-                style="@style/die_button"
-                android:text="@string/copy_down" />
+                style="@style/copy"
+                android:text="@string/copy_down"
+                />
 
             <Space
                 android:layout_width="0dp"
@@ -47,8 +48,9 @@
 
             <Button
                 android:id="@+id/copy_up"
-                style="@style/die_button"
-                android:text="@string/copy_up" />
+                style="@style/copy"
+                android:text="@string/copy_up"
+                android:textScaleX="2.5" />
 
             <Space
                 android:layout_width="0dp"
