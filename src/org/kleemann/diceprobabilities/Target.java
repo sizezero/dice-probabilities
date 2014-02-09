@@ -8,36 +8,46 @@ import android.widget.Button;
  * target of the roll.  Primary difference is the rendering of the value
  * and a different default value.
  */
-public class Target extends CurrentDicePile {
+public class Target implements View.OnClickListener {
 
 	private static final String GREATER_THAN_OR_EQUAL_TO = "\u2265"; 
 	
 	private final int defaultTarget;
+	private int count;
+	private Button button;
+	private View.OnClickListener changed;
 	
-	public Target(Button button, View.OnClickListener listener) {
-		super(1, button, listener);
+	public Target(Button button, View.OnClickListener changed) {
 		this.defaultTarget = button.getResources().getInteger(R.integer.default_target);
-		// slightly inefficient since constructor sets count to zero
 		this.count = defaultTarget;
+		this.button = button;
+		this.changed = changed;
+		button.setOnClickListener(this);
 		updateButton();
 	}
 
-	@Override
-	protected String render() {
-		return GREATER_THAN_OR_EQUAL_TO + getCount(); 
-	}
-
-	/**
-	 * Always show the ToBeat value even if it's zero
-	 */
-	@Override
-	protected void updateButton() {
-		button.setText(render());
+	private void updateButton() {
+		button.setText(GREATER_THAN_OR_EQUAL_TO + count);
 	}
 	
-	@Override
+	public int getCount() { return count; }
+	
+	public void setCount(int count) {
+		assert(count >= 0);
+		this.count = count;
+		updateButton();
+		changed.onClick(button);		
+	}
+	
+	public void add(int count) {
+		int n = this.count + count;
+		setCount(n<0 ? 0 : n);
+	}
+
 	public void clear() {
 		setCount(defaultTarget);
 	}
-
+	
+	@Override
+	public void onClick(View v) { add(-1); }
 }

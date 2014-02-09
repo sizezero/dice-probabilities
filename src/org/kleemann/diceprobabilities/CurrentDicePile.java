@@ -27,15 +27,11 @@ public class CurrentDicePile implements View.OnClickListener {
 		updateButton();
 	}
 	
-	protected void updateButton() {
-		button.setText(render());
+	private void updateButton() {
+		button.setText(sides==1 ? "+"+count : count+"d"+sides);
 		button.setVisibility(count==0 ? View.GONE : View.VISIBLE);
 	}
 	
-	protected String render() {
-		return sides==1 ? "+"+count : count+"d"+sides; 
-	}
-
 	public int getSides() { return sides; }
 	
 	public int getCount() { return count; }
@@ -49,14 +45,13 @@ public class CurrentDicePile implements View.OnClickListener {
 	
 	public void increment() { setCount(count+1); }
 
-	public void decrement() { add(-1); }
+	public void decrement() {
+		if (count>0) {
+			setCount(count-1);
+		}
+	}
 	
 	public void clear() { setCount(0); }
-	
-	public void add(int count) {
-		int n = getCount() + count;
-		setCount(n<0 ? 0 : n);
-	}
 	
 	@Override
 	public void onClick(View v) { decrement(); }
