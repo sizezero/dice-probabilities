@@ -6,7 +6,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
-        android:columnCount="4" >
+        android:columnCount="6" >
 
         <Button
             android:id="@+id/ds2_pool_d12"
@@ -32,50 +32,50 @@
         <Button
             android:id="@+id/ds2_pool_d6"
             style="@style/pool"
-            android:layout_column="0"
-            android:layout_row="1"
+            android:layout_column="3"
+            android:layout_row="0"
             android:background="@drawable/d06_btn" />
 
         <Button
             android:id="@+id/ds2_pool_d4"
             style="@style/pool"
-            android:layout_column="1"
-            android:layout_row="1"
+            android:layout_column="4"
+            android:layout_row="0"
             android:background="@drawable/d04_btn" />
 
         <Button
             android:id="@+id/ds2_pool_constant"
             style="@style/pool"
-            android:layout_column="2"
-            android:layout_row="1"
+            android:layout_column="5"
+            android:layout_row="0"
             android:background="@drawable/constant_btn" />
 
         <Button
             android:id="@+id/ds2_pool_target_m5"
             style="@style/pool"
-            android:layout_column="0"
-            android:layout_row="3"
+            android:layout_column="1"
+            android:layout_row="2"
             android:background="@drawable/target_btn" />
 
         <Button
             android:id="@+id/ds2_pool_target_m1"
             style="@style/pool"
-            android:layout_column="1"
-            android:layout_row="3"
+            android:layout_column="2"
+            android:layout_row="2"
             android:background="@drawable/target_btn" />
 
         <Button
             android:id="@+id/ds2_pool_target_1"
             style="@style/pool"
-            android:layout_column="2"
-            android:layout_row="3"
+            android:layout_column="3"
+            android:layout_row="2"
             android:background="@drawable/target_btn" />
 
         <Button
             android:id="@+id/ds2_pool_target_5"
             style="@style/pool"
-            android:layout_column="3"
-            android:layout_row="3"
+            android:layout_column="4"
+            android:layout_row="2"
             android:background="@drawable/target_btn" />
     </GridLayout>
 
@@ -124,6 +124,12 @@
             android:id="@+id/ds2_current_target"
             style="@style/die_button"
             android:background="@drawable/target_btn" />
+
+        <Button
+            android:id="@+id/copy_up"
+            style="@style/copy"
+            android:text="@string/copy_up"
+            android:textScaleX="2.5" />
     </LinearLayout>
 
     <LinearLayout

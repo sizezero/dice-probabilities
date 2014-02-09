@@ -120,11 +120,6 @@
             style="@style/die_button"
             android:background="@drawable/constant_btn" />
 
-        <!--
-             TODO: clear button is here to prevent LinearLayout vert size from 
-			shrinking to zero when all dice are gone. Need a better way to do this
-        -->
-
         <Button
             android:id="@+id/ds1_current_target"
             style="@style/die_button"
