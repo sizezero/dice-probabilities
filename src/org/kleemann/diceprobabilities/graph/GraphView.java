@@ -187,8 +187,8 @@ public class GraphView extends View {
 			out.serial = in.serial;
 
 			// don't display anything if both graphs are trivial
-			if (in.dist[0].upperBound()-in.dist[0].upperBound() <= 1 
-					&& in.dist[1].upperBound()-in.dist[1].upperBound() <= 1) {
+			if (isTrivialDistribution(in.dist[0]) 
+					&& isTrivialDistribution(in.dist[1])) {
 				return out;
 			}
 			
@@ -225,7 +225,7 @@ public class GraphView extends View {
 			for (int j=0 ; j<2 ; ++j) {
 				
 				// don't display a trivial graph
-				if (dist[j].upperBound()-dist[j].lowerBound() <= 1) {
+				if (isTrivialDistribution(dist[j])) {
 					out.path[j] = new Path();
 					out.answer[j] = new Point(0.0f, in.height);
 					continue;
@@ -373,5 +373,12 @@ public class GraphView extends View {
 			}
 		}
 		return false;
+	}
+
+	/**
+	 * <p>Catches ConstantDistribution.ZERO 
+	 */
+	private static boolean isTrivialDistribution(Distribution d) {
+		return d.lowerBound()==0 && d.upperBound()==1;
 	}
 }
