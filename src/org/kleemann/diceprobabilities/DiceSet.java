@@ -73,6 +73,8 @@ public class DiceSet {
 	// data members below here are thread-safe
 	
 	private final DecimalFormat answerFormatter;
+	private final String answerHighest;
+	private final String answerSecondHighest;
 	private final int maxFractionChars;
 
 	private static final String APPROXIMATELY_EQUAL_TO = "\u2245";
@@ -90,6 +92,8 @@ public class DiceSet {
 			) {
 		
 		this.answerFormatter = new DecimalFormat(clear.getResources().getString(R.string.answer_format));
+		this.answerHighest = answerFormatter.format(1.0d);
+		this.answerSecondHighest = clear.getResources().getString(R.string.answer_second_highest);
 		this.maxFractionChars = clear.getResources().getInteger(R.integer.max_fraction_chars); 
 		
 		// associate each Button object with a behavioral object
@@ -259,13 +263,19 @@ public class DiceSet {
 				out.answerFraction = "";
 				out.answerProbability = answerFormatter.format(0.0d);
 			} else {
-				BigFraction f = d.getCumulativeProbability(in.target);
+				final BigFraction f = d.getCumulativeProbability(in.target);
+				
 				String fraction = f.toString();
 				if (fraction.length() > maxFractionChars) {
 					fraction = "! / !";
 				}
 				out.answerFraction = " " + APPROXIMATELY_EQUAL_TO + " " + fraction;
+				
 				out.answerProbability = answerFormatter.format(f.doubleValue());
+				// don't round to 100% ; only show 100% if the probability is exactly 1.0
+				if (out.answerProbability.equals(answerHighest) && !f.equals(BigFraction.ONE)) {
+					out.answerProbability = answerSecondHighest;
+				}
 			}
 			
 			// convert the dice array into a formula String
