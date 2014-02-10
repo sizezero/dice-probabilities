@@ -53,4 +53,9 @@
 	<color name="graph_ruler">#888888</color>
 	<color name="graph_formula_text">#000000</color>
 				
+	<color name="special_base">#2fe5b4</color>
+	<color name="special_stroke">#24ab87</color>
+	<color name="special_gradientS">#d5f3eb</color>
+	<color name="special_gradientE">#126851</color>
+		
 </resources>

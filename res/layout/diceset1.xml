@@ -32,21 +32,21 @@
         <Button
             android:id="@+id/ds1_pool_d6"
             style="@style/pool"
-            android:layout_column="0"
-            android:layout_row="1"
+            android:layout_column="3"
+            android:layout_row="0"
             android:background="@drawable/d06_btn" />
 
         <Button
             android:id="@+id/ds1_pool_d4"
             style="@style/pool"
-            android:layout_column="1"
+            android:layout_column="0"
             android:layout_row="1"
             android:background="@drawable/d04_btn" />
 
         <Button
             android:id="@+id/ds1_pool_constant"
             style="@style/pool"
-            android:layout_column="2"
+            android:layout_column="1"
             android:layout_row="1"
             android:background="@drawable/constant_btn" />
 
@@ -77,6 +77,13 @@
             android:layout_column="3"
             android:layout_row="3"
             android:background="@drawable/target_btn" />
+
+        <Spinner
+            android:id="@+id/ds1_special"
+            style="@style/special"
+            android:layout_column="2"
+            android:layout_columnSpan="2"
+            android:layout_row="1" />
     </GridLayout>
 
     <Space

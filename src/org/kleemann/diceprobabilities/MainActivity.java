@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.app.Activity;
 import android.view.View;
 import android.widget.Button;
+import android.widget.Spinner;
 import android.widget.TextView;
 
 /**
@@ -54,6 +55,7 @@ public class MainActivity extends Activity {
 								(Button)findViewById(R.id.ds1_pool_d12), 
 								(Button)findViewById(R.id.ds1_current_d12)),
 				},
+				new SpecialSpinner(this, (Spinner)findViewById(R.id.ds1_special)),
 				new DiceSet.TargetParam[]{
 						new DiceSet.TargetParam(-5,
 								(Button)findViewById(R.id.ds1_pool_target_m5)), 
@@ -92,6 +94,7 @@ public class MainActivity extends Activity {
 								(Button)findViewById(R.id.ds2_pool_d12), 
 								(Button)findViewById(R.id.ds2_current_d12)),
 				},
+				new SpecialSpinner(this, (Spinner)findViewById(R.id.ds2_special)),
 				new DiceSet.TargetParam[]{
 						new DiceSet.TargetParam(-5,
 								(Button)findViewById(R.id.ds2_pool_target_m5)), 

@@ -11,4 +11,7 @@
     <dimen name="probability_text_size">60sp</dimen>
     <dimen name="pool_button_min_width">100dp</dimen>
 
+        
+    <dimen name="special_text_size">30sp</dimen>
+    
 </resources>

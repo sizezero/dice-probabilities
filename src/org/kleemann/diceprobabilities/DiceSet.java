@@ -59,6 +59,7 @@ public class DiceSet {
 	}
 	
 	private CurrentDicePile[] dice;
+	private SpecialSpinner specialSpinner;
 	private Target target;
 	
 	private TextView answer_fraction;
@@ -83,6 +84,7 @@ public class DiceSet {
 	
 	public DiceSet(
 			DieType[] dieType,
+			SpecialSpinner specialSpinner,
 			TargetParam[] targetParam,
 			Button targetButton,
 			Button clear,
@@ -112,12 +114,12 @@ public class DiceSet {
 		}
 		
 		assert(target != null);
-		
+
+		this.specialSpinner = specialSpinner;
 		this.answer_fraction = answer_fraction;
 		this.answer_probability = answer_probability;
 		this.graphSetter = graphSetter;
 
-		
 		final View.OnClickListener clearListener = new Clear();
 		clear.setOnClickListener(clearListener);
 		// explicit clear is necessary to set current constant to GONE

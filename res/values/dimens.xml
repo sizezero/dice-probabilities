@@ -19,4 +19,5 @@
     <dimen name="formula_text_size">20sp</dimen>
     <dimen name="formula_text_offset_y">-3dp</dimen>
     
+    <dimen name="special_text_size">15sp</dimen>
 </resources>

@@ -36,14 +36,14 @@ public class SpecialSpinner {
 		special.add(def);
 		special.add(new SpecialImp("foo2",
 				"bar2 blah blah blah blah blah blah\nblah blah blah blah"));
-		special.add(new SpecialImp("foo2",
-				"bar2 blah blah blah blah blah blah\nblah blah blah blah"));
-		special.add(new SpecialImp("foo1",
-				"bar2 blah blah blah blah blah blah\nblah blah blah blah"));
+		special.add(new SpecialImp("foo3",
+				"bar3 blah blah blah blah blah blah\nblah blah blah blah"));
+		special.add(new SpecialImp("foo4",
+				"bar4 blah blah blah blah blah blah\nblah blah blah blah"));
 
 		this.layoutInflater = activity.getLayoutInflater();
 		SpecialAdapter adapter = new SpecialAdapter(spinner.getContext(),
-				android.R.layout.simple_spinner_item);
+				R.layout.spinner_item);
 		spinner.setAdapter(adapter);
 
 		spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
@@ -69,7 +69,7 @@ public class SpecialSpinner {
 	}
 
 	public Special getSelected() {
-		return selected==null ? def : selected;
+		return selected == null ? def : selected;
 	}
 
 	// ///////////////////////////////////////////////
