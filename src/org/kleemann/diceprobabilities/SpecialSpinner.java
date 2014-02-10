@@ -1,0 +1,145 @@
+package org.kleemann.diceprobabilities;
+
+import java.util.ArrayList;
+import java.util.List;
+
+import android.app.Activity;
+import android.content.Context;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
+import android.widget.Spinner;
+import android.widget.TextView;
+
+/**
+ * <p>
+ * Handles all aspects of the spinner object "special". Dice set should query
+ * this to determine the currently selected state.
+ * 
+ * <p>
+ * Basic idea of a complex spinner control taken from here:
+ * http://adanware.blogspot.in/2012/03/android-custom-spinner-with-custom.html
+ */
+public class SpecialSpinner {
+
+	private final ArrayList<Special> special;
+	private final LayoutInflater layoutInflater;
+	private Special selected = null;
+	private final Special def;
+
+	public SpecialSpinner(Activity activity, Spinner spinner) {
+		def = new SpecialImp("foo1",
+				"bar1 blah blah blah blah blah blah\nblah blah blah blah");
+		special = new ArrayList<Special>();
+		special.add(def);
+		special.add(new SpecialImp("foo2",
+				"bar2 blah blah blah blah blah blah\nblah blah blah blah"));
+		special.add(new SpecialImp("foo2",
+				"bar2 blah blah blah blah blah blah\nblah blah blah blah"));
+		special.add(new SpecialImp("foo1",
+				"bar2 blah blah blah blah blah blah\nblah blah blah blah"));
+
+		this.layoutInflater = activity.getLayoutInflater();
+		SpecialAdapter adapter = new SpecialAdapter(spinner.getContext(),
+				android.R.layout.simple_spinner_item);
+		spinner.setAdapter(adapter);
+
+		spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+			@Override
+			public void onItemSelected(AdapterView<?> parent, View view,
+					int pos, long id) {
+				selected = special.get(pos);
+			}
+
+			@Override
+			public void onNothingSelected(AdapterView<?> arg0) {
+				selected = null;
+			}
+		});
+	}
+
+	public interface Special {
+		public String getTitle();
+
+		public String getDescription();
+
+		// TODO: behavior methods for distributions
+	}
+
+	public Special getSelected() {
+		return selected==null ? def : selected;
+	}
+
+	// ///////////////////////////////////////////////
+
+	// TODO spinner crap needs to get cleaned up
+
+	private static class SpecialImp implements Special {
+		private String title;
+		private String description;
+
+		public SpecialImp(String title, String description) {
+			this.title = title;
+			this.description = description;
+		}
+
+		public String getTitle() {
+			return title;
+		}
+
+		public String getDescription() {
+			return description;
+		}
+
+		/**
+		 * <p>
+		 * This is what you see in the closed spinner
+		 */
+		@Override
+		public String toString() {
+			return title;
+		}
+	}
+
+	public class SpecialAdapter extends ArrayAdapter<Special> {
+		List<SpecialImp> data = null;
+
+		public SpecialAdapter(Context context, int resource) {
+			super(context, resource, special);
+		}
+
+		@Override
+		public View getView(int position, View convertView, ViewGroup parent) {
+			// Ordinary view in Spinner, we use
+			// android.R.layout.simple_spinner_item
+			return super.getView(position, convertView, parent);
+		}
+
+		@Override
+		public View getDropDownView(int position, View row, ViewGroup parent) {
+			// This view starts when we click the spinner.
+			if (row == null) {
+				row = layoutInflater.inflate(R.layout.special, parent, false);
+			}
+
+			Special item = special.get(position);
+
+			if (item != null) { // Parse the data from each object and set it.
+				TextView tvTitle = (TextView) row.findViewById(R.id.title);
+				if (tvTitle != null) {
+					tvTitle.setText(item.getTitle());
+				}
+				TextView tvDescription = (TextView) row
+						.findViewById(R.id.description);
+				if (tvDescription != null) {
+					tvDescription.setText(item.getDescription());
+				}
+			}
+
+			return row;
+		}
+	}
+
+}
