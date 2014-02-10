@@ -8,7 +8,7 @@ import org.kleemann.diceprobabilities.distribution.CritDistribution;
 import org.kleemann.diceprobabilities.distribution.DieDistribution;
 import org.kleemann.diceprobabilities.distribution.Distribution;
 import org.kleemann.diceprobabilities.distribution.DogslicerDistribution;
-import org.kleemann.diceprobabilities.distribution.MultinomialDistribution;
+import org.kleemann.diceprobabilities.distribution.SumDistribution;
 
 import android.app.Activity;
 import android.content.Context;
@@ -170,10 +170,10 @@ public class SpecialSpinner {
 					} else {
 						final DieDistribution singleDie = new DieDistribution(
 								sides);
-						allDiceOfOneType = MultinomialDistribution.multiply(
+						allDiceOfOneType = SumDistribution.multiply(
 								singleDie, count);
 					}
-					d = MultinomialDistribution.add(d, allDiceOfOneType);
+					d = SumDistribution.add(d, allDiceOfOneType);
 				}
 			}
 			return d;
@@ -253,16 +253,16 @@ public class SpecialSpinner {
 					} else {
 						// replace the normal die with a crit die
 						if (sides == critSides) {
-							allDiceOfOneType = MultinomialDistribution
+							allDiceOfOneType = SumDistribution
 									.multiply(new CritDistribution(sides),
 											count);
 
 						} else {
-							allDiceOfOneType = MultinomialDistribution
+							allDiceOfOneType = SumDistribution
 									.multiply(new DieDistribution(sides), count);
 						}
 					}
-					d = MultinomialDistribution.add(d, allDiceOfOneType);
+					d = SumDistribution.add(d, allDiceOfOneType);
 				}
 			}
 			return d;
@@ -287,16 +287,16 @@ public class SpecialSpinner {
 					} else {
 						// replace the normal die with a crit die
 						if (sides == 6) {
-							allDiceOfOneType = MultinomialDistribution
+							allDiceOfOneType = SumDistribution
 									.multiply(new DogslicerDistribution(),
 											count);
 
 						} else {
-							allDiceOfOneType = MultinomialDistribution
+							allDiceOfOneType = SumDistribution
 									.multiply(new DieDistribution(sides), count);
 						}
 					}
-					d = MultinomialDistribution.add(d, allDiceOfOneType);
+					d = SumDistribution.add(d, allDiceOfOneType);
 				}
 			}
 			return d;

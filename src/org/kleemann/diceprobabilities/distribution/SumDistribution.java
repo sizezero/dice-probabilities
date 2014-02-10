@@ -18,7 +18,7 @@ import org.apache.commons.math3.fraction.BigFraction;
  * <p>For efficiency there is also an integer multiply function that adds a distribution 
  * to itself n times.
  */
-public class MultinomialDistribution implements Distribution {
+public class SumDistribution implements Distribution {
 
 	final private BigFraction[] vals;
 	final private int lower;
@@ -29,7 +29,7 @@ public class MultinomialDistribution implements Distribution {
 	 * every input parameter but takes O(m*n) with a high constant
 	 * factor due to a multiply and add of a BigFraction at each iteration.
 	 */
-	private MultinomialDistribution(Distribution d1, Distribution d2) {
+	private SumDistribution(Distribution d1, Distribution d2) {
 		// find the new range of the distribution.
 		// It should be bounded by the sum of the lowest two values and the sum
 		// of the highest two values
@@ -75,9 +75,9 @@ public class MultinomialDistribution implements Distribution {
 		assert(n>1);
 		// for small values of n there is no need to do anything special
 		if (n<4) {
-			Distribution sum = new MultinomialDistribution(d, d);
+			Distribution sum = new SumDistribution(d, d);
 			for (int i=2 ; i<n ; ++i ) {
-				sum = new MultinomialDistribution(sum, d);
+				sum = new SumDistribution(sum, d);
 			}
 			return sum;
 		}
@@ -87,7 +87,7 @@ public class MultinomialDistribution implements Distribution {
 		Distribution sums[] = new Distribution[log+1];
 		sums[0] = d;
 		for (int i=1 ; i<=log ; ++i) {
-			sums[i] = new MultinomialDistribution(sums[i-1], sums[i-1]);
+			sums[i] = new SumDistribution(sums[i-1], sums[i-1]);
 		}
 		
 		// add large multiples that are less than n until the entire sum is reached
@@ -95,7 +95,7 @@ public class MultinomialDistribution implements Distribution {
 		while (n > 0) {
 			// find the largest power of 2 that is less than or equal to n
 			final int lg = log2(n);
-			r = r==null ? sums[lg] : new MultinomialDistribution(r, sums[lg]);
+			r = r==null ? sums[lg] : new SumDistribution(r, sums[lg]);
 			n -= 1 << lg;
 		}
 		return r;
@@ -113,7 +113,7 @@ public class MultinomialDistribution implements Distribution {
 	 * Only works for multiplies < 20 for 12 sided dice.  Anything beyond that 
 	 * result in a long underflow and an incorrect result.
 	 */
-	private MultinomialDistribution(DieDistribution d, int mult) {
+	private SumDistribution(DieDistribution d, int mult) {
 
 		lower = mult;
 		upper = d.getSides() * mult + 1;
@@ -176,7 +176,7 @@ public class MultinomialDistribution implements Distribution {
 		} else if (isZero(d2)) {
 			return d1;
 		} else {
-			return new MultinomialDistribution(d1, d2);
+			return new SumDistribution(d1, d2);
 		}
 	}
 	
@@ -195,7 +195,7 @@ public class MultinomialDistribution implements Distribution {
 		} else if (mult==1) {
 			return d;
 		} else if (d.getSides()<=12 && mult<=15) {
-			return new MultinomialDistribution(d, mult);
+			return new SumDistribution(d, mult);
 		} else {
 			return multiplyLog(d, mult);
 		}
