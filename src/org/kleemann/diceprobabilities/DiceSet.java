@@ -5,10 +5,7 @@ import java.util.ArrayList;
 
 import org.apache.commons.math3.fraction.BigFraction;
 import org.kleemann.diceprobabilities.distribution.CachedCumulativeDistribution;
-import org.kleemann.diceprobabilities.distribution.ConstantDistribution;
-import org.kleemann.diceprobabilities.distribution.DieDistribution;
 import org.kleemann.diceprobabilities.distribution.Distribution;
-import org.kleemann.diceprobabilities.distribution.MultinomialDistribution;
 import org.kleemann.diceprobabilities.graph.GraphView;
 
 import android.os.AsyncTask;
@@ -146,6 +143,7 @@ public class DiceSet {
 				c.clear();
 			}
 			target.clear();
+			specialSpinner.setSelectedItemPosition(0);
 		}		
 	}
 
@@ -154,6 +152,8 @@ public class DiceSet {
 			savedInstanceState.putInt(prefix+"d"+c.getSides(), c.getCount());
 		}
 		savedInstanceState.putInt(prefix+"target", target.getCount());
+		savedInstanceState.putInt(prefix+"spinner", specialSpinner.getSelectedItemPosition());
+		
 	}
 	
 	public void restoreInstanceState(Bundle savedInstanceState, String prefix) {
@@ -161,6 +161,7 @@ public class DiceSet {
 			c.setCount(savedInstanceState.getInt(prefix+"d"+c.getSides()));
 		}
 		target.setCount(savedInstanceState.getInt(prefix+"target"));
+		specialSpinner.setSelectedItemPosition(savedInstanceState.getInt(prefix+"spinner"));
 	}
 
 	/**
@@ -184,6 +185,7 @@ public class DiceSet {
 		// current dice: number of sides, and number of dice pairs
 		public SparseIntArray sidesToCount = new SparseIntArray();
 		public int target;
+		public SpecialSpinner.Special special;
 	}
 	
 	/**
@@ -214,6 +216,7 @@ public class DiceSet {
 				in.sidesToCount.put(c.getSides(),c.getCount());
 			}
 			in.target = target.getCount();
+			in.special = specialSpinner.getSelected();
 			
 			answer_fraction.setText("");
 			answer_probability.setText("?");
@@ -236,30 +239,8 @@ public class DiceSet {
 			
 			// calculate both the distribution and the textual description
 			// of the dice formula
-			Distribution d = ConstantDistribution.ZERO;
-			ArrayList<String> dice = new ArrayList<String>();
-			// largest dice to smallest
-			for (int i=in.sidesToCount.size()-1 ; i>=0 ; --i) {
-				final int sides = in.sidesToCount.keyAt(i);
-				final int count = in.sidesToCount.valueAt(i);
-				if (count != 0) {
-					final Distribution allDiceOfOneType;
-					if (sides==1) {
-						// d1 is really just adding a constant
-						if (count < 0) {
-							dice.add("- "+Integer.toString(-count));
-						} else {
-							dice.add(Integer.toString(count));
-						}
-						allDiceOfOneType = new ConstantDistribution(count);
-					} else {
-						dice.add(count+"d"+sides);
-						final DieDistribution singleDie = new DieDistribution(sides);
-						allDiceOfOneType = MultinomialDistribution.multiply(singleDie, count);
-					}
-					d = MultinomialDistribution.add(d, allDiceOfOneType);
-				}
-			}
+			ArrayList<String> dice = in.special.getFormulaDice(in.sidesToCount);
+			Distribution d = in.special.getDistribution(in.sidesToCount);
 			// no modification to d after this; cache the cumulative values
 			d = new CachedCumulativeDistribution(d);
 			

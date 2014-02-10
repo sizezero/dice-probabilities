@@ -3,8 +3,14 @@ package org.kleemann.diceprobabilities;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.kleemann.diceprobabilities.distribution.ConstantDistribution;
+import org.kleemann.diceprobabilities.distribution.DieDistribution;
+import org.kleemann.diceprobabilities.distribution.Distribution;
+import org.kleemann.diceprobabilities.distribution.MultinomialDistribution;
+
 import android.app.Activity;
 import android.content.Context;
+import android.util.SparseIntArray;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -24,22 +30,24 @@ import android.widget.TextView;
  */
 public class SpecialSpinner {
 
+	private final Spinner spinner;
 	private final ArrayList<Special> special;
 	private final LayoutInflater layoutInflater;
 	private Special selected = null;
 	private final Special def;
 
 	public SpecialSpinner(Activity activity, Spinner spinner) {
-		def = new SpecialImp("foo1",
-				"bar1 blah blah blah blah blah blah\nblah blah blah blah");
+		this.spinner = spinner;
+		
+		def = new NormalSpecial();
 		special = new ArrayList<Special>();
 		special.add(def);
-		special.add(new SpecialImp("foo2",
-				"bar2 blah blah blah blah blah blah\nblah blah blah blah"));
-		special.add(new SpecialImp("foo3",
-				"bar3 blah blah blah blah blah blah\nblah blah blah blah"));
-		special.add(new SpecialImp("foo4",
-				"bar4 blah blah blah blah blah blah\nblah blah blah blah"));
+		special.add(new TwoRollsSpecial());
+		special.add(new ForceSecondRollSpecial());
+		special.add(new CritSpecial(6));
+		special.add(new CritSpecial(4));
+		special.add(new DogslicerSpecial());
+		special.add(new CaizarluZerrenSpecial());
 
 		this.layoutInflater = activity.getLayoutInflater();
 		SpecialAdapter adapter = new SpecialAdapter(spinner.getContext(),
@@ -65,18 +73,28 @@ public class SpecialSpinner {
 
 		public String getDescription();
 
-		// TODO: behavior methods for distributions
+		public ArrayList<String> getFormulaDice(SparseIntArray sidesToCount);
+		
+		public Distribution getDistribution(SparseIntArray sidesToCount);
 	}
 
 	public Special getSelected() {
 		return selected == null ? def : selected;
 	}
 
+	public int getSelectedItemPosition() {
+		return spinner.getSelectedItemPosition();
+	}
+	
+	public void setSelectedItemPosition(int pos) {
+		spinner.setSelection(pos);
+	}
+	
 	// ///////////////////////////////////////////////
 
 	// TODO spinner crap needs to get cleaned up
 
-	private static class SpecialImp implements Special {
+	private static abstract class SpecialImp implements Special {
 		private String title;
 		private String description;
 
@@ -85,10 +103,12 @@ public class SpecialSpinner {
 			this.description = description;
 		}
 
+		@Override
 		public String getTitle() {
 			return title;
 		}
 
+		@Override
 		public String getDescription() {
 			return description;
 		}
@@ -101,8 +121,144 @@ public class SpecialSpinner {
 		public String toString() {
 			return title;
 		}
+
+		@Override
+		public ArrayList<String> getFormulaDice(SparseIntArray sidesToCount) {
+			ArrayList<String> dice = new ArrayList<String>();
+			for (int i = sidesToCount.size() - 1; i >= 0; --i) {
+				final int sides = sidesToCount.keyAt(i);
+				final int count = sidesToCount.valueAt(i);
+				if (count != 0) {
+					if (sides == 1) {
+						// d1 is really just adding a constant
+						if (count < 0) {
+							dice.add("- " + Integer.toString(-count));
+						} else {
+							dice.add(Integer.toString(count));
+						}
+					} else {
+						dice.add(count + "d" + sides);
+					}
+				}
+			}
+			return dice;
+		}
+		
+		@Override
+		public Distribution getDistribution(SparseIntArray sidesToCount) {
+			Distribution d = ConstantDistribution.ZERO;
+			for (int i = sidesToCount.size() - 1; i >= 0; --i) {
+				final int sides = sidesToCount.keyAt(i);
+				final int count = sidesToCount.valueAt(i);
+				if (count != 0) {
+					final Distribution allDiceOfOneType;
+					if (sides == 1) {
+						allDiceOfOneType = new ConstantDistribution(count);
+					} else {
+						final DieDistribution singleDie = new DieDistribution(
+								sides);
+						allDiceOfOneType = MultinomialDistribution.multiply(
+								singleDie, count);
+					}
+					d = MultinomialDistribution.add(d, allDiceOfOneType);
+				}
+			}
+			return d;
+		}
 	}
 
+	private static class NormalSpecial extends SpecialImp {
+		public NormalSpecial() {
+			super("Normal", "No special changes are made to die rolls");
+		}
+	}
+
+	private static class TwoRollsSpecial extends SpecialImp {
+		public TwoRollsSpecial() {
+			super("Bonus Rolls", "If the first roll fails, you have a second chance to roll again. Weapon: Glaive, Icy LongSpear");
+		}
+		
+		@Override
+		public ArrayList<String> getFormulaDice(SparseIntArray sidesToCount) {
+			ArrayList<String> dice = super.getFormulaDice(sidesToCount);
+			dice.add("x2");
+			return dice;
+		}
+
+		@Override
+		public Distribution getDistribution(SparseIntArray sidesToCount) {
+			Distribution d = super.getDistribution(sidesToCount);
+			// TODO: take the extra roll into account
+			return d;
+		}
+	}
+
+	private static class ForceSecondRollSpecial extends SpecialImp {
+		public ForceSecondRollSpecial() {
+			super("Forced Roll", "If the first roll succeds, you must roll another successful check to make the roll.  Monster: Hermit Crab");
+		}
+		
+		@Override
+		public ArrayList<String> getFormulaDice(SparseIntArray sidesToCount) {
+			ArrayList<String> dice = super.getFormulaDice(sidesToCount);
+			dice.add("x2");
+			return dice;
+		}
+
+		@Override
+		public Distribution getDistribution(SparseIntArray sidesToCount) {
+			Distribution d = super.getDistribution(sidesToCount);
+			// TODO: take the extra roll into account
+			return d;
+		}
+	}
+
+	private static class CritSpecial extends SpecialImp {
+		public CritSpecial(int sides) {
+			super("d"+sides+" crit", "All maximum rolls on this die count as one higher. Weapons: Heavy Pick, Scyth");
+		}
+		
+		@Override
+		public ArrayList<String> getFormulaDice(SparseIntArray sidesToCount) {
+			ArrayList<String> dice = super.getFormulaDice(sidesToCount);
+			dice.add("x2");
+			return dice;
+		}
+
+		@Override
+		public Distribution getDistribution(SparseIntArray sidesToCount) {
+			Distribution d = super.getDistribution(sidesToCount);
+			// TODO: take the extra roll into account
+			return d;
+		}
+	}
+
+	private static class DogslicerSpecial extends SpecialImp {
+		public DogslicerSpecial() {
+			super("Dogslicer", "For six sided dice, ones count as threes");
+		}
+		
+		@Override
+		public Distribution getDistribution(SparseIntArray sidesToCount) {
+			Distribution d = super.getDistribution(sidesToCount);
+			// TODO: take the extra roll into account
+			return d;
+		}
+	}
+	
+	private static class CaizarluZerrenSpecial extends SpecialImp {
+		public CaizarluZerrenSpecial() {
+			super("C. Zerren", "When you attempt to defeat Caizarlu Zerren, after you make the roll, roll 1d6. On a 1 or 2, start teh check over. Cards Playued on the previous check do not affect the new check.");
+		}
+		
+		@Override
+		public Distribution getDistribution(SparseIntArray sidesToCount) {
+			Distribution d = super.getDistribution(sidesToCount);
+			// TODO: reroll a third of the time
+			return d;
+		}
+	}
+	
 	public class SpecialAdapter extends ArrayAdapter<Special> {
 		List<SpecialImp> data = null;
 
@@ -141,5 +297,4 @@ public class SpecialSpinner {
 			return row;
 		}
 	}
-
 }
