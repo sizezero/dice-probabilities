@@ -39,7 +39,7 @@
                 android:id="@+id/copy_down"
                 style="@style/copy"
                 android:text="@string/copy_down"
-                />
+                tools:ignore="InconsistentLayout" />
 
             <Space
                 android:layout_width="0dp"
@@ -50,7 +50,7 @@
                 android:id="@+id/copy_up"
                 style="@style/copy"
                 android:text="@string/copy_up"
-                android:textScaleX="2.5" />
+                tools:ignore="InconsistentLayout" />
 
             <Space
                 android:layout_width="0dp"

@@ -136,7 +136,7 @@
             android:id="@+id/copy_up"
             style="@style/copy"
             android:text="@string/copy_up"
-            android:textScaleX="2.5" />
+            tools:ignore="InconsistentLayout" />
     </LinearLayout>
 
     <LinearLayout

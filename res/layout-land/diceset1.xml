@@ -135,7 +135,8 @@
         <Button
             android:id="@+id/copy_down"
             style="@style/copy"
-            android:text="@string/copy_down" />
+            android:text="@string/copy_down"
+            tools:ignore="InconsistentLayout" />
     </LinearLayout>
 
     <LinearLayout

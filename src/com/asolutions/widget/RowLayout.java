@@ -5,6 +5,7 @@ import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.res.TypedArray;
 import android.util.AttributeSet;
@@ -34,6 +35,7 @@ public class RowLayout extends ViewGroup {
         styledAttributes.recycle();
     }
 
+    @SuppressLint("DrawAllocation")
     @Override
     protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
         final int widthMode = MeasureSpec.getMode(widthMeasureSpec);
@@ -75,7 +77,7 @@ public class RowLayout extends ViewGroup {
 
     private int createChildMeasureSpec(int childLayoutParam, int max, int parentMode) {
         int spec;
-        if (childLayoutParam == LayoutParams.FILL_PARENT) {
+        if (childLayoutParam == LayoutParams.MATCH_PARENT) {
             spec = MeasureSpec.makeMeasureSpec(max, MeasureSpec.EXACTLY);
         } else if (childLayoutParam == LayoutParams.WRAP_CONTENT) {
             spec = MeasureSpec.makeMeasureSpec(max, parentMode == MeasureSpec.UNSPECIFIED ? MeasureSpec.UNSPECIFIED
