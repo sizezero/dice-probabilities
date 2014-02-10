@@ -1,6 +1,7 @@
 package org.kleemann.diceprobabilities;
 
 import org.kleemann.diceprobabilities.graph.GraphView;
+import org.kleemann.diceprobabilities.special.SpecialSpinner;
 
 import android.os.Bundle;
 import android.app.Activity;

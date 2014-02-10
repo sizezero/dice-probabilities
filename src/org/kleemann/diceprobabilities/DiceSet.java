@@ -7,6 +7,7 @@ import org.apache.commons.math3.fraction.BigFraction;
 import org.kleemann.diceprobabilities.distribution.CachedCumulativeDistribution;
 import org.kleemann.diceprobabilities.distribution.Distribution;
 import org.kleemann.diceprobabilities.graph.GraphView;
+import org.kleemann.diceprobabilities.special.SpecialSpinner;
 
 import android.os.AsyncTask;
 import android.os.Bundle;

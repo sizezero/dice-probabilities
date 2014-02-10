@@ -1,8 +1,11 @@
-package org.kleemann.diceprobabilities;
+package org.kleemann.diceprobabilities.special;
 
 import java.util.ArrayList;
 import java.util.List;
 
+import org.kleemann.diceprobabilities.R;
+import org.kleemann.diceprobabilities.R.id;
+import org.kleemann.diceprobabilities.R.layout;
 import org.kleemann.diceprobabilities.distribution.ConstantDistribution;
 import org.kleemann.diceprobabilities.distribution.CritDistribution;
 import org.kleemann.diceprobabilities.distribution.DieDistribution;
