@@ -7,6 +7,7 @@ import org.apache.commons.math3.fraction.BigFraction;
 import org.kleemann.diceprobabilities.distribution.CachedCumulativeDistribution;
 import org.kleemann.diceprobabilities.distribution.Distribution;
 import org.kleemann.diceprobabilities.graph.GraphView;
+import org.kleemann.diceprobabilities.special.Special;
 import org.kleemann.diceprobabilities.special.SpecialSpinner;
 
 import android.os.AsyncTask;
@@ -186,7 +187,7 @@ public class DiceSet {
 		// current dice: number of sides, and number of dice pairs
 		public SparseIntArray sidesToCount = new SparseIntArray();
 		public int target;
-		public SpecialSpinner.Special special;
+		public Special special;
 	}
 	
 	/**

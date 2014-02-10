@@ -80,16 +80,6 @@ public class SpecialSpinner {
 		});
 	}
 
-	public interface Special {
-		public String getTitle();
-
-		public String getDescription();
-
-		public ArrayList<String> getFormulaDice(SparseIntArray sidesToCount);
-
-		public Distribution getDistribution(SparseIntArray sidesToCount);
-	}
-
 	public Special getSelected() {
 		return selected == null ? def : selected;
 	}
