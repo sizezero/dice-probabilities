@@ -2,6 +2,13 @@ package org.kleemann.diceprobabilities.distribution;
 
 import org.apache.commons.math3.fraction.BigFraction;
 
+/**
+ * <p>
+ * The Dogslicer is a peculiar distribution named after the pathfinder weapon
+ * type. It's a d6 where a one becomes 3. Note: this makes DogslicerDistribution
+ * not a DieDistribution since DieDistributions are equal probabilities between
+ * 1 and n.
+ */
 public class DogslicerDistribution implements Distribution {
 
 	// the total number of sides of the die
