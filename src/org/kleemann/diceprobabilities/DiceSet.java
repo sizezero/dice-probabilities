@@ -113,6 +113,7 @@ public class DiceSet {
 		assert(target != null);
 
 		this.specialSpinner = specialSpinner;
+		specialSpinner.setChangeListener(diceChanged);
 		this.answer_fraction = answer_fraction;
 		this.answer_probability = answer_probability;
 		this.graphSetter = graphSetter;
@@ -153,7 +154,6 @@ public class DiceSet {
 		}
 		savedInstanceState.putInt(prefix+"target", target.getCount());
 		savedInstanceState.putInt(prefix+"spinner", specialSpinner.getSelectedItemPosition());
-		
 	}
 	
 	public void restoreInstanceState(Bundle savedInstanceState, String prefix) {
