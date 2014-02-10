@@ -1,11 +1,13 @@
 package org.kleemann.diceprobabilities.special;
 
+import org.kleemann.diceprobabilities.R;
 import org.kleemann.diceprobabilities.distribution.ConstantDistribution;
 import org.kleemann.diceprobabilities.distribution.CritDistribution;
 import org.kleemann.diceprobabilities.distribution.DieDistribution;
 import org.kleemann.diceprobabilities.distribution.Distribution;
 import org.kleemann.diceprobabilities.distribution.SumDistribution;
 
+import android.content.res.Resources;
 import android.util.SparseIntArray;
 
 /**
@@ -17,9 +19,9 @@ class CritSpecial extends AbstractSpecial {
 
 	private int critSides;
 
-	public CritSpecial(int sides) {
-		super("d" + sides + " crit",
-				"All maximum rolls on this die count as one higher. Weapons: Heavy Pick, Scyth");
+	public CritSpecial(Resources r, int sides) {
+		super(String.format(r.getString(R.string.special_crit_title), sides), r
+				.getString(R.string.special_crit_description));
 		this.critSides = sides;
 	}
 

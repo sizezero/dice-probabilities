@@ -2,8 +2,10 @@ package org.kleemann.diceprobabilities.special;
 
 import java.util.ArrayList;
 
+import org.kleemann.diceprobabilities.R;
 import org.kleemann.diceprobabilities.distribution.Distribution;
 
+import android.content.res.Resources;
 import android.util.SparseIntArray;
 
 /**
@@ -13,10 +15,9 @@ import android.util.SparseIntArray;
  */
 class ForceSecondRollSpecial extends AbstractSpecial {
 
-	public ForceSecondRollSpecial() {
-		super(
-				"Forced Roll",
-				"If the first roll succeds, you must roll another successful check to make the roll.  Monster: Hermit Crab");
+	public ForceSecondRollSpecial(Resources r) {
+		super(r.getString(R.string.special_force_second_roll_title), r
+				.getString(R.string.special_force_second_roll_description));
 	}
 
 	@Override

@@ -3,10 +3,22 @@
 
     <string name="app_name">Dice Probabilities</string>
     <string name="action_settings">Settings</string>
-
     <string name="clear">C</string>
     <string name="copy_down">\u2193</string>
     <string name="copy_up">\u2191</string>
     <string name="answer_format">"##%"</string>
     <string name="answer_second_highest">99%</string>
+    <string name="special_normal_title">Normal</string>
+    <string name="special_normal_description">No special changes are made to die rolls</string>
+    <string name="special_two_rolls_title">Bonus Rolls</string>
+    <string name="special_two_rolls_description">If the first roll fails, you have a second chance to roll again. Weapon: Glaive, Icy Longspear</string>
+    <string name="special_force_second_roll_title">Forced Roll</string>
+    <string name="special_force_second_roll_description">If the first roll succeeds, you must roll another successful check to make the roll.  Monster: Giant Hermit Crab</string>
+    <string name="special_crit_title">d%d crit</string>
+    <string name="special_crit_description">All maximum rolls on this die count as one higher. Weapons: Heavy Pick, Scythe</string>
+    <string name="special_dogslicer_title">Dogslicer</string>
+    <string name="special_dogslicer_description">For six sided dice, ones count as threes</string>
+    <string name="special_caizerlu_zerren_title">C. Zerren</string>
+    <string name="special_caizerlu_zerren_description">When you attempt to defeat Caizarlu Zerren, after you make the roll, roll 1d6. On a 1 or 2, start the check over. Cards Played on the previous check do not affect the new check.</string>
+    
 </resources>

@@ -2,8 +2,10 @@ package org.kleemann.diceprobabilities.special;
 
 import java.util.ArrayList;
 
+import org.kleemann.diceprobabilities.R;
 import org.kleemann.diceprobabilities.distribution.Distribution;
 
+import android.content.res.Resources;
 import android.util.SparseIntArray;
 
 /**
@@ -11,10 +13,9 @@ import android.util.SparseIntArray;
  */
 class TwoRollsSpecial extends AbstractSpecial {
 
-	public TwoRollsSpecial() {
-		super(
-				"Bonus Rolls",
-				"If the first roll fails, you have a second chance to roll again. Weapon: Glaive, Icy LongSpear");
+	public TwoRollsSpecial(Resources r) {
+		super(r.getString(R.string.special_two_rolls_title), r
+				.getString(R.string.special_two_rolls_description));
 	}
 
 	@Override

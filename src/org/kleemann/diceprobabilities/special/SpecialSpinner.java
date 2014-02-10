@@ -6,6 +6,7 @@ import org.kleemann.diceprobabilities.R;
 
 import android.app.Activity;
 import android.content.Context;
+import android.content.res.Resources;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -35,15 +36,16 @@ public class SpecialSpinner {
 	public SpecialSpinner(Activity activity, Spinner spinner) {
 		this.spinner = spinner;
 
-		def = new NormalSpecial();
+		final Resources r = spinner.getResources();
+		def = new NormalSpecial(r);
 		special = new ArrayList<Special>();
 		special.add(def);
-		special.add(new TwoRollsSpecial());
-		special.add(new ForceSecondRollSpecial());
-		special.add(new CritSpecial(6));
-		special.add(new CritSpecial(4));
-		special.add(new DogslicerSpecial());
-		special.add(new CaizarluZerrenSpecial());
+		special.add(new TwoRollsSpecial(r));
+		special.add(new ForceSecondRollSpecial(r));
+		special.add(new CritSpecial(r, 6));
+		special.add(new CritSpecial(r, 4));
+		special.add(new DogslicerSpecial(r));
+		special.add(new CaizarluZerrenSpecial(r));
 
 		this.layoutInflater = activity.getLayoutInflater();
 		SpecialAdapter adapter = new SpecialAdapter(spinner.getContext(),
@@ -85,9 +87,9 @@ public class SpecialSpinner {
 	public void setChangeListener(View.OnClickListener changed) {
 		this.changed = changed;
 	}
-	
+
 	private class SpecialAdapter extends ArrayAdapter<Special> {
-		
+
 		public SpecialAdapter(Context context, int resource) {
 			super(context, resource, special);
 		}

@@ -1,14 +1,15 @@
 package org.kleemann.diceprobabilities.special;
 
+import org.kleemann.diceprobabilities.R;
 import org.kleemann.diceprobabilities.distribution.Distribution;
 
+import android.content.res.Resources;
 import android.util.SparseIntArray;
 
 class CaizarluZerrenSpecial extends AbstractSpecial {
-	public CaizarluZerrenSpecial() {
-		super(
-				"C. Zerren",
-				"When you attempt to defeat Caizarlu Zerren, after you make the roll, roll 1d6. On a 1 or 2, start teh check over. Cards Playued on the previous check do not affect the new check.");
+	public CaizarluZerrenSpecial(Resources r) {
+		super(r.getString(R.string.special_caizerlu_zerren_title), r
+				.getString(R.string.special_caizerlu_zerren_description));
 	}
 
 	@Override

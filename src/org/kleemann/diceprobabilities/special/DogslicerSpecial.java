@@ -1,11 +1,13 @@
 package org.kleemann.diceprobabilities.special;
 
+import org.kleemann.diceprobabilities.R;
 import org.kleemann.diceprobabilities.distribution.ConstantDistribution;
 import org.kleemann.diceprobabilities.distribution.DieDistribution;
 import org.kleemann.diceprobabilities.distribution.Distribution;
 import org.kleemann.diceprobabilities.distribution.DogslicerDistribution;
 import org.kleemann.diceprobabilities.distribution.SumDistribution;
 
+import android.content.res.Resources;
 import android.util.SparseIntArray;
 
 /**
@@ -13,8 +15,9 @@ import android.util.SparseIntArray;
  */
 class DogslicerSpecial extends AbstractSpecial {
 	
-	public DogslicerSpecial() {
-		super("Dogslicer", "For six sided dice, ones count as threes");
+	public DogslicerSpecial(Resources r) {
+		super(r.getString(R.string.special_dogslicer_title), r
+				.getString(R.string.special_dogslicer_description));
 	}
 
 	@Override
