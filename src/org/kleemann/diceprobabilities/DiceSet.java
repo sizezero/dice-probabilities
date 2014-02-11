@@ -132,8 +132,13 @@ public class DiceSet {
 	public void copyFrom(DiceSet that) {
 		for (int i=0 ; i<dice.length ; ++i) {
 			dice[i].setCount(that.dice[i].getCount());
+			// special case to not display constant of zero
+			if (dice[i].getSides()==1 && dice[i].getCount()==0) {
+				dice[i].clear();
+			}
 		}
 		target.setCount(that.target.getCount());
+		specialSpinner.setSelectedItemPosition(that.specialSpinner.getSelectedItemPosition());
 	}
 	
 	/**
@@ -161,6 +166,10 @@ public class DiceSet {
 	public void restoreInstanceState(Bundle savedInstanceState, String prefix) {
 		for (CurrentDicePile c : dice) {
 			c.setCount(savedInstanceState.getInt(prefix+"d"+c.getSides()));
+			// special case to not display constant of zero
+			if (c.getSides()==1 && c.getCount()==0) {
+				c.clear();
+			}
 		}
 		target.setCount(savedInstanceState.getInt(prefix+"target"));
 		specialSpinner.setSelectedItemPosition(savedInstanceState.getInt(prefix+"spinner"));
