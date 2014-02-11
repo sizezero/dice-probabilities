@@ -15,7 +15,7 @@ import android.util.SparseIntArray;
  * a Special.
  */
 abstract class AbstractSpecial implements Special {
-	
+
 	private final String title;
 	private final String description;
 
@@ -46,39 +46,55 @@ abstract class AbstractSpecial implements Special {
 			final int sides = sidesToCount.keyAt(i);
 			final int count = sidesToCount.valueAt(i);
 			if (count != 0) {
-				if (sides == 1) {
-					// d1 is really just adding a constant
-					if (count < 0) {
-						dice.add("- " + Integer.toString(-count));
-					} else {
-						dice.add(Integer.toString(count));
-					}
-				} else {
-					dice.add(count + "d" + sides);
-				}
+				addFormulaDie(sides, count, dice);
 			}
 		}
 		return dice;
 	}
 
+	/**
+	 * Override this function to change the way formula dice are created.
+	 */
+	protected void addFormulaDie(int sides, int count, ArrayList<String> dice) {
+		if (sides == 1) {
+			// d1 is really just adding a constant
+			if (count < 0) {
+				dice.add("- " + Integer.toString(-count));
+			} else {
+				dice.add(Integer.toString(count));
+			}
+		} else {
+			dice.add(count + "d" + sides);
+		}
+	}
+
 	@Override
 	public Distribution getDistribution(SparseIntArray sidesToCount) {
-		Distribution d = ConstantDistribution.ZERO;
+		Distribution accumulator = ConstantDistribution.ZERO;
 		for (int i = sidesToCount.size() - 1; i >= 0; --i) {
 			final int sides = sidesToCount.keyAt(i);
 			final int count = sidesToCount.valueAt(i);
 			if (count != 0) {
-				final Distribution allDiceOfOneType;
-				if (sides == 1) {
-					allDiceOfOneType = new ConstantDistribution(count);
-				} else {
-					final DieDistribution singleDie = new DieDistribution(sides);
-					allDiceOfOneType = SumDistribution.multiply(singleDie,
-							count);
-				}
-				d = SumDistribution.add(d, allDiceOfOneType);
+				accumulator = accumulateDiceStack(sides, count, accumulator);
 			}
 		}
-		return d;
+		return accumulator;
+	}
+
+	/**
+	 * <p>
+	 * Override this method to change the ways stacks of similar dice are added
+	 * to the distribution.
+	 */
+	protected Distribution accumulateDiceStack(int sides, int count,
+			Distribution accumulator) {
+		final Distribution allDiceOfOneType;
+		if (sides == 1) {
+			allDiceOfOneType = new ConstantDistribution(count);
+		} else {
+			final DieDistribution singleDie = new DieDistribution(sides);
+			allDiceOfOneType = SumDistribution.multiply(singleDie, count);
+		}
+		return SumDistribution.add(accumulator, allDiceOfOneType);
 	}
 }

@@ -1,5 +1,7 @@
 package org.kleemann.diceprobabilities.special;
 
+import java.util.ArrayList;
+
 import org.kleemann.diceprobabilities.R;
 import org.kleemann.diceprobabilities.distribution.ConstantDistribution;
 import org.kleemann.diceprobabilities.distribution.DieDistribution;
@@ -11,39 +13,49 @@ import android.content.res.Resources;
 import android.util.SparseIntArray;
 
 /**
- * <p>For all d6 dice, ones become threes. 
+ * <p>
+ * For all d6 dice, ones become threes.
  */
 class DogslicerSpecial extends AbstractSpecial {
-	
+
 	public DogslicerSpecial(Resources r) {
 		super(r.getString(R.string.special_dogslicer_title), r
 				.getString(R.string.special_dogslicer_description));
 	}
 
+	/**
+	 * <p>
+	 * Use capital D for crits
+	 */
 	@Override
-	public Distribution getDistribution(SparseIntArray sidesToCount) {
-		Distribution d = ConstantDistribution.ZERO;
-		for (int i = sidesToCount.size() - 1; i >= 0; --i) {
-			final int sides = sidesToCount.keyAt(i);
-			final int count = sidesToCount.valueAt(i);
-			if (count != 0) {
-				final Distribution allDiceOfOneType;
-				if (sides == 1) {
-					allDiceOfOneType = new ConstantDistribution(count);
-				} else {
-					// replace the normal die with a crit die
-					if (sides == 6) {
-						allDiceOfOneType = SumDistribution.multiply(
-								new DogslicerDistribution(), count);
+	protected void addFormulaDie(int sides, int count, ArrayList<String> dice) {
+		if (sides == 1) {
+			super.addFormulaDie(sides, count, dice);
+		} else {
+			dice.add(count + "D" + sides);
+		}
+	}
 
-					} else {
-						allDiceOfOneType = SumDistribution.multiply(
-								new DieDistribution(sides), count);
-					}
-				}
-				d = SumDistribution.add(d, allDiceOfOneType);
+	@Override
+	protected Distribution accumulateDiceStack(int sides, int count,
+			Distribution accumulator) {
+		final Distribution allDiceOfOneType;
+		if (sides == 1) {
+			allDiceOfOneType = new ConstantDistribution(count);
+		} else {
+			// replace the normal die with a dogslicer die
+			if (sides == 6) {
+				allDiceOfOneType = SumDistribution.multiply(
+						new DogslicerDistribution(), count);
+
+			} else {
+				// Note: passing DieDistribution to multiply is more efficient
+				// than CritDistribution
+				allDiceOfOneType = SumDistribution.multiply(
+						new DieDistribution(sides), count);
 			}
 		}
-		return d;
+		return SumDistribution.add(accumulator, allDiceOfOneType);
 	}
+
 }

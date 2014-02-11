@@ -1,5 +1,7 @@
 package org.kleemann.diceprobabilities.special;
 
+import java.util.ArrayList;
+
 import org.kleemann.diceprobabilities.R;
 import org.kleemann.diceprobabilities.distribution.ConstantDistribution;
 import org.kleemann.diceprobabilities.distribution.CritDistribution;
@@ -8,7 +10,6 @@ import org.kleemann.diceprobabilities.distribution.Distribution;
 import org.kleemann.diceprobabilities.distribution.SumDistribution;
 
 import android.content.res.Resources;
-import android.util.SparseIntArray;
 
 /**
  * <p>
@@ -25,30 +26,39 @@ class CritSpecial extends AbstractSpecial {
 		this.critSides = sides;
 	}
 
+	/**
+	 * <p>
+	 * Use capital D for crits
+	 */
 	@Override
-	public Distribution getDistribution(SparseIntArray sidesToCount) {
-		Distribution d = ConstantDistribution.ZERO;
-		for (int i = sidesToCount.size() - 1; i >= 0; --i) {
-			final int sides = sidesToCount.keyAt(i);
-			final int count = sidesToCount.valueAt(i);
-			if (count != 0) {
-				final Distribution allDiceOfOneType;
-				if (sides == 1) {
-					allDiceOfOneType = new ConstantDistribution(count);
-				} else {
-					// replace the normal die with a crit die
-					if (sides == critSides) {
-						allDiceOfOneType = SumDistribution.multiply(
-								new CritDistribution(sides), count);
+	protected void addFormulaDie(int sides, int count, ArrayList<String> dice) {
+		if (sides == 1) {
+			super.addFormulaDie(sides, count, dice);
+		} else {
+			dice.add(count + "D" + sides);
+		}
+	}
 
-					} else {
-						allDiceOfOneType = SumDistribution.multiply(
-								new DieDistribution(sides), count);
-					}
-				}
-				d = SumDistribution.add(d, allDiceOfOneType);
+	@Override
+	protected Distribution accumulateDiceStack(int sides, int count,
+			Distribution accumulator) {
+		final Distribution allDiceOfOneType;
+		if (sides == 1) {
+			allDiceOfOneType = new ConstantDistribution(count);
+		} else {
+			// replace the normal die with the crit die
+			if (sides == critSides) {
+				allDiceOfOneType = SumDistribution.multiply(
+						new CritDistribution(sides), count);
+
+			} else {
+				// Note: passing DieDistribution to multiply is more efficient
+				// than CritDistribution
+				allDiceOfOneType = SumDistribution.multiply(
+						new DieDistribution(sides), count);
 			}
 		}
-		return d;
+		return SumDistribution.add(accumulator, allDiceOfOneType);
 	}
+
 }
