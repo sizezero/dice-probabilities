@@ -9,16 +9,16 @@
     <string name="answer_format">"##%"</string>
     <string name="answer_second_highest">99%</string>
     <string name="special_normal_title">Normal</string>
-    <string name="special_normal_description">No special changes are made to die rolls</string>
+    <string name="special_normal_description">No special changes are made to die rolls\n</string>
     <string name="special_second_chance_title">Second Chance</string>
-    <string name="special_second_chance_description">If the first roll fails, you have a second chance to roll again. Weapon: Glaive, Icy Longspear</string>
+    <string name="special_second_chance_description">If the first roll fails, you have a second chance to roll again.\n\nWeapon: Glaive, Icy Longspear\n</string>
     <string name="special_forced_reroll_title">Forced Reroll</string>
-    <string name="special_forced_reroll_description">If the first roll succeeds, you must roll another successful check to make the roll.  Monster: Giant Hermit Crab</string>
+    <string name="special_forced_reroll_description">If the first roll succeeds, you must roll another successful check to make the roll.\n\nMonster: Giant Hermit Crab\n</string>
     <string name="special_crit_title">d%d crit</string>
-    <string name="special_crit_description">All maximum rolls on this die count as one higher. Weapons: Heavy Pick, Scythe</string>
+    <string name="special_crit_description">All maximum rolls on this die count as one higher.\n\nWeapons: Heavy Pick, Scythe\n</string>
     <string name="special_dogslicer_title">Dogslicer</string>
-    <string name="special_dogslicer_description">For six sided dice, ones count as threes</string>
+    <string name="special_dogslicer_description">For six sided dice, ones count as threes\n</string>
     <string name="special_caizerlu_zerren_title">C. Zerren</string>
-    <string name="special_caizerlu_zerren_description">When you attempt to defeat Caizarlu Zerren, after you make the roll, roll 1d6. On a 1 or 2, start the check over. Cards Played on the previous check do not affect the new check.</string>
+    <string name="special_caizerlu_zerren_description">When you attempt to defeat Caizarlu Zerren, after you make the roll, roll 1d6. On a 1 or 2, start the check over. Cards Played on the previous check do not affect the new check.\n</string>
     
 </resources>
