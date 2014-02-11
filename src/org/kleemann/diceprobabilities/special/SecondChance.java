@@ -3,6 +3,8 @@ package org.kleemann.diceprobabilities.special;
 import java.util.ArrayList;
 
 import org.kleemann.diceprobabilities.R;
+import org.kleemann.diceprobabilities.distribution.CachedCumulativeDistribution;
+import org.kleemann.diceprobabilities.distribution.CumulativeTransformDistribution;
 import org.kleemann.diceprobabilities.distribution.Distribution;
 
 import android.content.res.Resources;
@@ -11,11 +13,11 @@ import android.util.SparseIntArray;
 /**
  * <p>If the first roll fails you get a second chance to roll in order to succeed.
  */
-class TwoRollsSpecial extends AbstractSpecial {
+class SecondChance extends AbstractSpecial {
 
-	public TwoRollsSpecial(Resources r) {
-		super(r.getString(R.string.special_two_rolls_title), r
-				.getString(R.string.special_two_rolls_description));
+	public SecondChance(Resources r) {
+		super(r.getString(R.string.special_second_chance_title), r
+				.getString(R.string.special_second_chance_description));
 	}
 
 	@Override
@@ -28,7 +30,7 @@ class TwoRollsSpecial extends AbstractSpecial {
 	@Override
 	public Distribution getDistribution(SparseIntArray sidesToCount) {
 		Distribution d = super.getDistribution(sidesToCount);
-		// TODO: take the extra roll into account
-		return d;
+		Distribution c = new CachedCumulativeDistribution(d);
+		return CumulativeTransformDistribution.secondChance(c);
 	}
 }
