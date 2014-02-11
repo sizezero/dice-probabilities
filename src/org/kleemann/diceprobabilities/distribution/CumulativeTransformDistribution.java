@@ -16,7 +16,7 @@ import org.apache.commons.math3.fraction.BigFraction;
  * The constructors of this class use Cumulative values extensively so it may be
  * more efficient to pass a CachedCumulativeDistribution
  */
-public class CumulativeTransformDistribution implements Distribution {
+public class CumulativeTransformDistribution extends AbstractDistribution {
 
 	private final int lower;
 	private final int upper;
@@ -46,16 +46,11 @@ public class CumulativeTransformDistribution implements Distribution {
 	/**
 	 * <p>
 	 * If you fail the check you can try again.
-	 * 
-	 * <p>
-	 * TODO: I'd like a better name for this.
-	 * 
-	 * @return
 	 */
 	public static Distribution secondChance(Distribution d) {
 		CumulativeTransformDistribution n = new CumulativeTransformDistribution(
 				d);
-		for (int i = 0, x = n.lower; i < n.vals.length; ++i, ++x) {
+		for (int i = 0; i < n.vals.length; ++i) {
 			// P(S) = 1 - P(F)
 			// P(new) = P(S) + P(F) * P(S)
 			final BigFraction pS = n.cums[i];
@@ -77,9 +72,8 @@ public class CumulativeTransformDistribution implements Distribution {
 	}
 
 	@Override
-	public BigFraction getProbability(int x) {
-		return (x>=lower && x<upper) ? vals[x-lower] : BigFraction.ZERO;
-
+	protected BigFraction getProbabilityBounded(int x) {
+		return vals[x - lower];
 	}
 
 	@Override
@@ -89,7 +83,7 @@ public class CumulativeTransformDistribution implements Distribution {
 		} else if (x >= upper) {
 			return BigFraction.ZERO;
 		} else {
-			return cums[x-lower];
+			return cums[x - lower];
 		}
 	}
 }

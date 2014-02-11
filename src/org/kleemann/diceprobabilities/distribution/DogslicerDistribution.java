@@ -9,7 +9,7 @@ import org.apache.commons.math3.fraction.BigFraction;
  * not a DieDistribution since DieDistributions are equal probabilities between
  * 1 and n.
  */
-public class DogslicerDistribution implements Distribution {
+public class DogslicerDistribution extends AbstractDistribution {
 
 	// the total number of sides of the die
 	private int sides;
@@ -35,23 +35,11 @@ public class DogslicerDistribution implements Distribution {
 	}
 
 	@Override
-	public BigFraction getProbability(int x) {
+	public BigFraction getProbabilityBounded(int x) {
 		if (x == 3) {
 			return probability.multiply(2);
-		} else if (x >= 2 && x <= sides) {
-			return probability;
 		} else {
-			return BigFraction.ZERO;
+			return probability;
 		}
-	}
-
-	@Override
-	public BigFraction getCumulativeProbability(int x) {
-		BigFraction sum = BigFraction.ZERO;
-		x = Math.max(x, lowerBound()); // no need to add up a bunch of zeros
-		for (; x < upperBound(); ++x) {
-			sum = sum.add(getProbability(x));
-		}
-		return sum;
 	}
 }

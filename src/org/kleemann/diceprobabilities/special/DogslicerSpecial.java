@@ -10,7 +10,6 @@ import org.kleemann.diceprobabilities.distribution.DogslicerDistribution;
 import org.kleemann.diceprobabilities.distribution.SumDistribution;
 
 import android.content.res.Resources;
-import android.util.SparseIntArray;
 
 /**
  * <p>

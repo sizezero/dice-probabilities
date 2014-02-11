@@ -18,7 +18,7 @@ import org.apache.commons.math3.fraction.BigFraction;
  * <p>For efficiency there is also an integer multiply function that adds a distribution 
  * to itself n times.
  */
-public class SumDistribution implements Distribution {
+public class SumDistribution extends AbstractDistribution {
 
 	final private BigFraction[] vals;
 	final private int lower;
@@ -150,39 +150,21 @@ public class SumDistribution implements Distribution {
 	public int upperBound() { return upper; }
 
 	@Override
-	public BigFraction getProbability(int x) {
-		return (x>=lower && x<upper) ? vals[x-lower] : BigFraction.ZERO;
-	}
-
-	/**
-	 * <p>This is currently O(n).  Use CachedCumulativeDistribution to speed this up.
-	 */
-	@Override
-	public BigFraction getCumulativeProbability(int x) {
-		BigFraction sum = BigFraction.ZERO;
-		x = Math.max(x, lower); // no need to add up a bunch of zeros
-		for ( ; x<upper ; ++x) {
-			sum = sum.add(getProbability(x));
-		}
-		return sum;
+	public BigFraction getProbabilityBounded(int x) {
+		return vals[x-lower];
 	}
 
 	/**
 	 * <p>Sums two distributions. 
 	 */
 	public static Distribution add(Distribution d1, Distribution d2) {
-		if (isZero(d1)) {
+		if (d1.isZero()) {
 			return d2;
-		} else if (isZero(d2)) {
+		} else if (d2.isZero()) {
 			return d1;
 		} else {
 			return new SumDistribution(d1, d2);
 		}
-	}
-	
-	private static boolean isZero(Distribution d) {
-		return d.lowerBound()==0 && d.upperBound()==1 
-				&& d.getProbability(0).equals(BigFraction.ONE);
 	}
 	
 	/**

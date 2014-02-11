@@ -12,7 +12,7 @@ import org.apache.commons.math3.fraction.BigFraction;
  * <p>
  * e.g. a d6 is {1,2,3,4,5,6} but a crit d6 is {1,2,3,4,5,7}
  */
-public class CritDistribution implements Distribution {
+public class CritDistribution extends AbstractDistribution {
 
 	// the total number of sides of the die
 	private int sides;
@@ -38,21 +38,7 @@ public class CritDistribution implements Distribution {
 	}
 
 	@Override
-	public BigFraction getProbability(int x) {
-		if ((x >= 1 && x < sides) || x == sides + 1) {
-			return probability;
-		} else {
-			return BigFraction.ZERO;
-		}
-	}
-
-	@Override
-	public BigFraction getCumulativeProbability(int x) {
-		BigFraction sum = BigFraction.ZERO;
-		x = Math.max(x, lowerBound()); // no need to add up a bunch of zeros
-		for (; x < upperBound(); ++x) {
-			sum = sum.add(getProbability(x));
-		}
-		return sum;
+	public BigFraction getProbabilityBounded(int x) {
+		return probability;
 	}
 }
