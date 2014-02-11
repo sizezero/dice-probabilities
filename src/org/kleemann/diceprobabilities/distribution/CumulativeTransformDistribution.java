@@ -14,7 +14,7 @@ import org.apache.commons.math3.fraction.BigFraction;
  * 
  * <p>
  * The constructors of this class use Cumulative values extensively so it may be
- * more efficient to pass a CachedCumulativeDistribution
+ * more efficient to pass a CachedCumulativeDistribution as an argument
  */
 public class CumulativeTransformDistribution extends AbstractDistribution {
 
@@ -61,6 +61,26 @@ public class CumulativeTransformDistribution extends AbstractDistribution {
 		return n;
 	}
 
+	/**
+	 * <p>
+	 * If you succeed at a check you have to roll again and succeed.
+	 */
+	public static Distribution forcedReroll(Distribution d) {
+		CumulativeTransformDistribution n = new CumulativeTransformDistribution(
+				d);
+		for (int i = 0; i < n.vals.length; ++i) {
+			// P(S) = 1 - P(F)
+			// P(new) = 1 - ( P(F) + P(S) * P(F) )
+			final BigFraction pS = n.cums[i];
+			final BigFraction pF = BigFraction.ONE.subtract(pS);
+			n.cums[i] = BigFraction.ONE.subtract(pF.add(pS.multiply(pF)));
+		}
+		n.calculateValsFromCums();
+		return n;
+	}
+
+	
+	
 	@Override
 	public int lowerBound() {
 		return lower;

@@ -12,8 +12,8 @@
     <string name="special_normal_description">No special changes are made to die rolls</string>
     <string name="special_second_chance_title">Second Chance</string>
     <string name="special_second_chance_description">If the first roll fails, you have a second chance to roll again. Weapon: Glaive, Icy Longspear</string>
-    <string name="special_force_second_roll_title">Forced Roll</string>
-    <string name="special_force_second_roll_description">If the first roll succeeds, you must roll another successful check to make the roll.  Monster: Giant Hermit Crab</string>
+    <string name="special_forced_reroll_title">Forced Roll</string>
+    <string name="special_forced_reroll_description">If the first roll succeeds, you must roll another successful check to make the roll.  Monster: Giant Hermit Crab</string>
     <string name="special_crit_title">d%d crit</string>
     <string name="special_crit_description">All maximum rolls on this die count as one higher. Weapons: Heavy Pick, Scythe</string>
     <string name="special_dogslicer_title">Dogslicer</string>
