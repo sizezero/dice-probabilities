@@ -79,8 +79,27 @@ public class CumulativeTransformDistribution extends AbstractDistribution {
 		return n;
 	}
 
-	
-	
+	/**
+	 * <p>
+	 * When you attempt to defeat Caizarlu Zerren, after you make the roll, roll
+	 * 1d6. On a 1 or 2, start the check over. Cards Played on the previous
+	 * check do not affect the new check.
+	 */
+	public static Distribution caizarluZerren(Distribution d) {
+		CumulativeTransformDistribution n = new CumulativeTransformDistribution(
+				d);
+		for (int i = 0; i < n.vals.length; ++i) {
+			// P(S) = 1 - P(F)
+			// P(new) = 1 - ( P(F) + P(S) * P(F) * (2/6)
+			final BigFraction pS = n.cums[i];
+			final BigFraction pF = BigFraction.ONE.subtract(pS);
+			n.cums[i] = BigFraction.ONE.subtract(pF.add(pS.multiply(pF)
+					.multiply(BigFraction.ONE_THIRD)));
+		}
+		n.calculateValsFromCums();
+		return n;
+	}
+
 	@Override
 	public int lowerBound() {
 		return lower;
