@@ -38,7 +38,11 @@ public class CritDistribution extends AbstractDistribution {
 	}
 
 	@Override
-	public BigFraction getProbabilityBounded(int x) {
-		return probability;
+	public BigFraction getProbability(int x) {
+		if ((x >= 1 && x < sides) || x == sides + 1) {
+			return probability;
+		} else {
+			return BigFraction.ZERO;
+		}
 	}
 }
