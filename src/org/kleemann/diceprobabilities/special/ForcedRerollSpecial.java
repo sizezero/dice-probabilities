@@ -14,9 +14,9 @@ import android.util.SparseIntArray;
  * If the first roll succeeds, you must successfully roll again in order to
  * succeed.
  */
-class ForcedReroll extends AbstractSpecial {
+class ForcedRerollSpecial extends AbstractSpecial {
 
-	public ForcedReroll(Resources r) {
+	public ForcedRerollSpecial(Resources r) {
 		super(r.getString(R.string.special_forced_reroll_title), r
 				.getString(R.string.special_forced_reroll_description));
 	}

@@ -40,8 +40,8 @@ public class SpecialSpinner {
 		def = new NormalSpecial(r);
 		special = new ArrayList<Special>();
 		special.add(def);
-		special.add(new SecondChance(r));
-		special.add(new ForcedReroll(r));
+		special.add(new SecondChanceSpecial(r));
+		special.add(new ForcedRerollSpecial(r));
 		special.add(new CritSpecial(r, 6));
 		special.add(new CritSpecial(r, 4));
 		special.add(new ModifyEachDieSpecial(r, -1));

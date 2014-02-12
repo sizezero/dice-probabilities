@@ -12,9 +12,9 @@ import android.util.SparseIntArray;
 /**
  * <p>If the first roll fails you get a second chance to roll in order to succeed.
  */
-class SecondChance extends AbstractSpecial {
+class SecondChanceSpecial extends AbstractSpecial {
 
-	public SecondChance(Resources r) {
+	public SecondChanceSpecial(Resources r) {
 		super(r.getString(R.string.special_second_chance_title), r
 				.getString(R.string.special_second_chance_description));
 	}
