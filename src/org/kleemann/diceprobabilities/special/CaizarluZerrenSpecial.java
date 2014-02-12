@@ -1,7 +1,6 @@
 package org.kleemann.diceprobabilities.special;
 
 import org.kleemann.diceprobabilities.R;
-import org.kleemann.diceprobabilities.distribution.CachedCumulativeDistribution;
 import org.kleemann.diceprobabilities.distribution.CumulativeTransformDistribution;
 import org.kleemann.diceprobabilities.distribution.Distribution;
 
@@ -17,7 +16,6 @@ class CaizarluZerrenSpecial extends AbstractSpecial {
 	@Override
 	public Distribution getDistribution(SparseIntArray sidesToCount) {
 		Distribution d = super.getDistribution(sidesToCount);
-		Distribution c = new CachedCumulativeDistribution(d);
-		return CumulativeTransformDistribution.caizarluZerren(c);
+		return CumulativeTransformDistribution.caizarluZerren(d);
 	}
 }

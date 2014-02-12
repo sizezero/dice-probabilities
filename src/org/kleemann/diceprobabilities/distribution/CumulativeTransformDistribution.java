@@ -11,10 +11,6 @@ import org.apache.commons.math3.fraction.BigFraction;
  * These operations will not change the lower and upper bounds of the
  * distribution: possible things are still possible and impossible things are
  * still impossible.
- * 
- * <p>
- * The constructors of this class use Cumulative values extensively so it may be
- * more efficient to pass a CachedCumulativeDistribution as an argument
  */
 public class CumulativeTransformDistribution extends AbstractDistribution {
 
@@ -24,6 +20,9 @@ public class CumulativeTransformDistribution extends AbstractDistribution {
 	private BigFraction[] cums;
 
 	private CumulativeTransformDistribution(Distribution d) {
+		// we will be calling getCumulativeProbability(x) a lot
+		d = d.cacheCumulative();
+		
 		this.lower = d.lowerBound();
 		this.upper = d.upperBound();
 		final int n = upper - lower;
@@ -124,5 +123,14 @@ public class CumulativeTransformDistribution extends AbstractDistribution {
 		} else {
 			return cums[x - lower];
 		}
+	}
+	
+	/**
+	 * <p>
+	 * This class has an efficient getCumulativeProbability(x)
+	 */
+	@Override
+	public Distribution cacheCumulative() {
+		return this;
 	}
 }

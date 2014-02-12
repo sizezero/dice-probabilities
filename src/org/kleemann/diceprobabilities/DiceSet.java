@@ -4,7 +4,6 @@ import java.text.DecimalFormat;
 import java.util.ArrayList;
 
 import org.apache.commons.math3.fraction.BigFraction;
-import org.kleemann.diceprobabilities.distribution.CachedCumulativeDistribution;
 import org.kleemann.diceprobabilities.distribution.Distribution;
 import org.kleemann.diceprobabilities.graph.GraphView;
 import org.kleemann.diceprobabilities.special.Special;
@@ -253,7 +252,7 @@ public class DiceSet {
 			ArrayList<String> dice = in.special.getFormulaDice(in.sidesToCount);
 			Distribution d = in.special.getDistribution(in.sidesToCount);
 			// no modification to d after this; cache the cumulative values
-			d = new CachedCumulativeDistribution(d);
+			d = d.cacheCumulative();
 			
 			BackgroundOut out = new BackgroundOut();
 			out.serial = in.serial;

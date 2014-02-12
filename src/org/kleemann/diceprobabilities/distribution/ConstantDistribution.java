@@ -39,4 +39,13 @@ public class ConstantDistribution extends AbstractDistribution {
 	public BigFraction getCumulativeProbability(int x) {
 		return x > this.x ? BigFraction.ZERO : BigFraction.ONE;
 	}
+	
+	/**
+	 * <p>
+	 * This class has an efficient getCumulativeProbability(x)
+	 */
+	@Override
+	public Distribution cacheCumulative() {
+		return this;
+	}
 }

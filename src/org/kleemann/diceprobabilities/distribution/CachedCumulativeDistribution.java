@@ -9,12 +9,12 @@ import org.apache.commons.math3.fraction.BigFraction;
  * O(n). It should wrapped around a distribution after all the sums and
  * multiplies are done.
  */
-public class CachedCumulativeDistribution extends AbstractDistribution {
+class CachedCumulativeDistribution extends AbstractDistribution {
 
 	private final Distribution d;
 	private final BigFraction[] cums;
 
-	public CachedCumulativeDistribution(Distribution d) {
+	CachedCumulativeDistribution(Distribution d) {
 		this.d = d;
 		if (d.lowerBound() < d.upperBound()) {
 			cums = new BigFraction[d.upperBound() - d.lowerBound()];
@@ -53,5 +53,14 @@ public class CachedCumulativeDistribution extends AbstractDistribution {
 		} else {
 			return cums[x - d.lowerBound()];
 		}
+	}
+
+	/**
+	 * <p>
+	 * This class has an efficient getCumulativeProbability(x)
+	 */
+	@Override
+	public Distribution cacheCumulative() {
+		return this;
 	}
 }

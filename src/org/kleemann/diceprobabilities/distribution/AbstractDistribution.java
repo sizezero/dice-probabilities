@@ -47,6 +47,16 @@ abstract class AbstractDistribution implements Distribution {
 		return sum;
 	}
 
+	/**
+	 * <p>
+	 * If the implementing class has a getCumulativeProbability(x) that performs
+	 * O(1) then it should override this method to return <code>this</code>
+	 */
+	@Override
+	public Distribution cacheCumulative() {
+		return new CachedCumulativeDistribution(this);
+	}
+
 	@Override
 	public boolean isZero() {
 		return lowerBound() == 0 && upperBound() == 1

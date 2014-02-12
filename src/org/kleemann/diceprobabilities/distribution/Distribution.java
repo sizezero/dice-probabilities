@@ -42,6 +42,19 @@ public interface Distribution {
 
 	/**
 	 * <p>
+	 * If the function getCumulativeProbability(x) of this object has worse
+	 * performance than O(1) then a Distribution will be returned that has
+	 * performance of O(1). If the current object already has O(1) performance
+	 * then it will return itself.
+	 * 
+	 * <p>
+	 * If you are going to call getCumulativeProbability(x) many times then you
+	 * should call this function first.
+	 */
+	Distribution cacheCumulative();
+
+	/**
+	 * <p>
 	 * A handy way to test if the distribution is zero. e.g.
 	 * ConstantDistribution.ZERO or new ConstantDistribution(0)
 	 */
