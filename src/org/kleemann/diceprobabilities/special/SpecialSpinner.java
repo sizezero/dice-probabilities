@@ -44,6 +44,7 @@ public class SpecialSpinner {
 		special.add(new ForcedReroll(r));
 		special.add(new CritSpecial(r, 6));
 		special.add(new CritSpecial(r, 4));
+		special.add(new ModifyEachDieSpecial(r, -1));
 		special.add(new DogslicerSpecial(r));
 		special.add(new CaizarluZerrenSpecial(r));
 
