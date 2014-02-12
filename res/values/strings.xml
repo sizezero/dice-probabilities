@@ -20,6 +20,8 @@
     <string name="special_dogslicer_description">For six sided dice, ones count as threes\n</string>
     <string name="special_modify_each_die_title">%d per die</string>
     <string name="special_modify_each_die_description">%d for each die rolled\n\nMonster: Warlord\n</string>
+    <string name="special_desecrated_vault_title">Desecrated Vault</string>
+    <string name="special_desecrated_vault_description">If you would defeat a bane with the Undead trait here, roll 1d6. On a 1, the monster is undefeated.\n</string>
     <string name="special_caizerlu_zerren_title">C. Zerren</string>
     <string name="special_caizerlu_zerren_description">When you attempt to defeat Caizarlu Zerren, after you make the roll, roll 1d6. On a 1 or 2, start the check over. Cards Played on the previous check do not affect the new check.\n</string>
     

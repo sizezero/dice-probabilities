@@ -22,7 +22,7 @@ public class CumulativeTransformDistribution extends AbstractDistribution {
 	private CumulativeTransformDistribution(Distribution d) {
 		// we will be calling getCumulativeProbability(x) a lot
 		d = d.cacheCumulative();
-		
+
 		this.lower = d.lowerBound();
 		this.upper = d.upperBound();
 		final int n = upper - lower;
@@ -31,7 +31,9 @@ public class CumulativeTransformDistribution extends AbstractDistribution {
 		for (int i = 0, x = lower; x < upper; ++i, ++x) {
 			this.cums[i] = d.getCumulativeProbability(x);
 		}
-		// vals is uninitialized
+		
+		// vals is uninitialized; static factories in this class must call
+		// calculateValsFromCums() before returning the new object
 	}
 
 	private void calculateValsFromCums() {
@@ -99,6 +101,26 @@ public class CumulativeTransformDistribution extends AbstractDistribution {
 		return n;
 	}
 
+	/**
+	 * <p>
+	 * If you would defeat a bane with the Undead trait here, roll 1d6. On a 1,
+	 * the monster is undefeated.
+	 */
+	public static Distribution desecratedVault(Distribution d) {
+		CumulativeTransformDistribution n = new CumulativeTransformDistribution(
+				d);
+		final BigFraction fiveSixths = new BigFraction(5, 6);
+		for (int i = 0; i < n.vals.length; ++i) {
+			// P(S) = 1 - P(F)
+			// P(new) = (1/6) * 0 + (5/6) * P(S)
+			// P(new) = (5/6) * P(S)
+			final BigFraction pS = n.cums[i];
+			n.cums[i] = fiveSixths.multiply(pS);
+		}
+		n.calculateValsFromCums();
+		return n;
+	}
+
 	@Override
 	public int lowerBound() {
 		return lower;
@@ -124,7 +146,7 @@ public class CumulativeTransformDistribution extends AbstractDistribution {
 			return cums[x - lower];
 		}
 	}
-	
+
 	/**
 	 * <p>
 	 * This class has an efficient getCumulativeProbability(x)
