@@ -25,23 +25,22 @@ public class ModifyEachDieSpecial extends AbstractSpecial {
 
 	@Override
 	public Distribution getDistribution(SparseIntArray sidesToCount) {
-		int numDies = 0;
-		Distribution accumulator = ConstantDistribution.ZERO;
+		// count the total number of dice
+		int numDice = 0;
 		for (int i = sidesToCount.size() - 1; i >= 0; --i) {
 			final int sides = sidesToCount.keyAt(i);
 			final int count = sidesToCount.valueAt(i);
 			if (count != 0) {
-				accumulator = accumulateDiceStack(sides, count, accumulator);
 				// constant does not count as a die for this special
 				if (sides != 1) {
-					numDies += count;
+					numDice += count;
 				}
 			}
 		}
 
 		// adjust the whole distribution by this adjustment times the number of
 		// dice
-		return SumDistribution.add(accumulator, new ConstantDistribution(
-				numDies * modifier));
+		final Distribution k = new ConstantDistribution(numDice * modifier);
+		return SumDistribution.add(super.getDistribution(sidesToCount), k);
 	}
 }

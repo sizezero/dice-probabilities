@@ -3,9 +3,7 @@ package org.kleemann.diceprobabilities.special;
 import java.util.ArrayList;
 
 import org.kleemann.diceprobabilities.R;
-import org.kleemann.diceprobabilities.distribution.ConstantDistribution;
 import org.kleemann.diceprobabilities.distribution.CritDistribution;
-import org.kleemann.diceprobabilities.distribution.DieDistribution;
 import org.kleemann.diceprobabilities.distribution.Distribution;
 import org.kleemann.diceprobabilities.distribution.SumDistribution;
 
@@ -32,33 +30,23 @@ class CritSpecial extends AbstractSpecial {
 	 */
 	@Override
 	protected void addFormulaDie(int sides, int count, ArrayList<String> dice) {
-		if (sides == 1) {
-			super.addFormulaDie(sides, count, dice);
-		} else {
+		if (sides == critSides) {
 			dice.add(count + "D" + sides);
+		} else {
+			super.addFormulaDie(sides, count, dice);
 		}
 	}
 
 	@Override
 	protected Distribution accumulateDiceStack(int sides, int count,
 			Distribution accumulator) {
-		final Distribution allDiceOfOneType;
-		if (sides == 1) {
-			allDiceOfOneType = new ConstantDistribution(count);
+		if (sides == critSides) {
+			final Distribution allDiceOfOneType = SumDistribution.multiply(
+					new CritDistribution(sides), count);
+			return SumDistribution.add(accumulator, allDiceOfOneType);
 		} else {
-			// replace the normal die with the crit die
-			if (sides == critSides) {
-				allDiceOfOneType = SumDistribution.multiply(
-						new CritDistribution(sides), count);
-
-			} else {
-				// Note: passing DieDistribution to multiply is more efficient
-				// than CritDistribution
-				allDiceOfOneType = SumDistribution.multiply(
-						new DieDistribution(sides), count);
-			}
+			return super.accumulateDiceStack(sides, count, accumulator);
 		}
-		return SumDistribution.add(accumulator, allDiceOfOneType);
 	}
 
 }
