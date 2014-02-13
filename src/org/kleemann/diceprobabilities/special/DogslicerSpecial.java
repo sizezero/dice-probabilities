@@ -43,7 +43,7 @@ class DogslicerSpecial extends AbstractSpecial {
 			allDiceOfOneType = new ConstantDistribution(count);
 		} else {
 			// replace the normal die with a dogslicer die
-			if (sides == 6) {
+			if (sides == DogslicerDistribution.SIDES) {
 				allDiceOfOneType = SumDistribution.multiply(
 						new DogslicerDistribution(), count);
 

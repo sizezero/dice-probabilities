@@ -12,16 +12,14 @@ import org.apache.commons.math3.fraction.BigFraction;
 public class DogslicerDistribution extends AbstractDistribution {
 
 	// the total number of sides of the die
-	private int sides;
+	public final static int SIDES = 6;;
 
 	// the equal probability of getting any side of the die
 	// cache this for efficiency
 	private BigFraction probability;
 
 	public DogslicerDistribution() {
-		assert (sides > 0);
-		this.sides = 6;
-		this.probability = new BigFraction(1, sides);
+		this.probability = new BigFraction(1, SIDES);
 	}
 
 	@Override
@@ -31,7 +29,7 @@ public class DogslicerDistribution extends AbstractDistribution {
 
 	@Override
 	public int upperBound() {
-		return sides + 1;
+		return SIDES + 1;
 	}
 
 	@Override
