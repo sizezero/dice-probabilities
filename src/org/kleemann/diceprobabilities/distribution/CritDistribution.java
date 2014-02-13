@@ -45,13 +45,4 @@ public class CritDistribution extends AbstractDistribution {
 			return BigFraction.ZERO;
 		}
 	}
-	
-	/**
-	 * <p>
-	 * This class has an efficient getCumulativeProbability(x)
-	 */
-	@Override
-	public Distribution cacheCumulative() {
-		return this;
-	}
 }
