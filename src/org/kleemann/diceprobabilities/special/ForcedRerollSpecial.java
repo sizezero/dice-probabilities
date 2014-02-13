@@ -2,6 +2,7 @@ package org.kleemann.diceprobabilities.special;
 
 import java.util.ArrayList;
 
+import org.apache.commons.math3.fraction.BigFraction;
 import org.kleemann.diceprobabilities.R;
 import org.kleemann.diceprobabilities.distribution.ScaleCumulativeDistribution;
 import org.kleemann.diceprobabilities.distribution.Distribution;
@@ -31,6 +32,15 @@ class ForcedRerollSpecial extends AbstractSpecial {
 	@Override
 	public Distribution getDistribution(SparseIntArray sidesToCount) {
 		Distribution d = super.getDistribution(sidesToCount);
-		return ScaleCumulativeDistribution.forcedReroll(d);
+
+		return ScaleCumulativeDistribution.scale(d,
+				new ScaleCumulativeDistribution.Scale() {
+					public BigFraction scale(BigFraction pS, int x) {
+						// P(S) = 1 - P(F)
+						// P(new) = 1 - ( P(F) + P(S) * P(F) )
+						final BigFraction pF = BigFraction.ONE.subtract(pS);
+						return BigFraction.ONE.subtract(pF.add(pS.multiply(pF)));
+					}
+				});
 	}
 }
