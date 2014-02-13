@@ -22,7 +22,7 @@ abstract class AbstractDistribution implements Distribution {
 
 	/**
 	 * <p>
-	 * Guaranteed not to be called outside the bounds of lowerBound() and
+	 * Guaranteed not to be called outside the range of lowerBound() and
 	 * upperBound()-1
 	 * 
 	 * <p>
