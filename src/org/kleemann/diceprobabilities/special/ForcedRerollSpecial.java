@@ -3,7 +3,7 @@ package org.kleemann.diceprobabilities.special;
 import java.util.ArrayList;
 
 import org.kleemann.diceprobabilities.R;
-import org.kleemann.diceprobabilities.distribution.CumulativeTransformDistribution;
+import org.kleemann.diceprobabilities.distribution.ScaleCumulativeDistribution;
 import org.kleemann.diceprobabilities.distribution.Distribution;
 
 import android.content.res.Resources;
@@ -31,6 +31,6 @@ class ForcedRerollSpecial extends AbstractSpecial {
 	@Override
 	public Distribution getDistribution(SparseIntArray sidesToCount) {
 		Distribution d = super.getDistribution(sidesToCount);
-		return CumulativeTransformDistribution.forcedReroll(d);
+		return ScaleCumulativeDistribution.forcedReroll(d);
 	}
 }

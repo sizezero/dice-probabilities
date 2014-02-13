@@ -12,14 +12,14 @@ import org.apache.commons.math3.fraction.BigFraction;
  * distribution: possible things are still possible and impossible things are
  * still impossible.
  */
-public class CumulativeTransformDistribution extends AbstractDistribution {
+public class ScaleCumulativeDistribution extends AbstractDistribution {
 
 	private final int lower;
 	private final int upper;
 	private BigFraction[] vals;
 	private BigFraction[] cums;
 
-	private CumulativeTransformDistribution(Distribution d) {
+	private ScaleCumulativeDistribution(Distribution d) {
 		// we will be calling getCumulativeProbability(x) a lot
 		d = d.cacheCumulative();
 
@@ -49,7 +49,7 @@ public class CumulativeTransformDistribution extends AbstractDistribution {
 	 * If you fail the check you can try again.
 	 */
 	public static Distribution secondChance(Distribution d) {
-		CumulativeTransformDistribution n = new CumulativeTransformDistribution(
+		ScaleCumulativeDistribution n = new ScaleCumulativeDistribution(
 				d);
 		for (int i = 0; i < n.vals.length; ++i) {
 			// P(S) = 1 - P(F)
@@ -67,7 +67,7 @@ public class CumulativeTransformDistribution extends AbstractDistribution {
 	 * If you succeed at a check you have to roll again and succeed.
 	 */
 	public static Distribution forcedReroll(Distribution d) {
-		CumulativeTransformDistribution n = new CumulativeTransformDistribution(
+		ScaleCumulativeDistribution n = new ScaleCumulativeDistribution(
 				d);
 		for (int i = 0; i < n.vals.length; ++i) {
 			// P(S) = 1 - P(F)
@@ -87,7 +87,7 @@ public class CumulativeTransformDistribution extends AbstractDistribution {
 	 * check do not affect the new check.
 	 */
 	public static Distribution caizarluZerren(Distribution d) {
-		CumulativeTransformDistribution n = new CumulativeTransformDistribution(
+		ScaleCumulativeDistribution n = new ScaleCumulativeDistribution(
 				d);
 		for (int i = 0; i < n.vals.length; ++i) {
 			// P(S) = 1 - P(F)
@@ -107,7 +107,7 @@ public class CumulativeTransformDistribution extends AbstractDistribution {
 	 * the monster is undefeated.
 	 */
 	public static Distribution desecratedVault(Distribution d) {
-		CumulativeTransformDistribution n = new CumulativeTransformDistribution(
+		ScaleCumulativeDistribution n = new ScaleCumulativeDistribution(
 				d);
 		final BigFraction fiveSixths = new BigFraction(5, 6);
 		for (int i = 0; i < n.vals.length; ++i) {
