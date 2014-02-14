@@ -13,6 +13,7 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.SparseIntArray;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
 
@@ -81,6 +82,8 @@ public class DiceSet {
 	private static final String RIGHT_ARROW = "\u21e8"; 
 	
 	public DiceSet(
+			ViewGroup poolViewGroup,
+			ViewGroup currentViewGroup,
 			DieType[] dieType,
 			SpecialSpinner specialSpinner,
 			TargetParam[] targetParam,
@@ -123,6 +126,14 @@ public class DiceSet {
 		clear.setOnClickListener(clearListener);
 		// explicit clear is necessary to set current constant to GONE
 		clearListener.onClick(clear);
+		
+		// iss13: have the pool gridview and the current linearlayout "eat" clicks so that the user doesn't accidentally
+		// select the background graph
+		final View.OnClickListener doNothing = new View.OnClickListener(){
+			public void onClick(View v) {}
+		};
+		poolViewGroup.setOnClickListener(doNothing);
+		currentViewGroup.setOnClickListener(doNothing);
 	}
 
 	/**
