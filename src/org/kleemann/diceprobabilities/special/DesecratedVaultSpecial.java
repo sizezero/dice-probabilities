@@ -26,7 +26,11 @@ public class DesecratedVaultSpecial extends AbstractSpecial {
 	public Distribution getDistribution(SparseIntArray sidesToCount) {
 		Distribution d = super.getDistribution(sidesToCount);
 
-		return ScaleCumulativeDistribution.scale(d,
+		// we need to adjust the cumulative distribution past it's lower bound
+		// all the way to zero since failure always results if a 1/6 is rolled.
+		// There is no 100% with this distribution.
+
+		return ScaleCumulativeDistribution.scale(d, 0, d.upperBound(),
 				new ScaleCumulativeDistribution.Scale() {
 					public BigFraction scale(BigFraction pS, int x) {
 						// P(S) = 1 - P(F)

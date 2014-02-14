@@ -33,12 +33,13 @@ public class ScaleCumulativeDistribution extends AbstractDistribution {
 		BigFraction scale(BigFraction old, int x);
 	}
 
-	private ScaleCumulativeDistribution(Distribution d, Scale s) {
+	private ScaleCumulativeDistribution(Distribution d, Scale s, int newLower,
+			int newUpper) {
 		// we will be calling getCumulativeProbability(x) a lot
 		d = d.cacheCumulative();
 
-		this.lower = d.lowerBound();
-		this.upper = d.upperBound();
+		this.lower = newLower;
+		this.upper = newUpper;
 		final int n = upper - lower;
 		this.vals = new BigFraction[n];
 		this.cums = new BigFraction[n];
@@ -62,7 +63,24 @@ public class ScaleCumulativeDistribution extends AbstractDistribution {
 
 	public static Distribution scale(Distribution d, Scale s) {
 		// I like factory methods over constructors
-		return new ScaleCumulativeDistribution(d, s);
+		return new ScaleCumulativeDistribution(d, s, d.lowerBound(),
+				d.upperBound());
+	}
+
+	/**
+	 * <p>
+	 * Allows the caller to set a new bounds on the new distribution. This
+	 * allows 100% and 0% that were previously out of bounds to be adjusted.
+	 * 
+	 * <p>
+	 * Note: this allows the caller to create distributions that don't add up to
+	 * 100%. I'm not sure what the full affects of this is. Currently this is
+	 * only needed for Desecrated Vault and it seems to work.
+	 */
+	public static Distribution scale(Distribution d, int newLower,
+			int newUpper, Scale s) {
+		// I like factory methods over constructors
+		return new ScaleCumulativeDistribution(d, s, newLower, newUpper);
 	}
 
 	@Override
