@@ -1,7 +1,5 @@
 package org.kleemann.diceprobabilities.special;
 
-import java.util.ArrayList;
-
 import org.kleemann.diceprobabilities.distribution.Distribution;
 
 import android.util.SparseIntArray;
@@ -30,17 +28,6 @@ public interface Special {
 
 	/**
 	 * <p>
-	 * A list of dice components that is used to construct the formula that is
-	 * displayed on the background graph.
-	 * 
-	 * <p>
-	 * This function is thread safe and can be called from a non Android-UI
-	 * thread.
-	 */
-	public ArrayList<String> getFormulaDice(SparseIntArray sidesToCount);
-
-	/**
-	 * <p>
 	 * Given a set of dice and this special value, calculates and returns the
 	 * distribution.
 	 * 
@@ -49,4 +36,16 @@ public interface Special {
 	 * thread.
 	 */
 	public Distribution getDistribution(SparseIntArray sidesToCount);
+	
+	/**
+	 * <p>
+	 * A textual description of the die roll including dice, target result
+	 * and any special description.
+	 * 
+	 * <p>
+	 * This function is thread safe and can be called from a non Android-UI
+	 * thread.
+	 */
+	public String getFormula(SparseIntArray sidesToCount, int target, String answerProbability);
+
 }

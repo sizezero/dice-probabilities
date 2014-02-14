@@ -20,6 +20,18 @@ class DogslicerSpecial extends AbstractSpecial {
 				.getString(R.string.special_dogslicer_description));
 	}
 
+	@Override
+	protected Distribution accumulateDiceStack(int sides, int count,
+			Distribution accumulator) {
+		if (sides == DogslicerDistribution.SIDES) {
+			final Distribution allDiceOfOneType = SumDistribution.multiply(
+					new DogslicerDistribution(), count);
+			return SumDistribution.add(accumulator, allDiceOfOneType);
+		} else {
+			return super.accumulateDiceStack(sides, count, accumulator);
+		}
+	}
+
 	/**
 	 * <p>
 	 * Use capital D for crits
@@ -30,18 +42,6 @@ class DogslicerSpecial extends AbstractSpecial {
 			dice.add(count + "D" + sides);
 		} else {
 			super.addFormulaDie(sides, count, dice);
-		}
-	}
-
-	@Override
-	protected Distribution accumulateDiceStack(int sides, int count,
-			Distribution accumulator) {
-		if (sides == DogslicerDistribution.SIDES) {
-			final Distribution allDiceOfOneType = SumDistribution.multiply(
-					new DogslicerDistribution(), count);
-			return SumDistribution.add(accumulator, allDiceOfOneType);
-		} else {
-			return super.accumulateDiceStack(sides, count, accumulator);
 		}
 	}
 

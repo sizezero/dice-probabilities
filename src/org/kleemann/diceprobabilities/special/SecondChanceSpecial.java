@@ -1,11 +1,9 @@
 package org.kleemann.diceprobabilities.special;
 
-import java.util.ArrayList;
-
 import org.apache.commons.math3.fraction.BigFraction;
 import org.kleemann.diceprobabilities.R;
-import org.kleemann.diceprobabilities.distribution.ScaleCumulativeDistribution;
 import org.kleemann.diceprobabilities.distribution.Distribution;
+import org.kleemann.diceprobabilities.distribution.ScaleCumulativeDistribution;
 
 import android.content.res.Resources;
 import android.util.SparseIntArray;
@@ -19,13 +17,6 @@ class SecondChanceSpecial extends AbstractSpecial {
 	public SecondChanceSpecial(Resources r) {
 		super(r.getString(R.string.special_second_chance_title), r
 				.getString(R.string.special_second_chance_description));
-	}
-
-	@Override
-	public ArrayList<String> getFormulaDice(SparseIntArray sidesToCount) {
-		ArrayList<String> dice = super.getFormulaDice(sidesToCount);
-		dice.add("x2");
-		return dice;
 	}
 
 	@Override

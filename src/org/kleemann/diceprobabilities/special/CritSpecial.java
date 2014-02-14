@@ -24,6 +24,18 @@ class CritSpecial extends AbstractSpecial {
 		this.critSides = sides;
 	}
 
+	@Override
+	protected Distribution accumulateDiceStack(int sides, int count,
+			Distribution accumulator) {
+		if (sides == critSides) {
+			final Distribution allDiceOfOneType = SumDistribution.multiply(
+					new CritDistribution(sides), count);
+			return SumDistribution.add(accumulator, allDiceOfOneType);
+		} else {
+			return super.accumulateDiceStack(sides, count, accumulator);
+		}
+	}
+
 	/**
 	 * <p>
 	 * Use capital D for crits
@@ -34,18 +46,6 @@ class CritSpecial extends AbstractSpecial {
 			dice.add(count + "D" + sides);
 		} else {
 			super.addFormulaDie(sides, count, dice);
-		}
-	}
-
-	@Override
-	protected Distribution accumulateDiceStack(int sides, int count,
-			Distribution accumulator) {
-		if (sides == critSides) {
-			final Distribution allDiceOfOneType = SumDistribution.multiply(
-					new CritDistribution(sides), count);
-			return SumDistribution.add(accumulator, allDiceOfOneType);
-		} else {
-			return super.accumulateDiceStack(sides, count, accumulator);
 		}
 	}
 

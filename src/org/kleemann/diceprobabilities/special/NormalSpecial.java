@@ -14,4 +14,13 @@ class NormalSpecial extends AbstractSpecial {
 		super(r.getString(R.string.special_normal_title), r
 				.getString(R.string.special_normal_description));
 	}
+
+	/**
+	 * If there are no specials then don't bother appending "normal" to the
+	 * formula
+	 */
+	@Override
+	protected void appendTitle(StringBuilder sb, String title) {
+	}
+
 }

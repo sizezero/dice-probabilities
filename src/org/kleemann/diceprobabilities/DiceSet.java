@@ -1,7 +1,6 @@
 package org.kleemann.diceprobabilities;
 
 import java.text.DecimalFormat;
-import java.util.ArrayList;
 
 import org.apache.commons.math3.fraction.BigFraction;
 import org.kleemann.diceprobabilities.distribution.Distribution;
@@ -76,10 +75,8 @@ public class DiceSet {
 	private final String answerHighest;
 	private final String answerSecondHighest;
 	private final int maxFractionChars;
-
+	
 	private static final String APPROXIMATELY_EQUAL_TO = "\u2245";
-	private static final String GREATER_THAN_OR_EQUAL_TO = "\u2265"; 
-	private static final String RIGHT_ARROW = "\u21e8"; 
 	
 	public DiceSet(
 			ViewGroup poolViewGroup,
@@ -94,10 +91,11 @@ public class DiceSet {
 			GraphView.Setter graphSetter
 			) {
 		
-		this.answerFormatter = new DecimalFormat(clear.getResources().getString(R.string.answer_format));
+		this.answerFormatter = new DecimalFormat(
+				clear.getResources().getString(R.string.answer_format));
 		this.answerHighest = answerFormatter.format(1.0d);
 		this.answerSecondHighest = clear.getResources().getString(R.string.answer_second_highest);
-		this.maxFractionChars = clear.getResources().getInteger(R.integer.max_fraction_chars); 
+		this.maxFractionChars = clear.getResources().getInteger(R.integer.max_fraction_chars);
 		
 		// associate each Button object with a behavioral object
 		CurrentDiceChanged diceChanged = new CurrentDiceChanged();
@@ -258,9 +256,7 @@ public class DiceSet {
 		protected BackgroundOut doInBackground(BackgroundIn... arg0) {
 			BackgroundIn in = arg0[0];
 			
-			// calculate both the distribution and the textual description
-			// of the dice formula
-			ArrayList<String> dice = in.special.getFormulaDice(in.sidesToCount);
+			// calculate the distribution
 			Distribution d = in.special.getDistribution(in.sidesToCount);
 			// no modification to d after this; cache the cumulative values
 			d = d.cacheCumulative();
@@ -270,7 +266,6 @@ public class DiceSet {
 			out.distribution = d;
 			out.target = in.target;
 			
-			// format the textual answer of the distribution at the target
 			if (d.upperBound()-d.lowerBound() <= 1) {
 				// if distribution is trivial then show minimal text
 				out.answerFraction = "";
@@ -291,30 +286,8 @@ public class DiceSet {
 				}
 			}
 			
-			// convert the dice array into a formula String
-			if (dice.size()==0) {
-				out.answerFormula = "";
-			} else {
-				StringBuilder sb = new StringBuilder(dice.get(0));
-				for (int i=1 ; i<dice.size() ; ++i) {
-					final String die = dice.get(i);
-					if (die.startsWith("-")) {
-						sb.append(" ");
-					} else {
-						sb.append(" + ");
-					}
-					sb.append(die);
-				}
-				sb.append(" ");
-				sb.append(GREATER_THAN_OR_EQUAL_TO);
-				sb.append(" ");
-				sb.append(in.target);
-				sb.append(" ");
-				sb.append(RIGHT_ARROW);
-				sb.append(" ");
-				sb.append(out.answerProbability);
-				out.answerFormula = sb.toString();
-			}
+			// format the textual answer of the distribution at the target
+			out.answerFormula = in.special.getFormula(in.sidesToCount, in.target, out.answerProbability);
 			
 			return out;
 		}
