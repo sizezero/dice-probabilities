@@ -266,7 +266,7 @@ public class DiceSet {
 			out.distribution = d;
 			out.target = in.target;
 			
-			if (d.upperBound()-d.lowerBound() <= 1) {
+			if (d.isZero()) {
 				// if distribution is trivial then show minimal text
 				out.answerFraction = "";
 				out.answerProbability = answerFormatter.format(0.0d);
