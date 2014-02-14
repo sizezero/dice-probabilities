@@ -11,5 +11,5 @@
     <dimen name="pool_button_min_width">100dp</dimen>
     
         
-    <dimen name="special_text_size">30sp</dimen>
+    <dimen name="special_text_size">25sp</dimen>
 </resources>
