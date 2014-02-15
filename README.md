@@ -1,5 +1,5 @@
 
-# Dice Probabilities
+# PACG Probabilities
 
 This is a small android app that calculates the probabilities of multiple dice exceeding a specified number.  It is particularly designed for playing the game [Pathfinder the Card Game](http://boardgamegeek.com/boardgame/133038/pathfinder-adventure-card-game-rise-of-the-runelor)
 
