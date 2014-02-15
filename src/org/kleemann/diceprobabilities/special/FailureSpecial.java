@@ -1,25 +1,22 @@
 package org.kleemann.diceprobabilities.special;
 
 import org.apache.commons.math3.fraction.BigFraction;
-import org.kleemann.diceprobabilities.R;
-import org.kleemann.diceprobabilities.distribution.ScaleCumulativeDistribution;
 import org.kleemann.diceprobabilities.distribution.Distribution;
+import org.kleemann.diceprobabilities.distribution.ScaleCumulativeDistribution;
 
-import android.content.res.Resources;
 import android.util.SparseIntArray;
 
 /**
  * <p>
- * If you would defeat a bane with the Undead trait here, roll 1d6. On a 1, the
- * monster is undefeated.
+ * After a successful check, failure still occurs with the given probability.
  */
-public class DesecratedVaultSpecial extends AbstractSpecial {
+class FailureSpecial extends AbstractSpecial {
 
-	private final static BigFraction FIVE_SIXTHS = new BigFraction(5, 6);
+	private BigFraction success;
 
-	public DesecratedVaultSpecial(Resources r) {
-		super(r.getString(R.string.special_desecrated_vault_title), r
-				.getString(R.string.special_desecrated_vault_description));
+	public FailureSpecial(String title, String description, BigFraction failure) {
+		super(title, description);
+		this.success = BigFraction.ONE.subtract(failure);
 	}
 
 	@Override
@@ -27,7 +24,8 @@ public class DesecratedVaultSpecial extends AbstractSpecial {
 		Distribution d = super.getDistribution(sidesToCount);
 
 		// we need to adjust the cumulative distribution past it's lower bound
-		// all the way to zero since failure always results if a 1/6 is rolled.
+		// all the way to zero since failure always results if a the final
+		// success fails rolled.
 		// There is no 100% with this distribution.
 
 		return ScaleCumulativeDistribution.scale(d, 0, d.upperBound(),
@@ -36,8 +34,9 @@ public class DesecratedVaultSpecial extends AbstractSpecial {
 						// P(S) = 1 - P(F)
 						// P(new) = (1/6) * 0 + (5/6) * P(S)
 						// P(new) = (5/6) * P(S)
-						return FIVE_SIXTHS.multiply(pS);
+						return success.multiply(pS);
 					}
 				});
+
 	}
 }

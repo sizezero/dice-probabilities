@@ -2,6 +2,7 @@ package org.kleemann.diceprobabilities.special;
 
 import java.util.ArrayList;
 
+import org.apache.commons.math3.fraction.BigFraction;
 import org.kleemann.diceprobabilities.R;
 
 import android.app.Activity;
@@ -46,8 +47,14 @@ public class SpecialSpinner {
 		special.add(new CritSpecial(r, 4));
 		special.add(new ModifyEachDieSpecial(r, -1));
 		special.add(new DogslicerSpecial(r));
-		special.add(new DesecratedVaultSpecial(r));
-		special.add(new CaizarluZerrenSpecial(r));
+		special.add(new FailureSpecial(r
+				.getString(R.string.special_caizerlu_zerren_title), r
+				.getString(R.string.special_caizerlu_zerren_description),
+				new BigFraction(2, 6)));
+		special.add(new FailureSpecial(r
+				.getString(R.string.special_one_sixth_failure_title), r
+				.getString(R.string.special_one_sixth_failure_description),
+				new BigFraction(1, 6)));
 
 		this.layoutInflater = activity.getLayoutInflater();
 		SpecialAdapter adapter = new SpecialAdapter(spinner.getContext(),

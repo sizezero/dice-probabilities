@@ -24,5 +24,7 @@
     <string name="special_desecrated_vault_description">If you would defeat a bane with the Undead trait here, roll 1d6. On a 1, the monster is undefeated.\n</string>
     <string name="special_caizerlu_zerren_title">C. Zerren</string>
     <string name="special_caizerlu_zerren_description">When you attempt to defeat Caizarlu Zerren, after you make the roll, roll 1d6. On a 1 or 2, start the check over. Cards Played on the previous check do not affect the new check.\n</string>
+    <string name="special_one_sixth_failure_title">1/6 Failure</string>
+    <string name="special_one_sixth_failure_description">After a successful check, roll a six sided die. On a 1 your check fails.\n\nLocations: Desecrated Vault, Jorgenfist\n</string>
     
 </resources>
