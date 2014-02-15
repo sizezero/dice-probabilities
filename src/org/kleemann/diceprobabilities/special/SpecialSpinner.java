@@ -48,13 +48,13 @@ public class SpecialSpinner {
 		special.add(new ModifyEachDieSpecial(r, -1));
 		special.add(new DogslicerSpecial(r));
 		special.add(new FailureSpecial(r
-				.getString(R.string.special_caizerlu_zerren_title), r
-				.getString(R.string.special_caizerlu_zerren_description),
-				new BigFraction(2, 6)));
-		special.add(new FailureSpecial(r
 				.getString(R.string.special_one_sixth_failure_title), r
 				.getString(R.string.special_one_sixth_failure_description),
 				new BigFraction(1, 6)));
+		special.add(new FailureSpecial(r
+				.getString(R.string.special_two_sixth_failure_title), r
+				.getString(R.string.special_two_sixth_failure_description),
+				new BigFraction(2, 6)));
 
 		this.layoutInflater = activity.getLayoutInflater();
 		SpecialAdapter adapter = new SpecialAdapter(spinner.getContext(),
