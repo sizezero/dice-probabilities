@@ -19,7 +19,7 @@
     <string name="special_dogslicer_title">Dogslicer</string>
     <string name="special_dogslicer_description">For six sided dice, ones count as threes\n</string>
     <string name="special_modify_each_die_title">%d per die</string>
-    <string name="special_modify_each_die_description">%d for each die rolled\n\nMonster: Warlord\n</string>
+    <string name="special_modify_each_die_description">%d for each die rolled\n\nBarrier: Ambush\nLocation: Waterfront\nMonster: Warlord\n</string>
     <string name="special_desecrated_vault_title">Desecrated Vault</string>
     <string name="special_desecrated_vault_description">If you would defeat a bane with the Undead trait here, roll 1d6. On a 1, the monster is undefeated.\n</string>
     <string name="special_one_sixth_failure_title">1/6 Failure</string>
