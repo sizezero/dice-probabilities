@@ -1,45 +1,31 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layer-list xmlns:android="http://schemas.android.com/apk/res/android">
-<item android:id="@android:id/background">
-    <shape>
-        <corners android:radius="5dip" />
-        <gradient
-                android:startColor="#ff9d9d9d"
-                android:centerColor="#ff5a5a5a"
-                android:centerY="0.75"
-                android:endColor="#ff747474"
-                android:angle="270"
-        />
-    </shape>
-</item>
+<layer-list xmlns:android="http://schemas.android.com/apk/res/android" >
 
-<item android:id="@android:id/secondaryProgress">
-    <clip>
+    <item android:id="@android:id/background">
         <shape>
             <corners android:radius="5dip" />
+
             <gradient
-                    android:startColor="#80d3d3d3"
-                    android:centerColor="#80b6b6b6"
-                    android:centerY="0.75"
-                    android:endColor="#a0cbcbcb"
-                    android:angle="270"
-            />
+                android:angle="270"
+                android:centerColor="#ff5a5a5a"
+                android:centerY="0.5"
+                android:endColor="#ff747474"
+                android:startColor="#ff9d9d9d" />
         </shape>
-    </clip>
-</item>
-<item
-    android:id="@android:id/progress"
->
-    <clip>
-        <shape>
-            <corners
-                android:radius="5dip" />
-            <gradient
-                android:startColor="#ffffff"
-                android:endColor="#333333"
-                android:angle="270" />
-        </shape>
-    </clip>
-</item>
+    </item>
+
+    <item android:id="@android:id/progress">
+        <clip>
+            <shape>
+                <corners android:radius="5dip" />
+
+                <gradient
+                    android:angle="0"
+                    android:endColor="#ff00ff00"
+                    android:centerColor="#fdff4c"
+                    android:startColor="#ffff0000" />
+            </shape>
+        </clip>
+    </item>
 
 </layer-list>

@@ -9,7 +9,7 @@ import android.animation.ObjectAnimator;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
-import android.graphics.Color;
+import android.content.res.Resources;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.animation.DecelerateInterpolator;
@@ -25,21 +25,21 @@ import android.widget.TextView;
 public class Check {
 
 	private static final int ANIMATION_START_DELAY_MILLISECONDS = 500;
-	private static final int ANIMATION_PROGRESS_DURATION_MILLISECONDS = 2500;
+	private static final int ANIMATION_PROGRESS_DURATION_CONSTANT_MILLISECONDS = 1000;
+	private static final int ANIMATION_PROGRESS_DURATION_VARIABLE_MILLISECONDS = 1000;
 	private static final float ANIMATION_PROGRESS_DECELERATE_SCALE = 2.0f;
 
-	private AlertDialog dialog;
-	private TextView checkTest;
-	private ProgressBar checkTargetProgress;
-	private ProgressBar checkActualProgress;
-	private TextView checkResult;
+	private final AlertDialog dialog;
+	private final TextView checkTest;
+	private final ProgressBar checkTargetProgress;
+	private final ProgressBar checkActualProgress;
+	private final TextView checkResult;
 
 	private String probabilityText;
 	private Distribution distribution;
 	private int target;
-	private Random random;
 
-	private Wrapper wrapper;
+	private final Wrapper wrapper;
 
 	/**
 	 * <p>
@@ -73,7 +73,6 @@ public class Check {
 				.findViewById(R.id.check_actual_progress);
 		this.checkResult = (TextView) v.findViewById(R.id.check_result);
 
-		this.random = new Random();
 		this.wrapper = new Wrapper();
 		button.setOnClickListener(wrapper);
 	}
@@ -94,25 +93,6 @@ public class Check {
 		this.target = target;
 	}
 
-	private static int percentageToColor(float f) {
-		float a = f - 0.5f;
-		if (a > 0.5f) {
-			a -= 0.5f;
-		} else {
-			a += 0.5f;
-
-		}
-		a = a * a;
-		if (a > 0.0f) {
-			a -= 0.5f;
-		} else {
-			a += 0.5f;
-
-		}
-		final int gradient = (int) (a * Color.RED + (1.0f - a) * Color.GREEN);
-		return gradient;
-	}
-
 	/**
 	 * <p>
 	 * Lots of listeners: original mouse click, dialog show, and animation
@@ -122,12 +102,28 @@ public class Check {
 	 */
 	private class Wrapper implements View.OnClickListener,
 			DialogInterface.OnShowListener, Animator.AnimatorListener {
+
+		private Random random;
 		private ObjectAnimator progressAnim;
 		private float targetProb;
 		private float actualProb;
 
+		private final int successColor;
+		private final int failureColor;
+		private final String successText;
+		private final String failureText;
+		private final String descriptionFormat;
+
 		Wrapper() {
+			random = new Random();
 			dialog.setOnShowListener(this);
+
+			final Resources r = checkResult.getResources();
+			successColor = r.getColor(R.color.check_success);
+			failureColor = r.getColor(R.color.check_failure);
+			successText = r.getString(R.string.check_success);
+			failureText = r.getString(R.string.check_failure);
+			descriptionFormat = r.getString(R.string.check_description);
 		}
 
 		/**
@@ -137,12 +133,9 @@ public class Check {
 		 */
 		@Override
 		public void onClick(View v) {
-			float targetProb = distribution.getCumulativeProbability(target)
+			this.targetProb = distribution.getCumulativeProbability(target)
 					.floatValue();
-			float actualProb = random.nextFloat();
-
-			this.targetProb = targetProb;
-			this.actualProb = actualProb;
+			this.actualProb = random.nextFloat();
 
 			// clear old values
 			checkTest.setText("");
@@ -154,7 +147,9 @@ public class Check {
 			// setup the animator for the actual progress bar
 			progressAnim = ObjectAnimator.ofFloat(this, "progress", 0f,
 					1.0f - actualProb);
-			progressAnim.setDuration(ANIMATION_PROGRESS_DURATION_MILLISECONDS);
+			final int duration = ANIMATION_PROGRESS_DURATION_CONSTANT_MILLISECONDS
+					+ (int) ((1.0f - actualProb) * ANIMATION_PROGRESS_DURATION_VARIABLE_MILLISECONDS);
+			progressAnim.setDuration(duration);
 			progressAnim.setInterpolator(new DecelerateInterpolator(
 					ANIMATION_PROGRESS_DECELERATE_SCALE));
 			progressAnim.addListener(this);
@@ -179,20 +174,19 @@ public class Check {
 		 */
 		@Override
 		public void onAnimationStart(Animator animator) {
-			checkTest.setText(probabilityText + " chance to roll target "
-					+ target);
+			checkTest.setText(String.format(descriptionFormat, probabilityText,
+					target));
 		}
 
 		/**
-		 * <p>The bulk of the animation updates the progress bar
+		 * <p>
+		 * The bulk of the animation updates the progress bar
+		 * 
 		 * @param percentage
 		 */
 		@SuppressWarnings("unused")
 		void setProgress(float percentage) {
 			checkActualProgress.setProgress((int) (percentage * 10000));
-			// TODO: change progress bar color
-			// p.getProgressDrawable().setColorFilter(
-			// percentageToColor(percentage), PorterDuff.Mode.SRC_OVER);
 		}
 
 		@Override
@@ -200,12 +194,18 @@ public class Check {
 		}
 
 		/**
-		 * <p>Display the final result after the animation has finished
+		 * <p>
+		 * Display the final result after the animation has finished
 		 */
 		@Override
 		public void onAnimationEnd(Animator animator) {
-			checkResult.setText(actualProb <= targetProb ? "Success"
-					: "Failure");
+			if (actualProb <= targetProb) {
+				checkResult.setText(successText);
+				checkResult.setTextColor(successColor);
+			} else {
+				checkResult.setText(failureText);
+				checkResult.setTextColor(failureColor);
+			}
 		}
 
 		@Override

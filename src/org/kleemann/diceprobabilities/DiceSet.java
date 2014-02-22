@@ -60,8 +60,9 @@ public class DiceSet {
 	private SpecialSpinner specialSpinner;
 	private Target target;
 	
-	private TextView answer_fraction;
-	private TextView answer_probability;
+	private TextView answerFraction;
+	private Button answerProbability;
+	private Check check;
 	private GraphView.Setter graphSetter;
 	
 	// every time the dice are changed; this is incremented
@@ -86,8 +87,8 @@ public class DiceSet {
 			TargetParam[] targetParam,
 			Button targetButton,
 			Button clear,
-			TextView answer_fraction,
-			TextView answer_probability,
+			TextView answerFraction,
+			Button answerProbability,
 			GraphView.Setter graphSetter
 			) {
 		
@@ -116,8 +117,9 @@ public class DiceSet {
 
 		this.specialSpinner = specialSpinner;
 		specialSpinner.setChangeListener(diceChanged);
-		this.answer_fraction = answer_fraction;
-		this.answer_probability = answer_probability;
+		this.answerFraction = answerFraction;
+		this.answerProbability = answerProbability;
+		this.check = new Check(answerProbability);
 		this.graphSetter = graphSetter;
 
 		final View.OnClickListener clearListener = new Clear();
@@ -237,8 +239,8 @@ public class DiceSet {
 			in.target = target.getCount();
 			in.special = specialSpinner.getSelected();
 			
-			answer_fraction.setText("");
-			answer_probability.setText("?");
+			answerFraction.setText("");
+			answerProbability.setText("?");
 			
 			new BackgroundJob().executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR, in);
 		}
@@ -300,8 +302,9 @@ public class DiceSet {
 		protected void onPostExecute(BackgroundOut out) {
 			running = false;
 			if (out.serial == serial) {
-				answer_fraction.setText(out.answerFraction);
-				answer_probability.setText(out.answerProbability);
+				answerFraction.setText(out.answerFraction);
+				answerProbability.setText(out.answerProbability);
+				check.set(out.answerProbability, out.distribution, out.target);
 				graphSetter.setResult(out.distribution, out.target, out.answerFormula);
 			} else {
 				// the dice have changed since we started the background task

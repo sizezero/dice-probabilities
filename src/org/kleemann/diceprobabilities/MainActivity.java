@@ -73,7 +73,7 @@ public class MainActivity extends Activity {
 				(Button)findViewById(R.id.ds1_current_target),
 				(Button)findViewById(R.id.ds1_clear),
 				(TextView)findViewById(R.id.ds1_answer_fraction),
-				(TextView)findViewById(R.id.ds1_answer_probability),
+				(Button)findViewById(R.id.ds1_answer_probability),
 				graph.getSetter1()
 				);
 
@@ -114,7 +114,7 @@ public class MainActivity extends Activity {
 				(Button)findViewById(R.id.ds2_current_target),
 				(Button)findViewById(R.id.ds2_clear),
 				(TextView)findViewById(R.id.ds2_answer_fraction),
-				(TextView)findViewById(R.id.ds2_answer_probability),
+				(Button)findViewById(R.id.ds2_answer_probability),
 				graph.getSetter2()
 				);
 

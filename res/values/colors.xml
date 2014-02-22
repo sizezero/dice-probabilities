@@ -57,5 +57,8 @@
 	<color name="special_stroke">#24ab87</color>
 	<color name="special_gradientS">#d5f3eb</color>
 	<color name="special_gradientE">#126851</color>
-		
+	
+	<color name="check_success">#00ff00</color>
+	<color name="check_failure">#ff0000</color>
+			
 </resources>

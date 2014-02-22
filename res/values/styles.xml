@@ -66,4 +66,7 @@
         <item name="android:layout_margin">0dp</item>
         </style>
 
+    <style name="check_result" parent="die_button">
+    </style>
+    
 </resources>

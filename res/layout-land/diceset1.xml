@@ -151,10 +151,9 @@
             style="@style/clear"
             android:text="@string/clear" />
 
-        <TextView
+        <Button
             android:id="@+id/ds1_answer_probability"
-            style="@style/probability"
-            android:background="@drawable/result_btn" />
+            style="@style/probability" />
 
         <TextView
             android:id="@+id/ds1_answer_fraction"
