@@ -21,6 +21,11 @@ import android.widget.TextView;
  * <p>
  * Bring up a dialog that shows the results of a simulated roll of the dice
  * resulting in a check.
+ * 
+ * <p>
+ * NOTE: this class uses the android Animator classes which rely on java
+ * introspection. This class should not be obfuscated by proguard or the release
+ * build will silently fail to animat.
  */
 public class Check {
 
