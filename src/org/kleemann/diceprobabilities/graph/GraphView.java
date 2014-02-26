@@ -15,6 +15,26 @@ import android.util.AttributeSet;
 import android.util.TypedValue;
 import android.view.View;
 
+/**
+ * <p>
+ * A custom ui control that displays the background graph on the main activity.
+ * Graphs for two distributions are displayed.
+ * 
+ * <p>
+ * The basic graph just shows the probability curves and the horizontal lines
+ * showing the percentages of the two distributions. This is the false verbose
+ * setting and is what is shown when all the ui buttons are displayed.
+ * 
+ * <p>
+ * The enhanced graph adds formulas, percentages, crosshairs and horizontal tick
+ * markers. This is the true verbose setting and is what is shown when all the
+ * ui buttons are hidden.
+ * 
+ * <p>
+ * When either of the set distribution and target methods are called, a
+ * background thread is run to regerate all display objects. This allows the
+ * onDraw() method to be quick and efficient.
+ */
 public class GraphView extends View {
 
 	/**
