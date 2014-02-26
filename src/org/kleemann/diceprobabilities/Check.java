@@ -30,8 +30,8 @@ import android.widget.TextView;
 public class Check {
 
 	private static final int ANIMATION_START_DELAY_MILLISECONDS = 500;
-	private static final int ANIMATION_PROGRESS_DURATION_CONSTANT_MILLISECONDS = 1000;
-	private static final int ANIMATION_PROGRESS_DURATION_VARIABLE_MILLISECONDS = 1000;
+	private static final int ANIMATION_PROGRESS_DURATION_CONSTANT_MILLISECONDS = 500;
+	private static final int ANIMATION_PROGRESS_DURATION_VARIABLE_MILLISECONDS = 1500;
 	private static final float ANIMATION_PROGRESS_DECELERATE_SCALE = 2.0f;
 
 	private final AlertDialog dialog;
