@@ -25,7 +25,7 @@ import android.widget.TextView;
  * <p>
  * NOTE: this class uses the android Animator classes which rely on java
  * introspection. This class should not be obfuscated by proguard or the release
- * build will silently fail to animat.
+ * build will silently fail to animate.
  */
 public class Check {
 
@@ -165,22 +165,18 @@ public class Check {
 
 		/**
 		 * <p>
-		 * When the dialog is rendered, start the animation
+		 * When the dialog is rendered, show the text description of the check
+		 * and start the animation
 		 */
 		@Override
 		public void onShow(DialogInterface dialog) {
+			checkTest.setText(String.format(descriptionFormat, probabilityText,
+					target));
 			progressAnim.start();
 		}
 
-		/**
-		 * <p>
-		 * The animation has an initial delay; after that show the text
-		 * description of the check
-		 */
 		@Override
 		public void onAnimationStart(Animator animator) {
-			checkTest.setText(String.format(descriptionFormat, probabilityText,
-					target));
 		}
 
 		/**
