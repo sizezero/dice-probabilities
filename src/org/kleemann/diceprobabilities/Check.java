@@ -43,6 +43,7 @@ public class Check {
 	private String probabilityText;
 	private Distribution distribution;
 	private int target;
+	private final int maxRoll;
 
 	private final Wrapper wrapper;
 
@@ -78,6 +79,9 @@ public class Check {
 				.findViewById(R.id.check_actual_progress);
 		this.checkResult = (TextView) v.findViewById(R.id.check_result);
 
+		this.maxRoll = button.getResources().getInteger(
+				R.integer.max_roll);
+		
 		this.wrapper = new Wrapper();
 		button.setOnClickListener(wrapper);
 	}
@@ -145,7 +149,7 @@ public class Check {
 			// clear old values
 			checkTest.setText("");
 			checkTargetProgress
-					.setProgress((int) ((1.0f - targetProb) * 10000));
+					.setProgress((int) ((1.0f - targetProb) * maxRoll));
 			checkActualProgress.setProgress(0);
 			checkResult.setText("");
 
@@ -187,7 +191,7 @@ public class Check {
 		 */
 		@SuppressWarnings("unused")
 		void setProgress(float percentage) {
-			checkActualProgress.setProgress((int) (percentage * 10000));
+			checkActualProgress.setProgress((int) (percentage * maxRoll));
 		}
 
 		@Override

@@ -14,7 +14,7 @@
         style="?android:attr/progressBarStyleHorizontal"
         android:layout_width="match_parent"
         android:layout_height="20dp"
-        android:max="10000"
+        android:max="@integer/max_roll"
         android:padding="3dp" />
 
     <ProgressBar
@@ -22,7 +22,7 @@
         style="?android:attr/progressBarStyleHorizontal"
         android:layout_width="match_parent"
         android:layout_height="20dp"
-        android:max="10000"
+        android:max="@integer/max_roll"
         android:padding="3dp"
         android:progressDrawable="@drawable/progress" />
 

@@ -1,7 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    
+
     <integer name="default_target">10</integer>
     <integer name="max_fraction_chars">30</integer>
-    
+    <!-- an arbitrary large integer that represents the number of ticks int the Check progress bars -->
+    <integer name="max_roll">10000</integer>
+
 </resources>
