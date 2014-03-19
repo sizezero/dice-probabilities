@@ -68,7 +68,28 @@ $ ant test
 
 ### Eclipse
 
-TODO
+First from bash:
+
+```bash
+$ cd /tmp
+$ git clone http://github.com/sizezero/dice-probabilities.git DiceProbabilities
+$ cd DiceProbabilities
+$ ./setup_eclipse.sh
+```
+
+(windows users will need to hand copy the files specified in setup_eclipse.sh)
+
+Then from Eclipse (assuming workspace is **~/workspace** )
+
+* File > Import > Android > Existing Android Code Into Workspace
+  * Browse > **/tmp/DiceProbabilities**
+  * Unselect the *test* project
+  * Select the option *Copy projects into workspace*
+  * Finish
+* File > Import > Android > Existing Android Code Into Workspace
+  * Browse > **~/workspace/DiceProbabilities/tests**
+  * Leave unselected: *Copy projects into workspace*
+  * Finish
 
 ## Background
 
