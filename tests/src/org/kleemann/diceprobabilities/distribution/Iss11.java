@@ -15,7 +15,7 @@ public class Iss11 extends TestCase {
 	 * The original bug
 	 */
 	public void testSimple() {
-		Distribution c4 = new CritDistribution(4);
+		Distribution c4 = new CritDistribution(4, 1);
 		assertEquals(BigFraction.ONE, c4.getCumulativeProbability(1));
 	}
 
@@ -25,7 +25,7 @@ public class Iss11 extends TestCase {
 	 */
 	public void testCumulative() {
 		for (int s = 1; s < 8; ++s) {
-			SlowTest.distSumsToOne(new CritDistribution(s));
+			SlowTest.distSumsToOne(new CritDistribution(s, 1));
 		}
 	}
 

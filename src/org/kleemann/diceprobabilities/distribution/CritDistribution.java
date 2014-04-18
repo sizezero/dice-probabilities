@@ -4,26 +4,29 @@ import org.apache.commons.math3.fraction.BigFraction;
 
 /**
  * <p>
- * I distribution that is similar to DieDistribution except that the highest
- * value of the die is replaced with the number of sides plus 1. Note: this
- * makes CritDistribution not a DieDistribution since DieDistributions are equal
- * probabilities between 1 and n.
+ * A distribution that is similar to DieDistribution except that the highest
+ * value of the die receives a bonus. Note: this makes CritDistribution not a
+ * DieDistribution since DieDistributions are equal probabilities between 1 and
+ * n.
  * 
  * <p>
- * e.g. a d6 is {1,2,3,4,5,6} but a crit d6 is {1,2,3,4,5,7}
+ * e.g. a d6 is {1,2,3,4,5,6} but a crit +1 d6 is {1,2,3,4,5,7}
  */
 public class CritDistribution extends AbstractDistribution {
 
 	// the total number of sides of the die
-	private int sides;
+	private final int sides;
 
+	private final int bonus;
+	
 	// the equal probability of getting any side of the die
 	// cache this for efficiency
-	private BigFraction probability;
+	private final BigFraction probability;
 
-	public CritDistribution(int sides) {
+	public CritDistribution(int sides, int bonus) {
 		assert (sides > 0);
 		this.sides = sides;
+		this.bonus = bonus;
 		this.probability = new BigFraction(1, sides);
 	}
 
@@ -34,12 +37,12 @@ public class CritDistribution extends AbstractDistribution {
 
 	@Override
 	public int upperBound() {
-		return sides + 2;
+		return sides + 1 + bonus;
 	}
 
 	@Override
 	public BigFraction getProbability(int x) {
-		if ((x >= 1 && x < sides) || x == sides + 1) {
+		if ((x >= 1 && x < sides) || x == sides + bonus) {
 			return probability;
 		} else {
 			return BigFraction.ZERO;

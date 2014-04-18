@@ -11,17 +11,20 @@ import android.content.res.Resources;
 
 /**
  * <p>
- * Turns a particular die type into a critical die. e.g. the highest value is
- * actually one higher. See CritDistribution.
+ * Turns a particular die type into a critical die. e.g. the highest value
+ * receives some extra bonus. See CritDistribution.
  */
 class CritSpecial extends AbstractSpecial {
 
-	private int critSides;
+	private final int critSides;
+	private final int bonus;
 
-	public CritSpecial(Resources r, int sides) {
-		super(String.format(r.getString(R.string.special_crit_title), sides), r
-				.getString(R.string.special_crit_description));
+	public CritSpecial(Resources r, int sides, int bonus, String weapon) {
+		super(String.format(r.getString(R.string.special_crit_title), sides,
+				bonus), String.format(
+				r.getString(R.string.special_crit_description), bonus, weapon));
 		this.critSides = sides;
+		this.bonus = bonus;
 	}
 
 	@Override
@@ -29,7 +32,7 @@ class CritSpecial extends AbstractSpecial {
 			Distribution accumulator) {
 		if (sides == critSides) {
 			final Distribution allDiceOfOneType = SumDistribution.multiply(
-					new CritDistribution(sides), count);
+					new CritDistribution(sides, bonus), count);
 			return SumDistribution.add(accumulator, allDiceOfOneType);
 		} else {
 			return super.accumulateDiceStack(sides, count, accumulator);

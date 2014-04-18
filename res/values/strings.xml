@@ -14,8 +14,8 @@
     <string name="special_second_chance_description">If the first roll fails, you have a second chance to roll again.\n\nWeapons: Glaive, Icy Longspear\n</string>
     <string name="special_forced_reroll_title">Forced Reroll</string>
     <string name="special_forced_reroll_description">If the first roll succeeds, you must roll another successful check or be defeated.\n\nMonster: Giant Hermit Crab\n</string>
-    <string name="special_crit_title">d%d crit</string>
-    <string name="special_crit_description">All maximum rolls on this die count as one higher.\n\nWeapons: Heavy Pick, Scythe\n</string>
+    <string name="special_crit_title">d%1$d crit +%2$d</string>
+    <string name="special_crit_description">All maximum rolls on this die count as %1$d higher.\n\nWeapon: %2$s\n</string>
     <string name="special_dogslicer_title">Dogslicer</string>
     <string name="special_dogslicer_description">For six sided dice, ones count as threes\n</string>
     <string name="special_modify_each_die_title">%d per die</string>

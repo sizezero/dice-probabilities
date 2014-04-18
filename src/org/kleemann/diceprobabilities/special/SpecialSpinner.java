@@ -43,8 +43,9 @@ public class SpecialSpinner {
 		special.add(def);
 		special.add(new SecondChanceSpecial(r));
 		special.add(new ForcedRerollSpecial(r));
-		special.add(new CritSpecial(r, 6));
-		special.add(new CritSpecial(r, 4));
+		special.add(new CritSpecial(r, 6, 1, "Heavy Pick"));
+		special.add(new CritSpecial(r, 4, 1, "Scyth"));
+		special.add(new CritSpecial(r, 4, 2, "Fanged Falchion"));
 		special.add(new ModifyEachDieSpecial(r, -1));
 		special.add(new DogslicerSpecial(r));
 		special.add(new FailureSpecial(r
