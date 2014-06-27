@@ -16,6 +16,8 @@
     <string name="special_forced_reroll_description">If the first roll succeeds, you must roll another successful check or be defeated.\n\nMonster: Giant Hermit Crab\n</string>
     <string name="special_crit_title">d%1$d crit +%2$d</string>
     <string name="special_crit_description">All maximum rolls on this die count as %1$d higher.\n\nWeapon: %2$s\n</string>
+    <string name="special_death_zone_title">Death Zone</string>
+    <string name="special_death_zone_description">On checks, treat all rolls of 1 or 2 as 0</string>
     <string name="special_dogslicer_title">Dogslicer</string>
     <string name="special_dogslicer_description">For six sided dice, ones count as threes\n</string>
     <string name="special_modify_each_die_title">%d per die</string>

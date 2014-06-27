@@ -56,6 +56,7 @@ public class SpecialSpinner {
 				.getString(R.string.special_two_sixth_failure_title), r
 				.getString(R.string.special_two_sixth_failure_description),
 				new BigFraction(2, 6)));
+		special.add(new DeathZoneSpecial(r));
 
 		this.layoutInflater = activity.getLayoutInflater();
 		SpecialAdapter adapter = new SpecialAdapter(spinner.getContext(),
