@@ -6,7 +6,7 @@ import org.apache.commons.math3.fraction.BigFraction;
  * <p>
  * Represents a discrete distribution that exists over the integer set 0 to
  * size()-1 A distribution consists of discrete events (x values) that have a
- * probabilty (returned by getProbability(y)) that each have an independent
+ * probability (returned by getProbability(y)) that each have an independent
  * probability. Independence means:
  * 
  * <p>
@@ -23,9 +23,9 @@ import org.apache.commons.math3.fraction.BigFraction;
  * to 100% (one)
  * 
  * <p>
- * In addition to the probability of event x it also can be useful to look at the
- * Cumulative probability which is the probability that an event greater than or
- * equal to x occurs. This is returned by getCumulativeProbability(x)
+ * In addition to the probability of event x it also can be useful to look at
+ * the Cumulative probability which is the probability that an event greater
+ * than or equal to x occurs. This is returned by getCumulativeProbability(x)
  * 
  * <p>
  * All our implementations of Distribution are immutable and thus thread-safe
